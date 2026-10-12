@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morning Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho:wght@600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f3ee; --paper:#fffdf8; --ink:#16161a; --sub:#5b5b66; --line:#e4e0d6;
+  --accent:#c2410c; --up:#0f8a5f; --down:#c62839; --up-bg:#e3f4ec; --down-bg:#fbe7ea;
+  --chip:#efece4; --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.05);
+  --c-geo:#b4232f; --c-macro:#1d4ed8; --c-tech:#7c3aed; --c-japan:#be185d; --c-asia:#b45309; --c-energy:#0f766e; --c-other:#475569; --c-sports:#15803d; --c-life:#0369a1; --c-ent:#c026d3; --c-trend:#ea580c; --c-sci:#4f46e5;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f1014; --paper:#17181e; --ink:#ecebe7; --sub:#a0a0ab; --line:#2a2b33;
+    --accent:#fb923c; --up:#34d399; --down:#f87171; --up-bg:#0f2a21; --down-bg:#33161b;
+    --chip:#23242c; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+    --c-geo:#f87171; --c-macro:#60a5fa; --c-tech:#a78bfa; --c-japan:#f472b6; --c-asia:#fbbf24; --c-energy:#2dd4bf; --c-other:#94a3b8; --c-sports:#4ade80; --c-life:#38bdf8; --c-ent:#e879f9; --c-trend:#fb923c; --c-sci:#818cf8;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f1014; --paper:#17181e; --ink:#ecebe7; --sub:#a0a0ab; --line:#2a2b33;
+  --accent:#fb923c; --up:#34d399; --down:#f87171; --up-bg:#0f2a21; --down-bg:#33161b;
+  --chip:#23242c; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  --c-geo:#f87171; --c-macro:#60a5fa; --c-tech:#a78bfa; --c-japan:#f472b6; --c-asia:#fbbf24; --c-energy:#2dd4bf; --c-other:#94a3b8; --c-sports:#4ade80; --c-life:#38bdf8; --c-ent:#e879f9; --c-trend:#fb923c; --c-sci:#818cf8;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{overflow-wrap:anywhere;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.num{font-family:Inter,"Noto Sans JP",sans-serif;font-variant-numeric:tabular-nums}
+
+/* masthead */
+header.mast{border-bottom:3px double var(--ink);padding:28px 0 14px}
+.mast-top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;color:var(--sub);letter-spacing:.08em}
+.mast h1{font-family:"Shippori Mincho",serif;font-weight:800;font-size:clamp(34px,6vw,64px);line-height:1.1;margin:10px 0 4px;letter-spacing:.02em}
+.mast h1 span{color:var(--accent)}
+.mast .date{font-family:"Shippori Mincho",serif;font-size:18px}
+.tools{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:5px 12px;font:inherit;font-size:12px;cursor:pointer}
+select.btn{appearance:none;padding-right:12px}
+
+/* ticker */
+.ticker{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:22px 0}
+.tk{padding:12px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 -1px -1px 0;min-width:0}
+.tk .n{font-size:11px;color:var(--sub);letter-spacing:.04em}
+.tk .v{font-size:19px;font-weight:800}
+.tk .c{font-size:12px;font-weight:600}
+.tk .note{font-size:10.5px;color:var(--sub);line-height:1.4;margin-top:2px}
+.up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--sub)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-bottom:28px}
+@media (max-width:820px){.hero{grid-template-columns:minmax(0,1fr)}}
+.card{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.summary{padding:24px 26px}
+.eyebrow{font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:700;text-transform:uppercase}
+.summary h2{font-family:"Shippori Mincho",serif;font-size:clamp(20px,2.6vw,27px);line-height:1.45;margin:6px 0 14px}
+.summary ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.summary li{counter-increment:s;position:relative;padding:10px 0 10px 40px;border-top:1px solid var(--line);font-size:15px}
+.summary li::before{content:counter(s);position:absolute;left:0;top:10px;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--paper);font:700 13px/26px Inter;text-align:center}
+.mood{padding:22px 24px;display:flex;flex-direction:column;gap:14px}
+.gauge{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,var(--down),#d4a017 50%,var(--up))}
+.gauge i{position:absolute;top:-5px;width:4px;height:22px;background:var(--ink);border-radius:2px;transform:translateX(-50%)}
+.gauge-l{display:flex;justify-content:space-between;font-size:11px;color:var(--sub)}
+.mood .lbl{font-size:24px;font-weight:900}
+.mood p{margin:0;font-size:14px;color:var(--sub)}
+.themes{display:flex;flex-wrap:wrap;gap:6px}
+.theme{background:var(--chip);border-radius:999px;padding:3px 11px;font-size:12px;font-weight:500}
+
+/* section heads */
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-top:1px solid var(--ink);padding-top:10px;margin:34px 0 16px;flex-wrap:wrap}
+.sh h3{font-family:"Shippori Mincho",serif;font-size:24px;margin:0}
+.sh small{color:var(--sub);font-size:12px}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.f{border:1px solid var(--line);background:transparent;color:var(--sub);border-radius:999px;padding:3px 12px;font:inherit;font-size:12px;cursor:pointer}
+.f.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* stories */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+.story{grid-column:span 6;padding:22px 24px;display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--cat)}
+.story.lvl3{grid-column:span 12}
+.story.lvl1{grid-column:span 6}
+@media (max-width:980px){.story.lvl1{grid-column:span 6}}
+@media (max-width:720px){.story,.story.lvl1,.story.lvl3{grid-column:span 12}}
+.meta{display:flex;gap:8px;align-items:center;font-size:11.5px;color:var(--sub);flex-wrap:wrap}
+.cat{color:var(--cat);font-weight:700;letter-spacing:.06em}
+.stars{color:var(--accent);letter-spacing:1px}
+.story h4{font-family:"Shippori Mincho",serif;font-size:20px;line-height:1.45;margin:0}
+.story.lvl3 h4{font-size:clamp(22px,2.8vw,30px)}
+.story p{margin:0;font-size:14.5px}
+.why{background:var(--chip);border-radius:12px;padding:10px 14px;font-size:13.5px}
+.why b{color:var(--accent);font-size:11px;letter-spacing:.12em;display:block}
+.impact{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.impact{grid-template-columns:minmax(0,1fr)}.ticker{grid-template-columns:repeat(2,minmax(0,1fr))}.summary,.story,.mood{padding:18px}}
+.imp{border-radius:12px;padding:10px 12px;font-size:12.5px}
+.imp.u{background:var(--up-bg)} .imp.d{background:var(--down-bg)}
+.imp h5{margin:0 0 4px;font-size:11px;letter-spacing:.1em}
+.imp.u h5{color:var(--up)} .imp.d h5{color:var(--down)}
+.imp ul{margin:0;padding:0;list-style:none}
+.imp li{padding:3px 0;line-height:1.5}
+.imp li b{font-weight:700}
+.imp li code{font-family:Inter;font-size:10.5px;background:var(--paper);border-radius:4px;padding:0 4px;margin-left:4px;color:var(--sub)}
+.imp li span{display:block;color:var(--sub);font-size:11.5px}
+.src{font-size:11.5px;color:var(--sub);margin-top:auto}
+.src a{color:var(--sub);text-decoration:underline;text-underline-offset:2px;margin-right:10px}
+
+/* sectors & calendar */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
+.sectors{padding:8px 0}
+.sec{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:12px 20px;border-bottom:1px solid var(--line);align-items:start}
+.sec:last-child{border-bottom:0}
+.arrow{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-weight:900;font-size:15px}
+.arrow.up{background:var(--up-bg)} .arrow.down{background:var(--down-bg)} .arrow.flat{background:var(--chip)}
+.sec b{font-size:14.5px} .sec div span{display:block;font-size:12.5px;color:var(--sub);line-height:1.55}
+.cal{padding:8px 0}
+.ev{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line)}
+.ev:last-child{border-bottom:0}
+.ev .d{font-family:Inter;font-weight:800;font-size:14px}
+.ev .d small{display:block;font-weight:600;font-size:11px;color:var(--sub)}
+.ev b{font-size:14px} .ev span{display:block;font-size:12.5px;color:var(--sub);line-height:1.55}
+
+
+/* weather */
+.wx{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:22px 0 28px}
+@media (max-width:980px){.wx{grid-template-columns:repeat(2,minmax(0,1fr))}.wx .jma{grid-column:span 2}}
+@media (max-width:620px){.wx{grid-template-columns:minmax(0,1fr)}.wx .jma{grid-column:auto}}
+.place{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.place .top{display:flex;align-items:center;gap:14px}
+.place .ic{font-size:44px;line-height:1}
+.place .nm{font-size:12px;color:var(--sub);letter-spacing:.1em}
+.place .tx{font-size:20px;font-weight:900;line-height:1.3}
+.place .tp{margin-left:auto;text-align:right;font-family:Inter;line-height:1.2}
+.place .tp b{font-size:26px;color:var(--down)} .place .tp span{font-size:15px;color:#3b82f6;display:block}
+.advice{display:flex;flex-wrap:wrap;gap:6px}
+.advice span{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--chip)}
+.advice .rain{background:#dbeafe;color:#1e40af}
+:root[data-theme="dark"] .advice .rain{background:#172554;color:#93c5fd}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .advice .rain{background:#172554;color:#93c5fd}}
+.hours{display:flex;gap:4px;text-align:center;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding-bottom:6px;scrollbar-width:thin;overscroll-behavior-x:contain}
+.hours-hint{font-size:11px;color:var(--sub);display:flex;justify-content:space-between}
+.hr{flex:0 0 44px;scroll-snap-align:start;font-size:11px;color:var(--sub);display:flex;flex-direction:column;align-items:center;gap:2px;position:relative}
+.hr.nd{margin-left:8px}
+.hr.nd::before{content:"明日";position:absolute;left:-7px;top:-2px;bottom:0;border-left:2px dashed var(--accent);padding-left:3px;font-size:9px;color:var(--accent);font-weight:700;writing-mode:vertical-rl}
+.hr .hi{font-size:15px;line-height:1.2}
+.hr .bar{width:100%;height:34px;background:var(--chip);border-radius:6px;position:relative;overflow:hidden}
+.hr .bar i{position:absolute;left:0;right:0;bottom:0;background:#60a5fa;opacity:.8}
+.hr b{font-family:Inter;color:var(--ink);font-size:11.5px}
+.tmr{font-size:12.5px;color:var(--sub);border-top:1px solid var(--line);padding-top:8px}
+.jma{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.jma p{margin:0;font-size:14.5px;font-weight:500}
+.jma .pops{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;text-align:center}
+.jma .pops div{background:var(--chip);border-radius:10px;padding:6px 0;font-size:11px;color:var(--sub)}
+.jma .pops b{display:block;font:800 17px Inter;color:var(--ink)}
+.jma small{color:var(--sub);font-size:11px}
+
+/* topics */
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.topic{padding:18px 20px;display:flex;flex-direction:column;gap:8px;border-left:4px solid var(--cat)}
+.topic h4{margin:0;font-size:16.5px;line-height:1.5;font-weight:700}
+.topic p{margin:0;font-size:13.5px;color:var(--sub)}
+.topic .hook{font-size:12.5px;background:var(--chip);border-radius:10px;padding:7px 10px;color:var(--ink)}
+.trivia{padding:20px 22px;background:var(--ink);color:var(--paper);border:0}
+.trivia .eyebrow{color:var(--accent)}
+.trivia h4{font-family:"Shippori Mincho",serif;font-size:19px;margin:6px 0}
+.trivia p{margin:0;font-size:13.5px;opacity:.85}
+
+/* weekly */
+.week{grid-column:1/-1;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.week-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.seg{display:flex;gap:4px;background:var(--chip);padding:3px;border-radius:999px}
+.seg button{border:0;background:transparent;color:var(--sub);font:inherit;font-size:12px;padding:3px 12px;border-radius:999px;cursor:pointer}
+.seg button.on{background:var(--paper);color:var(--ink);font-weight:700;box-shadow:var(--shadow)}
+.days{display:grid;grid-template-columns:repeat(8,minmax(64px,1fr));gap:6px;overflow-x:auto;padding-bottom:4px}
+.day{background:var(--chip);border-radius:12px;padding:10px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;align-items:center}
+.day .dl{font-size:12px;font-weight:700}
+.day .dl small{font-weight:500;color:var(--sub);margin-left:2px}
+.day.sat .dl small{color:#3b82f6} .day.sun .dl small{color:var(--down)}
+.day .di{font-size:24px;line-height:1.3}
+.day .dt{font-size:11.5px;color:var(--sub)}
+.day .dx{font:800 15px Inter;color:var(--down)} .day .dn{font:600 12px Inter;color:#3b82f6}
+.day .dp{font-size:11px;font-family:Inter;color:var(--sub)}
+.day .dp.wet{color:#3b82f6;font-weight:700}
+
+/* changes */
+.changes{padding:6px 0}
+.chg{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:13px 20px;border-bottom:1px solid var(--line);align-items:start}
+.chg:last-child{border-bottom:0}
+.chg .when{font-size:11.5px;font-weight:700;background:var(--accent);color:var(--paper);border-radius:8px;padding:3px 9px;white-space:nowrap;margin-top:2px}
+.chg .when.later{background:var(--chip);color:var(--ink)}
+.chg b{font-size:15px} .chg span{display:block;font-size:13px;color:var(--sub);line-height:1.6}
+
+/* follow-up */
+.fu{background:var(--accent);color:var(--paper);font-weight:700;border-radius:6px;padding:0 7px;font-size:11px;letter-spacing:.05em}
+.delta{font-size:13px;border-left:3px solid var(--accent);padding:2px 0 2px 10px;color:var(--ink)}
+.delta b{color:var(--accent);font-size:11px;letter-spacing:.08em;margin-right:6px}
+
+/* glossary */
+.term{border-bottom:1.5px dotted var(--accent);cursor:help;border-radius:2px}
+.term:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* tap-to-open details */
+.tap{cursor:pointer}
+.tap:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card.tap{transition:transform .15s ease, box-shadow .15s ease}
+.card.tap:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(0,0,0,.06),0 14px 32px rgba(0,0,0,.1)}
+.imp li.tap{border-radius:8px;padding:5px 22px 5px 6px;margin:0 -6px;position:relative}
+.imp li.tap::after{content:"›";position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--sub)}
+.imp li.tap:hover{background:var(--paper)}
+.tk.tap:hover,.sec.tap:hover,.ev.tap:hover,.chg.tap:hover{background:var(--chip)}
+.sec.tap,.ev.tap,.chg.tap{position:relative;padding-right:30px}
+.sec.tap::after,.ev.tap::after,.chg.tap::after{content:"›";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--sub)}
+.readmore{font-size:12.5px;font-weight:700;color:var(--accent)}
+@media (prefers-reduced-motion: reduce){.card.tap,.sheet{transition:none!important;animation:none!important}}
+
+.sheet-bg{position:fixed;inset:0;background:rgba(10,10,14,.5);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--paper);color:var(--ink);width:min(680px,100%);max-height:88vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.3);animation:up .22s ease-out;padding-bottom:env(safe-area-inset-bottom, 0px)}
+@media (min-width:760px){.sheet-bg{align-items:center}.sheet{border-radius:22px;max-height:84vh}}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.sheet-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 4px;gap:8px}
+.sheet-bar button{background:var(--chip);border:0;color:var(--ink);border-radius:999px;font:inherit;font-size:13px;padding:5px 14px;cursor:pointer}
+.sheet-bar .grab{width:40px;height:4px;border-radius:4px;background:var(--line)}
+.sheet-body{overflow-y:auto;padding:6px 24px 28px;display:flex;flex-direction:column;gap:14px;overscroll-behavior:contain}
+.sheet-body h3{font-family:"Shippori Mincho",serif;font-size:23px;line-height:1.4;margin:0;text-wrap:balance}
+.sheet-body p{margin:0;font-size:15px;line-height:1.85}
+.sheet-body .sec-t{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--accent);margin-bottom:4px}
+.sheet-body .box{background:var(--chip);border-radius:14px;padding:12px 16px}
+.sheet-body .dir{font-size:12px;font-weight:800;letter-spacing:.08em}
+.sheet-body .codes{display:flex;flex-wrap:wrap;gap:6px}
+.sheet-body .codes a{font:600 12.5px Inter,sans-serif;background:var(--chip);border-radius:999px;padding:4px 12px;text-decoration:none}
+.sheet-body .codes a:hover{background:var(--line)}
+.sheet-body .lst{display:flex;flex-direction:column;gap:6px}
+.sheet-body .lst .it{border:1px solid var(--line);border-radius:12px;padding:10px 34px 10px 14px;position:relative;font-size:13.5px}
+.sheet-body .lst .it::after{content:"›";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--sub)}
+.sheet-body .lst .it b{display:block;font-size:14.5px}
+.sheet-body .lst .it code{font-family:Inter;font-size:11px;color:var(--sub);margin-left:6px}
+.sheet-body .lst .it span{color:var(--sub)}
+.sheet-body .lst .it.u b{color:var(--up)} .sheet-body .lst .it.d b{color:var(--down)}
+.sheet-body .note{font-size:11.5px;color:var(--sub)}
+.sheet-body .src a{font-size:12.5px;color:var(--sub);margin-right:12px}
+
+/* track record */
+.trk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:18px}
+@media (max-width:820px){.trk{grid-template-columns:minmax(0,1fr)}}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.kpi{background:var(--paper);padding:14px 16px}
+.kpi .n{font-size:11px;color:var(--sub)}
+.kpi .v{font:800 26px Inter,sans-serif}
+.kpi .s{font-size:11px;color:var(--sub)}
+.review{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.review p{margin:0;font-size:14px}
+.rv{border:1px solid var(--line);border-radius:12px;padding:10px 34px 10px 14px;position:relative;font-size:13px}
+.rv b{display:block;font-size:14px}
+.rv::after{content:"›";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--sub)}
+.res{padding:4px 0}
+.rs{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 32px 10px 16px;border-bottom:1px solid var(--line);position:relative}
+.rs:last-child{border-bottom:0}
+.rs::after{content:"›";position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--sub)}
+.rs:hover{background:var(--chip)}
+.vd{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px}
+.vd.hit{background:var(--up-bg);color:var(--up)} .vd.miss{background:var(--down-bg);color:var(--down)} .vd.flat{background:var(--chip);color:var(--sub)}
+.rs .nm{font-size:13.5px;font-weight:700;line-height:1.4}
+.rs .nm small{display:block;font-weight:400;color:var(--sub);font-size:11.5px}
+.rs .fig{text-align:right;font-family:Inter;font-size:13px;font-weight:700;line-height:1.35}
+.rs .fig small{display:block;font-weight:500;font-size:11px;color:var(--sub)}
+.lessons{margin:0;padding:6px 20px 14px 36px;font-size:13.5px}
+.lessons li{padding:4px 0}
+.empty{padding:18px 20px;color:var(--sub);font-size:13.5px}
+
+footer{color:var(--sub);font-size:11.5px;text-align:center;padding:40px 0 60px;line-height:1.8}
+.hidden,[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <span id="updated"></span>
+      <div class="tools">
+        <select class="btn" id="archive" aria-label="過去の号"></select>
+        <button class="btn" id="theme">◐</button>
+      </div>
+    </div>
+    <h1>Morning <span>Brief</span></h1>
+    <div class="date" id="date"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="sh" id="wxHead"><h3>今日の天気</h3><small id="wxNote"></small></div>
+  <section class="wx" id="weather"></section>
+
+  <section class="hero">
+    <div class="card summary">
+      <div class="eyebrow">Today in 30 seconds</div>
+      <h2 id="lead"></h2>
+      <ol id="points"></ol>
+    </div>
+    <div class="card mood">
+      <div class="eyebrow">Market Mood</div>
+      <div class="lbl" id="moodLabel"></div>
+      <div><div class="gauge"><i id="needle"></i></div><div class="gauge-l"><span>リスクオフ</span><span>中立</span><span>リスクオン</span></div></div>
+      <p id="moodText"></p>
+      <div class="eyebrow" style="margin-top:4px">Key Themes</div>
+      <div class="themes" id="themes"></div>
+    </div>
+  </section>
+
+  <div class="sh" id="chgHead"><h3>今日から変わること</h3><small>制度・値上げ・サービス変更など</small></div>
+  <section class="card changes" id="changes"></section>
+
+  <div class="sh">
+    <h3>今日の重要ニュース</h3>
+    <div class="filters" id="filters"></div>
+  </div>
+  <section class="grid" id="stories"></section>
+
+  <div class="sh"><h3>世の中の話題</h3><small>スポーツ・くらし・エンタメ・トレンド — 知っておくと会話に困らない</small></div>
+  <section class="topics" id="topics"></section>
+
+  <div class="sh"><h3>マーケット</h3><small>前営業日の終値ベース</small></div>
+  <section class="ticker" id="ticker" style="margin-top:0"></section>
+
+  <div class="sh"><h3>予想の答え合わせ</h3><small>「追い風・逆風」の予想を実際の株価で検証（指数との差で判定）</small></div>
+  <section class="trk" id="track">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="kpis" id="kpis"></div>
+      <div class="card review" id="review"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card res" id="results"></div>
+      <div class="card" id="lessonsBox"><div class="eyebrow" style="padding:16px 20px 0">これまでの学び</div><ol class="lessons" id="lessons"></ol></div>
+    </div>
+  </section>
+
+  <section class="two">
+    <div>
+      <div class="sh"><h3>セクターの風向き</h3><small>ニュースから読む追い風・逆風</small></div>
+      <div class="card sectors" id="sectors"></div>
+    </div>
+    <div>
+      <div class="sh"><h3>今後の注目予定</h3><small>相場や暮らしに関わるイベント</small></div>
+      <div class="card cal" id="calendar"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  AIが公開ニュースを収集・要約したものです。天気は気象庁・Open-Meteoのデータ。銘柄の記載は連想・影響の整理であり投資助言ではありません。<br>
+  数値は前営業日の終値ベース。最終判断は必ず一次情報でご確認ください。
+</footer>
+
+<div class="sheet-bg" id="sheetBg" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="詳しい説明">
+    <div class="sheet-bar"><button id="sheetBack" hidden>‹ 戻る</button><span class="grab"></span><button id="sheetX" aria-label="閉じる">閉じる</button></div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+</div>
+
+<script id="news-data" type="application/json">{"date": "2026-10-13", "generated_at": "2026-10-13 05:30 JST", "lead": "イエメンの反政府勢力フーシ派は12日もサウジアラビアにミサイルとドローンを撃ち込み、首都リヤドの空港は17日まで閉鎖された。週末の2度の攻撃で計13人が亡くなっている。一方、トランプ米大統領が発表したロシアとウクライナの「エネルギー停戦」は、ロシアが発表後も6カ所のエネルギー施設を攻撃し、早くも形だけになりつつある。この2つが重なって、北海ブレント原油は1バレル106ドル台に上がった。米国株はまちまちで、中国のメモリー大手CXMTの技術の進歩が伝わり、マイクロンなど世界のメモリー株が4〜7%下げた。12日朝には北朝鮮が弾道ミサイル2発を発射し、1発は900キロ以上飛んだ。3連休明けの今日の東京市場は、原油高と半導体安を受けて売りから始まりそう。夜には米国で大手銀行の決算とアップルの新製品の発表がある。スポーツでは、出雲駅伝で早稲田大が大会新記録で16年ぶりに優勝し、パ・リーグCSは日本ハムが西武を破ってファイナルに進んだ。", "summary": ["フーシ派のサウジへの攻撃が止まらず、リヤドの空港は17日まで閉鎖。ロシアもエネルギー停戦の発表後に発電所などを攻撃し続け、ブレント原油は1.8%高の106.65ドル、WTIは2.0%高の93.74ドル。物価高が長引く心配から、ドル円は158円75銭まで円安が進んだ。", "中国のメモリー大手CXMTが「年内に新しい設計のサーバー向けメモリーを出す」と表明し、マイクロン、サンディスク、SKハイニックス、サムスンが軒並み下落。半導体の設計図を売る英Armも3%超下げ、ナスダックは0.44%安。今日の東京ではキオクシアやソフトバンクGに売りが出やすい。", "出雲駅伝は早稲田大が2時間5分56秒の大会新記録で16年ぶりの優勝。プロ野球CSは14日からファイナルで、セは阪神×DeNA、パはソフトバンク×日本ハム。ドジャースはブルワーズとのリーグ優勝決定シリーズ初戦を1対2で落とし、大谷は2安打だった。"], "mood": {"label": "中東の攻撃と原油高、半導体安で慎重", "score": 38, "text": "停戦の発表という和らぐ材料は、ロシアの攻撃続行で中身が伴わず、中東ではフーシ派がサウジの空港や石油施設を狙い続けている。原油高は物価高を通じて米国の利上げ観測を強める材料で、14日の米消費者物価を前に株式市場は様子見。米国では大型株の平均（S&P500）は最高値の近くにとどまるが、半導体・メモリー株が売られた。東京は連休中の動きをまとめて反映し、祝日取引の日経平均先物は9日より320円安い69,150円だった。"}, "themes": ["リヤド空港 17日まで閉鎖", "エネルギー停戦 ロシアは攻撃続行", "ブレント原油 106ドル台", "メモリー株急落 中国CXMT", "北朝鮮 弾道ミサイル2発", "今夜 米大手銀決算・アップル発表", "ノーベル経済学賞 ホール氏とウッドフォード氏", "早稲田 出雲駅伝16年ぶりV"], "markets": [{"name": "日経平均", "value": "69,030", "change": "-11 (-0.02%)", "note": "10/9終値・今日13日に3連休明けの取引", "why": "12日は東京の株式市場は休みだったが、大阪の日経平均先物は祝日も取引され、日中は9日より320円安い69,150円で終えた。原油高と米国の半導体株安（SOX指数は9日まで3日続落）が重しで、今日は売りが先行しやすい。日経平均への影響が大きいソフトバンクGやアドバンテストの動きが、指数の方向を決めそう。"}, {"name": "NYダウ", "value": "51,850", "change": "+195 (+0.38%)", "note": "10/12終値", "why": "原油高でエネルギー株が買われ、アナリストの評価引き上げがあったセールスフォースも支えになった。ダウは値段の高い30銘柄の平均で、ハイテク株の比重が小さいため、半導体安の影響を受けにくかった。今日から始まる大手銀行の決算で、米国の景気の強さが確かめられる。"}, {"name": "S&P 500", "value": "7,807", "change": "-4 (-0.06%)", "note": "10/12終値", "why": "エネルギー株やメタ（+3%台）が上がる一方、メモリー株や半導体株が下げ、ほぼ横ばいで最高値（7,818）の手前にとどまった。原油高は物価を押し上げ、米国の利上げにつながる心配がある。14日のCPIが予想より強いと、最高値の更新は遠のきやすい。"}, {"name": "ナスダック", "value": "27,246", "change": "-120 (-0.44%)", "note": "10/12終値", "why": "中国のメモリー大手CXMTの技術の進歩が伝わり、マイクロンが4%超、サンディスクが6%前後下げた。Armもクアルコムとの訴訟の行方が意識されて3%超安。メタは新しいAIモデル「Muse Wonder」の発表で上がったが、半導体の売りを打ち消せなかった。"}, {"name": "米10年債", "value": "5.24%", "change": "0.00pt（休場）", "note": "10/9の水準・12日は米債券市場が休み", "why": "コロンブス・デーで債券市場は休みだった。先週は一時5.36%と2002年以来の高さをつけている。12日の原油高は物価の上振れを通じて利回りを押し上げやすく、今日の取引再開と14日のCPIで動きが出やすい。"}, {"name": "ドル円", "value": "158円75銭", "change": "+0.60円（円安方向）", "note": "10/12のNY市場の終値", "why": "リヤドの空港への攻撃などで原油が上がり、米国の金利が上がるとの見方からドルが買われた。ユーロはフランスの財政不安で売られ、ドルの独歩高になっている。160円に近づくと日本の当局の円安けん制が意識され、15日のG20財務相会合や16日の植田日銀総裁の発言も節目になる。"}, {"name": "WTI原油", "value": "$93.74", "change": "+2.0%", "note": "11月物・10/12の清算値", "why": "朝はエネルギー停戦の期待で下げたが、ロシアの攻撃続行とフーシ派のサウジへの攻撃が伝わり、1日で約1.9ドル上げた。国際的な指標の北海ブレントは1.8%高の106.65ドルで、約2週間ぶりの高さ。停戦が本物になれば下げ、米国が対フーシ派の戦いに加われば一段と上がりやすい。"}, {"name": "金", "value": "$4,218", "change": "-0.26%", "note": "12月物・10/12の清算値", "why": "週末の中東の攻撃で朝は1週間ぶりの高値から始まったが、その後は売られて小幅に下げた。原油高で米国の金利が上がるとの見方は、利息を生まない金には逆風。14日のCPIを前に様子見の動きも出ている。"}, {"name": "ビットコイン", "value": "約8.34万ドル", "change": "+0.9%", "note": "10/12朝（米東部時間）・始値の前日比", "why": "週末も8万ドル台前半での一進一退が続いた。ハイテク株と同じ方向に動きやすく、半導体株が売られた12日の米国時間は伸び悩んだ。最近は大きな材料がなく、株式市場の地合いの温度計として見るとよい。"}], "stories": [{"category": "地政学", "importance": 3, "region": "中東", "title": "フーシ派、12日もサウジにミサイルとドローン——リヤドの空港は17日まで閉鎖、週末の攻撃で計13人死亡。製油所やガス施設も標的と主張", "summary": "イエメンの反政府勢力フーシ派は12日も、サウジアラビアに弾道ミサイルや巡航ミサイル、ドローンを発射し、サウジ軍が迎撃した。首都リヤドのキング・ハリド国際空港は10日の攻撃で12人、11日の攻撃でパキスタン人1人が亡くなり、17日まで閉鎖される。", "detail": "フーシ派は10日以降、リヤドの空港を少なくとも4回攻撃したと主張し、ほかにも東部ダンマンのキング・ファハド国際空港、ガス施設、タナジブの製油所を狙ったとしている。米ブルームバーグは、サウジの空港への攻撃としてはこれまでで最も犠牲者の多いものだと伝えた。トランプ米大統領はサウジ側の反撃に米国が加わることを「検討する」と述べているが、12日の時点で米国の攻撃は確認されていない。オマーン沖ではタンカーにドローンが当たったとも伝えられ、原油の値段には「中東のリスク料」が上乗せされている。一方、イランは国連総会で示した7つの条件（ホルムズ海峡の通航再開と引き換え）への米国の返答を「一部は受け入れたが不十分」とし、仲介役を通じて対案を出す構え。米国が参戦するか、イランとの交渉が進むかで、原油の向きが大きく変わる。", "why": "世界最大級の産油国の首都や石油施設が毎日のように狙われ、紅海とホルムズ海峡という2つの海の要所がどちらも不安定になっている。原油高はガソリン代や電気代、輸入品の値段に波及し、米国の利上げ観測を強めて円安にもつながる。中東を経由する旅行や出張の予定がある人は、空港の閉鎖や欠航の情報を確かめたい。", "followup": true, "delta": "前日は「12人死亡・米国が参戦を検討」の段階だったが、12日も攻撃が続き、空港の17日までの閉鎖が決まり、フーシ派は製油所やガス施設への攻撃も主張した。", "impact": {"up": [], "down": []}, "sources": [{"name": "CBS News", "url": "https://www.cbsnews.com/news/houthis-threat-saudi-airspace-attack-riyadh-airport/"}, {"name": "Washington Times（AP）", "url": "https://www.washingtontimes.com/news/2026/oct/12/houthi-attacks-saudi-airports-continue-marking-major-escalation-yemen/"}]}, {"category": "地政学", "importance": 3, "region": "ロシア・ウクライナ・米国", "title": "トランプ氏の「エネルギー停戦」、発表後もロシアは6カ所のエネルギー施設を攻撃——ロシア大統領府は合意を認めず「接触は続いている」", "summary": "ゼレンスキー大統領は、トランプ氏の停戦の発表を受けてウクライナはロシアのエネルギー施設を攻撃しなかったが、ロシアはその後も発電所などを攻撃したと述べた。ロシアのペスコフ大統領報道官は12日、停戦に同意したかどうかを答えず「接触は続いている」とだけ述べた。", "detail": "ロシアはハルキウの熱電併給所や、キーウの発電所をドローンで攻撃し、各地で停電が起きた。仏フランス24によると、ロシアは停戦の発表後に6カ所のエネルギー施設を攻撃した。東部クラマトルスク近くではクラスター弾による攻撃で13歳の少女を含む3人が亡くなり、ハルキウでは少なくとも12人がけがをした。ゼレンスキー氏は「ロシアがエネルギー停戦を受け入れるつもりがないことがますます明らかだ」と述べた。欧州連合（EU）は「譲歩ではなく圧力こそが戦争を早く終わらせる」との立場を改めて示し、フランス海軍はインド洋でロシアの「影の船団」のタンカーを止めた。トランプ氏による同様の停戦の発表は9月に続いて2度目で、今回も実際の攻撃は止まっていない。", "why": "停戦が本物なら、ロシアの製油所への攻撃が止まって燃料の供給が増え、原油や軽油が下がるはずだった。12日の朝は実際に原油が下げたが、ロシアの攻撃が続いているとわかって上げに転じた。11月3日の米中間選挙を前に、燃料の値段を下げたいトランプ政権の思惑と、戦場の現実のずれが大きくなっている。", "followup": true, "delta": "前日は「ゼレンスキー氏は初耳」の段階だったが、ロシア大統領府が合意を認めず、ロシアは発表後に6カ所のエネルギー施設を攻撃し、停戦は形だけになりつつある。", "impact": {"up": [], "down": []}, "sources": [{"name": "France 24", "url": "https://www.france24.com/en/europe/20261012-live-oil-prices-fall-after-trump-unilaterally-announces-russia-ukraine-energy-ceasefire"}, {"name": "PBS NewsHour（AP）", "url": "https://www.pbs.org/newshour/world/zelenskyy-says-russia-strikes-energy-facilities-despite-trump-claim-of-an-energy-ceasefire"}]}, {"category": "テクノロジー", "importance": 2, "region": "中国・米国・韓国", "title": "中国のメモリー大手CXMT「年内に新設計のサーバー向けメモリー」——マイクロン4%超安、サンディスク6%前後安、サムスン・SKハイニックスも4%前後安", "summary": "中国のメモリー大手、長鑫存儲技術（CXMT）の社長が、記憶の部屋（セル）を約3分の1小さくできる新しい設計「4F²」のDRAMを使ったサーバー向けの製品を年内に出す計画を示した。中国勢の追い上げへの警戒から、12日は世界のメモリー株が売られた。", "detail": "これまでのDRAMは1つのセルに「6F²」の面積を使うのが一般的で、4F²にできれば同じ大きさのシリコンにより多くのメモリーを詰め込める。米マイクロンは4%超下げて1株1000ドルを割り込み、記憶装置のサンディスクは6%前後、ウエスタンデジタルは2%前後下げた。韓国ではサムスン電子が4%前後、SKハイニックスが3%台後半下げた。米モーニングスターは「量産・商品化にはまだ大きな壁がある」としている。同じ日、半導体の設計図を売る英Armも、米クアルコムとの契約をめぐる裁判の評決待ち（13日に審議再開）が意識され3%超下げた。一方、メタは新しいAIモデル「Muse Wonder」を発表して3%台上げ、AI関連でも明暗が分かれた。", "why": "AIのデータセンター向けのメモリーは、この1年で値段も株価も大きく上がった分野で、中国勢が追いつけば値下がりにつながるとの心配が出た。日本ではNAND型の記憶用半導体を作るキオクシアが同じ「メモリー銘柄」として売られやすい。15日の台湾TSMCの決算で、AI向けの需要の強さが改めて試される。", "impact": {"up": [], "down": [{"name": "キオクシアホールディングス", "code": "285A", "reason": "記憶用半導体（NAND）の大手、サンディスクと共同で工場を運営", "detail": "キオクシアはサンディスクと四日市・北上の工場を共同で運営しており、米国でサンディスクが6%前後、マイクロンが4%超下げた翌日は、連れて売られやすい。CXMTの話はDRAMだが、市場は「メモリー全体」をひとまとめに売る傾向がある。過去の答え合わせでは、米国でメモリー株が下げた翌日のキオクシアの逆風は当たっている（10/9号、指数比-2.2%）。注意点は、今回の材料が「量産はまだ先」の技術の話で、続報や別の好材料（TSMCの決算への期待など）が出ると、下げ幅が小さくなること。"}, {"name": "ソフトバンクグループ", "code": "9984", "reason": "Armの株を約9割持つ親会社、Armが前日の米国で3%超下げた", "detail": "ソフトバンクGの資産の大きな柱はArmの株で、過去の答え合わせではArmの前日の動きにそのまま連動してきた（Armが大きく下げた翌日は下落、10/9号は-3.9%で的中）。12日はArmがクアルコムとの裁判の評決待ちで3%超下げ、ナスダックも0.44%安だった。日経平均への影響が大きい銘柄で、下げると指数全体を押し下げやすい。注意点は、13日に裁判の評決が出たり、OpenAIの資金調達など好材料が出たりすると、1日で大きく戻ることがある点で、予想は今日1日に限る。"}]}, "sources": [{"name": "24/7 Wall St.", "url": "https://247wallst.com/investing/2026/10/12/memory-stocks-slide-as-chinas-cxmt-flags-denser-chip-design-micron-and-sk-hynix-fall-4-western-digital-drops-2/"}, {"name": "TradingKey", "url": "https://www.tradingkey.com/analysis/stocks/us-stocks/262211996-memory-stocks-selloff-sandisk-micron-drop-cxmt-new-dram-architecture-tradingkey"}]}, {"category": "経済・金融", "importance": 2, "region": "米国・日本", "title": "原油高で米国株はまちまち、ドル円は158円75銭に——今日から米大手銀行の決算、14日には消費者物価。東京は3連休明けで売り先行か", "summary": "12日の米国株は、ダウが0.38%高、S&P500が0.06%安、ナスダックが0.44%安とまちまちだった。原油高で物価が下がりにくくなるとの心配が広がり、ドルが買われて円は158円75銭まで下げた。", "detail": "今日13日は、JPモルガン・チェース、ゴールドマン・サックス、シティグループ、ウェルズ・ファーゴが7〜9月期の決算を発表する。JPモルガンは1株利益が前年より16.4%多い5.90ドルの予想で、貸し出しの利ざやで稼ぐ「純金利収入」は12%増える一方、市場の売買で稼ぐ収入は18%減る見通し。14日夜（日本時間21時30分）の米9月消費者物価は前年同月比3.6%と、8月の3.4%から伸びが高まる予想で、主な理由は燃料高。米10年債利回りは先週5.36%と24年ぶりの高さをつけ、年内の利上げが8割超の確率で見込まれている。東京では、祝日取引の日経平均先物が9日より320円安い69,150円で、連休中の原油高と半導体安をまとめて反映する。", "why": "原油高→物価高→米国の利上げ観測→ドル高・円安、という流れが強まっている。円安は輸出企業の利益を押し上げる一方、ガソリンや食品など輸入品の値段を通じて家計の負担を重くする。今週のCPIと銀行の決算が、年末にかけての金利と株価の方向を決める大きな材料になる。", "followup": true, "delta": "前日は今週の予定を伝えた段階だったが、週明けの原油高で物価への心配が強まり、ドル円は158円75銭まで円安が進んだ。", "impact": {"up": [], "down": []}, "sources": [{"name": "Yahoo Finance", "url": "https://finance.yahoo.com/markets/live/stock-market-today-monday-october-12-dow-sp-500-nasdaq-080321571.html"}, {"name": "ザイFX！", "url": "https://zai.diamond.jp/articles/-/497128"}]}, {"category": "中国・アジア", "importance": 2, "region": "北朝鮮・日本・韓国", "title": "北朝鮮が弾道ミサイル2発、1発は900キロ以上飛ぶ——今年16回目の発射。韓国の極超音速兵器の試験から4日後", "summary": "防衛省によると、北朝鮮は12日午前9時20分ごろと9時36分ごろ、少なくとも2発の弾道ミサイルを東の方向に発射した。2発とも日本の排他的経済水域（EEZ）の外に落ちたとみられ、被害の報告はない。", "detail": "1発目は最高高度約20キロで約220キロ、2発目は最高高度約70キロで910キロ以上飛んだとみられる。韓国の報道によると、北朝鮮の弾道ミサイルの発射は今年16回目。韓国が国産の「極超音速滑空体」の初めての試験発射を行ってから4日後で、対抗措置との見方が出ている。高市首相は発射の直後に、情報の収集などを関係省庁に指示した。", "why": "日本海に向けたミサイルの発射は、漁船や航空機の安全に直結する。中東やウクライナに世界の目が向く中、東アジアでも緊張が続いていることを示した。日本の防衛費の増額や、ミサイル防衛の強化の議論にも影響する。", "impact": {"up": [], "down": []}, "sources": [{"name": "NHK", "url": "https://news.web.nhk/newsweb/na/nd-20261012de58077"}, {"name": "SBS（韓国）", "url": "https://news.sbs.co.kr/english/article.do?news_id=N1008792958"}]}, {"category": "中国・アジア", "importance": 1, "region": "中国", "title": "中国の自動車輸出、9月は61.4%増の105万3千台——4カ月連続で月100万台超え。国内販売は26%減で「国内で売れない分を海外へ」", "summary": "中国自動車工業協会が12日に発表した9月の自動車輸出は、前年同月より61.4%多い105万3千台だった。1〜9月の合計は820万5千台で、2025年の1年分（約709万台）をすでに大きく上回った。", "detail": "電気自動車（EV）とプラグインハイブリッド車（PHV）を合わせた新エネルギー車の輸出は2.6倍に増えた。一方で中国国内の販売は26.0%減の190万4千台と、6カ月続けて20%以上の減少になっている。個人消費の弱さとガソリン車の需要の落ち込みが理由で、国内で売れない車を海外で売る流れが強まっている。欧州連合（EU）はすでに中国製EVに追加の関税をかけており、フランスのマクロン大統領も「欧州製を優先する」よう訴えている。", "why": "中国車が東南アジアや中南米、中東などで安さを武器に売れると、これらの地域で強かった日本の自動車メーカーのシェアが削られる。中国国内の販売の落ち込みは、中国の景気の弱さを示すデータでもある。", "impact": {"up": [], "down": []}, "sources": [{"name": "東京新聞（共同）", "url": "https://www.tokyo-np.co.jp/article/521222"}]}, {"category": "経済・金融", "importance": 1, "region": "米国・スウェーデン", "title": "ノーベル経済学賞に米国のロバート・ホール氏とマイケル・ウッドフォード氏——「家計や企業の先読み」を景気・物価の政策に生かす研究", "summary": "スウェーデン王立科学アカデミーは12日、今年のノーベル経済学賞を、米スタンフォード大学のロバート・E・ホール教授と米コロンビア大学のマイケル・ウッドフォード教授に贈ると発表した。賞金は1200万スウェーデン・クローナ（約120万ドル）を2人で分ける。", "detail": "2人は、家計や企業が「将来どうなるか」の見通しをもとにお金の使い方や値段を決めることを、経済全体の動きのモデルに組み込んだ。ホール氏は、家計の約8割が将来の収入の見通しで消費を決め、約2割はその月の給料で暮らしていることを示した。ウッドフォード氏は、企業は競争相手の値段や将来の金利を見越して値段を決めるとし、中央銀行が先々の方針を「はっきりと信頼できる形で伝える」ことの重要性を説いた。選考委員会は「受賞者の研究で、大きな経済危機に以前よりずっとうまく対処できるようになった」と評価した。ウッドフォード氏は「大変な名誉で、驚いている」と語った。", "why": "日銀や米国の中央銀行の総裁が、会見で先々の利上げ・利下げの考え方を丁寧に説明するのは、ウッドフォード氏らの研究が土台になっている。今週の植田日銀総裁の発言や、米国の利上げをめぐる議論を読み解くヒントになる。", "impact": {"up": [], "down": []}, "sources": [{"name": "ABC News（AP）", "url": "https://abcnews.com/Business/wireStory/nobel-memorial-prize-economics-awarded-stockholm-137186234"}, {"name": "NPR", "url": "https://npr.org/2026/10/12/nx-s1-5996634/last-nobel-prize-of-the-year-to-be-announced-for-economics"}]}], "sectors": [{"name": "海運（中堅）", "direction": "up", "reason": "サウジへの攻撃が続き、タンカーやガス運搬船の運賃が上がりやすい", "detail": "フーシ派は12日もサウジを攻撃し、オマーン沖ではタンカーへのドローン攻撃も伝えられた。攻撃が続く間の海運の追い風は過去3件中3件で当たっている。大手3社（日本郵船・商船三井・川崎汽船）は連休前の号で何度も取り上げ、今日の値動きで判定されるため、今回は同じテーマで別の銘柄を選んだ。米国とイランの交渉が進むと売られやすい。", "stocks": [{"name": "飯野海運", "code": "9119", "reason": "原油タンカーやケミカル船、LPG船を運ぶ中堅の海運会社", "detail": "中東から原油や液化石油ガス（LPG）、化学品を運ぶ船が主力で、中東の海の道が危険になると、遠回りや船の不足で運賃が上がりやすい。過去の答え合わせでは、海峡での攻撃が「続いている」間の海運株の追い風は3件中3件当たった。注意点は、米国とイランの交渉が進んでホルムズ海峡の再開が見えると、真っ先に売られやすいこと。"}, {"name": "NSユナイテッド海運", "code": "9110", "reason": "鉄鉱石や石炭を運ぶばら積み船が主力で、タンカーも持つ", "detail": "日本製鉄グループの海運会社で、資源を運ぶ大型船が主力。中東の混乱で船の遠回りが増えると、船全体が足りなくなり、ばら積み船の運賃にも波及しやすい。タンカーの比重は大手ほど高くないため、値動きは大手より穏やかになりやすい。"}]}, {"name": "防衛", "direction": "flat", "reason": "北朝鮮のミサイルと中東の攻撃は追い風だが、連休前の予想が判定待ち", "detail": "北朝鮮の弾道ミサイル発射や、リヤドの空港への攻撃で防空の重要性が浮き彫りになり、防衛関連の受注は数年単位で続くとみられる。ただ三菱重工業と川崎重工業は10月11日号・12日号で追い風として取り上げ、今日の値動きで判定される。同じ銘柄を重ねないため、今日は方向を示さない。", "stocks": [{"name": "三菱重工業", "code": "7011", "reason": "日本最大の防衛関連企業、ミサイル防衛や艦船を手がける", "detail": "国のミサイル防衛や護衛艦の主な受注先。北朝鮮のミサイル発射は、防衛費の増額の議論を後押ししやすい。"}, {"name": "川崎重工業", "code": "7012", "reason": "潜水艦や哨戒機を手がける", "detail": "防衛省向けの潜水艦や哨戒機を作る。二輪車や鉄道車両など民間の事業も大きく、景気の影響も受ける。"}]}, {"name": "石油・資源開発", "direction": "flat", "reason": "原油は2%高だが、過去の答え合わせでは原油高を理由にした追い風は当たっていない", "detail": "ブレント原油は106ドル台に上がったが、エネルギー停戦や米国のロシア産軽油の確保など、燃料の供給を増やす政策も同時に動いている。過去の答え合わせでは、日本の石油株の「原油高による追い風」は1日後4件中0件、5営業日後も5件中0件だった。今日は方向を示さない。", "stocks": [{"name": "INPEX", "code": "1605", "reason": "国内最大の石油・天然ガスの開発会社", "detail": "原油の値段が利益に直結するが、すでに株価に織り込まれていることが多く、原油高の翌日に上がるとは限らない。"}, {"name": "ENEOSホールディングス", "code": "5020", "reason": "国内最大の石油元売り", "detail": "原油高で在庫の評価益が出やすい一方、政府の補助金や燃料の値段の動きにも左右される。"}]}], "topics": [{"category": "スポーツ", "title": "早稲田大が出雲駅伝で16年ぶりの優勝、大会記録を約2分更新——1年生2人の活躍で國學院大の3連覇を阻む", "summary": "大学駅伝の今季の開幕戦、出雲全日本大学選抜駅伝が12日に島根県出雲市で行われ、早稲田大が2時間5分56秒の大会新記録で16年ぶり3度目の優勝を果たした。2位は國學院大で2時間6分54秒。", "hook": "これまでの大会記録は2023年に駒澤大が出した2時間7分51秒で、一気に約2分も縮めた。2区の1年生・本田桜二郎が6人抜きで首位に立ち、4区の1年生・新妻遼己と5区の山口竣平が連続で区間新記録。正月の箱根駅伝に向けて「早稲田復活」が話題になりそう。", "detail": "出雲駅伝は出雲大社の前からゴールの出雲ドームまで、6区間45.1キロで争う。アンカーの6区は、「山の名探偵」の愛称で知られる4年生の工藤慎作が走り、大会新記録のペースを守り切った。國學院大は3連覇を逃した。大学三大駅伝は、11月の全日本大学駅伝、正月の箱根駅伝と続く。", "sources": [{"name": "TBS NEWS DIG（dメニューニュース）", "url": "https://topics.smt.docomo.ne.jp/article/tbs/sports/tbs-3005129"}, {"name": "Yahoo!ニュース", "url": "https://news.yahoo.co.jp/pickup/6598480"}]}, {"category": "スポーツ", "title": "日本ハムが西武に連勝してCSファイナルへ——14日からセは阪神×DeNA（甲子園）、パはソフトバンク×日本ハム", "summary": "パ・リーグのCSファーストステージ第3戦が12日にベルーナドームで行われ、日本ハムが西武に4対1で勝ち、2勝1敗でファイナルステージ進出を決めた。日本ハムは3年連続のファイナル進出で、リーグ王者ソフトバンクとは3年続けて同じ顔合わせになる。", "hook": "日本ハムは初戦でサヨナラ負けした後の連勝で、エースの伊藤大海が5回1失点、万波中正がソロを放った。セの阪神は14日の初戦にエース村上頌樹を立てる見込み。今季の阪神のDeNA戦は13勝12敗、甲子園では5勝5敗と互角で、昨年のCSでは阪神がDeNAに3連勝している。", "detail": "日本ハムは2回に野村佑希の適時打で先制し、4回に万波のソロ、5回に奈良間大己の犠牲フライで加点した。ファイナルステージは6試合制で、リーグ優勝チームに1勝のアドバンテージがあり、先に4勝したチームが日本シリーズに進む。阪神は村上、高橋遥人、才木浩人の順の先発が有力と報じられている。", "sources": [{"name": "読売新聞（Yahoo!ニュース）", "url": "https://news.yahoo.co.jp/articles/b20885576e697981dc2e72f96d99bf0e0eff0384"}, {"name": "デイリースポーツ", "url": "https://www.daily.co.jp/tigers/2026/10/10/0020912245.shtml"}]}, {"category": "スポーツ", "title": "ドジャース、ブルワーズとのリーグ優勝決定シリーズ初戦を1対2で落とす——大谷は2安打1得点、打線は得点圏で1安打", "summary": "米大リーグのナ・リーグ優勝決定シリーズ第1戦が11日（日本時間12日）にミルウォーキーで行われ、ドジャースがブルワーズに1対2で敗れた。ブルワーズがドジャースにポストシーズンで勝つのは2018年以来。", "hook": "ドジャースは2回に先制したが、4回にトゥラングの同点ソロ、5回に勝ち越しを許した。ブルワーズは先発が5回途中で降りた後、救援陣が4回2/3を無失点。昨年のこのシリーズでドジャースに4連敗したブルワーズが、まず雪辱した。", "detail": "大谷翔平は2安打1得点と、地区シリーズの不振から少し上向いた。ドジャースは走者を得点圏に置いて5打数1安打、残塁7と、あと1本が出なかった。ブルワーズは今季103勝でリーグ最高勝率のため、本拠地での開催が多い。第2戦は日本時間13日午前6時から。7試合制で、先に4勝したチームがワールドシリーズに進む。ア・リーグは日本時間13日午前9時から、レイズとガーディアンズの第1戦が行われる。", "sources": [{"name": "CBS Sports", "url": "https://www.cbssports.com/mlb/news/2026-mlb-playoffs-nlcs-game-1-dodgers-brewers/live/"}, {"name": "Baseball-Reference", "url": "https://www.baseball-reference.com/boxes/MIL/MIL202610110.shtml"}]}, {"category": "エンタメ・カルチャー", "title": "紅白歌合戦の司会に芦田愛菜・堺雅人・二宮和也——芦田と堺は初、二宮は9年ぶり。テーマは「こえていこう、歌とともに。」", "summary": "NHKは、大みそかの第77回紅白歌合戦の司会を、俳優の芦田愛菜さん、堺雅人さん、二宮和也さんと、鈴木奈穂子アナウンサーが務めると発表した。", "hook": "堺さんと二宮さんは、ドラマ『VIVANT』で兄弟役を演じたことから「乃木兄弟」での司会と話題に。芦田さんは「お二人の力をお借りして、しっかり大役を務めたい」とコメントした。", "detail": "芦田さんと堺さんは紅白の司会は初めてで、二宮さんは2017年以来9年ぶり。今年のテーマは「こえていこう、歌とともに。」。出場歌手は例年11月中旬ごろに発表される。俳優3人が司会に並ぶのは珍しく、ドラマのファンにも注目されそうだ。", "sources": [{"name": "アニメ！アニメ！（Yahoo!ニュース）", "url": "https://news.yahoo.co.jp/articles/b1d4987eaa3df005b84057135987199c8c6c30e5"}, {"name": "日刊スポーツ（Infoseekニュース）", "url": "https://news.infoseek.co.jp/article/nikkansports_202610090000049/"}]}, {"category": "話題・トレンド", "title": "アップルが今夜「Welcome home」の新製品発表——画面付きの家庭用ハブ「HomePad」が本命か", "summary": "米アップルは13日午前9時（日本時間22時）から、ニューヨークで新製品の発表の場を設ける。幹部のグレッグ・ジョズウィアック氏がXに「Welcome home. October 13.」と投稿し、家まわりの新製品が出るとみられている。", "hook": "うわさの本命は、タッチ画面で家電の操作や家族の予定の確認ができる家庭用ハブ（通称HomePad）。新しいAIのSiriで動くとみられる。ほかにApple TVやHomePod miniの新型も候補に挙がっている。", "detail": "今回は大きな発表会ではなく、招待したメディアに実機を触ってもらう「体験会」形式で、プレスリリースや短い動画で発表される可能性があると報じられている。アップルは生成AIで出遅れたと言われており、家庭向けの機器で巻き返せるかが注目される。大手テック各社が家庭やスマホでの「AIの入り口」を奪い合っており、その競争の一場面になる。", "sources": [{"name": "9to5Mac", "url": "https://9to5mac.com/2026/10/08/apple-announces-special-event-for-october-13-welcome-home/"}, {"name": "ケータイ Watch", "url": "https://k-tai.watch.impress.co.jp/docs/news/2146949.html"}]}, {"category": "話題・トレンド", "title": "ファミマが8年ぶりにホイップクリームを刷新、「無限クリーム」を今日から——ダブルシューは1週間クリーム30%増量", "summary": "ファミリーマートは13日から全国の約1万6500店で「ファミマの無限クリーム」の販売を始める。8年ぶりに作り直したホイップクリームと、新たに配合した生クリームを使ったスイーツの総称。", "hook": "今日発売は「クリームたっぷり!ダブルシュー」（199円）、「生クリームロールケーキ」（213円）、「ほぼクリームのケーキ」（248円）。ダブルシューは今日から1週間、ホイップクリームが30%増量される。", "detail": "濃厚な味わいと、ふわっとした口どけの両立をうたう。20日にはダブルクリームエクレアなど3品が加わる予定。コンビニ各社はスイーツの品質競争を強めており、同じ13日にはローソンも秋冬向けの新商品を出している。", "sources": [{"name": "ファミリーマート", "url": "https://www.family.co.jp/company/news_releases/2026/20261006_02.html"}, {"name": "マイナビニュース", "url": "https://news.mynavi.jp/article/20261007-5084740/"}]}, {"category": "サイエンス・健康", "title": "インフルエンザ、例年より約3カ月早く流行——9月下旬の患者数は前年同期の6.6倍、沖縄は警報レベル", "summary": "厚生労働省によると、9月21〜27日の1週間に全国の定点医療機関から報告されたインフルエンザの患者数は2万6678人で、1医療機関あたり7.17人だった。前年の同じ時期の6.6倍にあたる。", "hook": "例年は12月ごろに始まる流行が、今年は8月下旬に全国で「流行入り」した。ワクチンは打ってから効き始めるまで約2週間かかるので、受験生や高齢の家族がいる家庭は早めの接種を考えたい。", "detail": "都道府県別では沖縄が1医療機関あたり42.50人と警報レベルの目安を超え、埼玉、茨城、愛知、岐阜、千葉も10人以上だった。東京都は9月半ばに注意報を出している。学級閉鎖も増えており、手洗いやマスク、換気といった基本の対策が改めて呼びかけられている。", "sources": [{"name": "文春オンライン", "url": "https://bunshun.jp/denshiban/articles/b15009"}, {"name": "東京都感染症情報センター", "url": "https://idsc.tmiph.metro.tokyo.lg.jp/diseases/flu/flu/"}]}, {"category": "サイエンス・健康", "title": "死んだ星の「灰」から生まれた惑星？——ハッブル宇宙望遠鏡の観測で、白色矮星を回る「第2世代の惑星」の候補", "summary": "地球から約270光年離れた白色矮星「HS 0209+0832」に、星が死ぬときにまき散らした物質から新しく生まれた「第2世代の惑星」があるかもしれないと、国際チームが科学誌ネイチャー・アストロノミーに発表した。", "hook": "決め手は、白色矮星の表面で見つかった「ニオブ」という珍しい元素が異常に多かったこと。星が生まれたときの材料ではなく、星が死ぬときに放り出した物質に由来するとみられる。確認されれば、第2世代の惑星として初めての例になる。", "detail": "白色矮星は、太陽くらいの星が燃え尽きた後に残る小さく重い芯。候補の惑星はガスでできた巨大な惑星とみられ、わずか4.4日で白色矮星の周りを1周している。ハッブル宇宙望遠鏡が以前から捉えていた「なぜこの元素がここにあるのか」という謎を説明できる可能性があり、欧州宇宙機関は「ハッブルの未解決事件を解決」と表現した。太陽も約50億年後には白色矮星になるとされる。", "sources": [{"name": "ESA/Hubble", "url": "https://esahubble.org/news/heic2613/"}, {"name": "CNN", "url": "https://www.cnn.com/2026/10/05/science/second-generation-planet-discovery-white-dwarf"}]}], "trivia": {"label": "今日は何の日", "title": "10月13日——「麻酔の日」。和歌山の医師・華岡青洲が、世界で初めて全身麻酔の手術に成功した日", "text": "1804年（文化元年）のこの日、紀州（いまの和歌山県）の医師・華岡青洲が、自ら作った麻酔薬「通仙散」を使って、60歳の女性の乳がんを取り除く手術に成功した。記録に残る全身麻酔による手術としては世界初とされ、欧米でエーテルを使った麻酔が初めて公に行われた1846年より40年以上早い。通仙散の主な材料は、チョウセンアサガオ（曼陀羅華）という毒をもつ植物。完成までには、実験に協力した母が亡くなり、妻が失明したと伝えられ、有吉佐和子の小説『華岡青洲の妻』でも知られる。日本麻酔科学会がこの日を「麻酔の日」と定めている。和歌山県紀の川市には、青洲の住まいと病院を兼ねた「春林軒」が復元されている。"}, "changes": [{"when": "今日", "title": "3連休明けで東京市場が再開、米国では大手銀行の決算が始まる", "detail": "東京証券取引所は今日13日から取引を再開する。米国では今夜、JPモルガン・チェースやゴールドマン・サックスなど大手4行が7〜9月期の決算を発表する。", "more": "連休中の原油高や米国の半導体株安がまとめて反映されるため、寄り付きで大きく動く可能性がある。投資信託や株を持っている人は、1日の値動きに慌てず、14日の米消費者物価までの流れを見たい。"}, {"when": "10/17まで", "title": "サウジアラビア・リヤドのキング・ハリド国際空港が閉鎖", "detail": "フーシ派の攻撃で死傷者が出たため、リヤドの主要空港は17日まで閉鎖される。", "more": "サウジや中東を経由する出張・旅行を予定している人は、航空会社の運航情報と外務省の海外安全情報を確かめたい。乗り継ぎで中東の空港を使う欧州・アフリカ方面の便にも影響が出る可能性がある。"}, {"when": "10/15", "title": "年金の支給日", "detail": "公的年金は偶数月の15日に、前2カ月分がまとめて振り込まれる。10月は8月・9月分の支給日。", "more": "年金を受け取っている人や家族の口座の管理をしている人は、入金を確認したい。支給日の前後は、年金事務所や役所を名乗る詐欺の電話やメールが増えやすいので、口座番号や暗証番号を聞かれても答えないように。"}], "glossary": [{"term": "DRAM", "desc": "パソコンやスマホ、AIのサーバーで、計算中のデータを一時的に置いておくメモリー。電源を切ると中身が消える。写真などを長く保存するNAND型のメモリーとは別物。"}, {"term": "ブレント原油", "desc": "イギリス北海でとれる原油の値段で、世界の原油取引の代表的な指標。米国の原油の指標であるWTIより、中東や欧州の情勢を反映しやすい。"}, {"term": "影の船団", "desc": "制裁を逃れてロシア産の原油を運ぶために使われる、持ち主や国籍がはっきりしない古いタンカーの集まり。"}, {"term": "純金利収入", "desc": "銀行が貸し出しで受け取る利息から、預金者に払う利息を差し引いたもうけ。金利が高いと増えやすい。"}, {"term": "極超音速滑空体", "desc": "ロケットで打ち上げた後、音速の5倍以上の速さで滑るように飛ぶ兵器。飛ぶ道筋を変えられるため、迎撃が難しいとされる。"}, {"term": "排他的経済水域", "desc": "沿岸から約370キロ（200海里）までの海で、その国が魚や海底の資源を優先して使える範囲。英語の略でEEZと呼ぶ。"}, {"term": "新エネルギー車", "desc": "中国での呼び方で、電気自動車（EV）、プラグインハイブリッド車（PHV）、燃料電池車をまとめた言葉。"}, {"term": "白色矮星", "desc": "太陽くらいの重さの星が燃え尽きた後に残る、地球ほどの大きさしかないのにとても重い星の芯。ゆっくり冷えていく。"}, {"term": "祝日取引", "desc": "日本の祝日にも、大阪取引所で日経平均先物などを売り買いできる仕組み。休み明けの株式市場の動きの目安になる。"}, {"term": "定点医療機関", "desc": "感染症のはやり具合を調べるために、国があらかじめ決めた全国の病院や診療所。そこからの1週間の患者数の報告で流行の大きさを測る。"}], "calendar": [{"date": "10/13", "time": "火", "event": "東京市場の取引再開・米大手銀行の決算（JPモルガン、ゴールドマン・サックス、シティ、ウェルズ・ファーゴ）・アップルの新製品発表（22:00）・ドジャース×ブルワーズ第2戦（6:00）・ア・リーグ優勝決定シリーズ第1戦（9:00）", "note": "連休中の原油高と半導体安がまとめて反映される", "detail": "銀行の決算では、企業や個人の借り入れの状況から米国の景気の強さが見えてくる。東京では、メモリー関連やソフトバンクGが日経平均の重しになるかが焦点。国際宇宙ステーションへの物資補給船も、日本時間19時33分に打ち上げ予定。"}, {"date": "10/14", "time": "水 21:30", "event": "米9月消費者物価（CPI）・ASML決算・CSファイナルステージ開幕（阪神×DeNA、ソフトバンク×日本ハム）", "note": "CPIは前年比3.6%の予想（8月は3.4%）", "detail": "原油高が続く中、予想より強ければ10月末の米国の利上げ観測が強まり、ドル高・円安と長期金利の上昇につながる。阪神は1勝のアドバンテージを持ち、初戦はエース村上が先発の見込み。"}, {"date": "10/15", "time": "木", "event": "台湾TSMC決算・G20財務相・中央銀行総裁会議（バンコク）・米9月小売売上高・米9月卸売物価・年金支給日", "note": "AI向けの需要と米国の消費の強さを確かめる日", "detail": "メモリー株が売られた後だけに、TSMCがAI向けの需要は強いと説明すれば、半導体株の見直し買いにつながる。G20では円安やドル高への言及があるかにも注目。"}, {"date": "10/16", "time": "金", "event": "植田日銀総裁の発言", "note": "10月末の2カ月連続の利上げを示唆するか", "detail": "利上げに前向きな発言なら円高に振れやすく、慎重なら円安が進みやすい。ドル円が158円台後半まで来ており、発言への注目度は高い。"}, {"date": "10/17", "time": "土", "event": "リヤドのキング・ハリド国際空港の閉鎖期限", "note": "再開できるかでフーシ派の攻撃の勢いを測れる", "detail": "予定どおり再開できれば中東の緊張がやや和らいだサインになる。攻撃が続いて閉鎖が延びれば、原油や海運の運賃に上げ圧力がかかりやすい。"}, {"date": "10/22", "time": "木 16:50", "event": "プロ野球ドラフト会議", "note": "阪神・オリックスの1位指名に注目", "detail": "1位指名が重なった場合はくじ引きで交渉権が決まる。"}, {"date": "10/27", "time": "火〜28日", "event": "米FOMC（結果は29日午前3時）・29日ECB理事会・29〜30日日銀会合", "note": "米国は10月に利上げするか", "detail": "14日のCPIの結果しだいで、10月か12月かの見方が大きく動く。日銀が利上げに前向きな姿勢を示せば、円高につながりやすい。"}, {"date": "11/3", "time": "火", "event": "米中間選挙", "note": "燃料の値段とウクライナ・中東政策が争点に", "detail": "エネルギー停戦の発表のように、燃料の値段を下げるための動きが選挙前に続く可能性がある。選挙の後は、米国の対イラン・対ロシアの方針が変わる可能性がある。"}], "review": {"summary": "3連休で東京市場が休みだったため、新しく1営業日後の結果が出た予想はなく、通算の成績は1営業日後57%（150件）、5営業日後63%（125件中77件的中、平均で指数を1.26%上回る）。新たに確定したのは10/6号の米住宅株の5営業日後の2件で、パルトグループは的中、D.R.ホートンは外れた。10/10〜12号の東京の予想は今日の値動きでまとめて判定されるが、海運・防衛に同じ銘柄が何度も重なっているため、今日は同じ銘柄を繰り返さず、前日の米国の個別の材料に直結する銘柄に絞った。", "items": [{"title": "パルトグループ(PHM) 逆風予想（10/6号）→ 5営業日後に指数比 -2.94%で的中", "why": "週の途中で米10年債利回りが一時5.36%と24年ぶりの高さまで上がり、金利に敏感な住宅株が売られた。", "lesson": "住宅株は金利の向きに2〜4倍で反応する。週単位でも、金利が上がる週なら逆風が効く。"}, {"title": "D.R.ホートン(DHI) 逆風予想（10/6号）→ 5営業日後に指数比 +0.34%で外れ", "why": "同じ住宅株でもPHMと結果が分かれた。予想を出した当日に金利が下がって大きく買い戻されており、その分を週の後半で取り戻せなかった。", "lesson": "金利の向きに自信がない日（指標や入札の前、前日に利回りが上がった直後）は住宅株を使わない。今日も米債券市場の休み明けで、14日のCPIを控えるため住宅株は見送った。"}]}, "weather": {"fetched": "05:12", "places": [{"name": "大阪市", "days": [{"label": "今日", "wd": "火", "date": "2026-10-13", "text": "晴れ時々くもり", "icon": "⛅", "tmax": 26, "tmin": 16, "pop": 7, "umbrella": "傘はいらなそう", "clothes": "半袖でOK"}, {"label": "明日", "wd": "水", "date": "2026-10-14", "text": "雨", "icon": "🌧️", "tmax": 26, "tmin": 18, "pop": 92, "umbrella": "傘を持って出かけましょう", "clothes": "半袖でOK"}, {"label": "10/15", "wd": "木", "date": "2026-10-15", "text": "晴れ", "icon": "🌤️", "tmax": 24, "tmin": 15, "pop": 0, "umbrella": "傘はいらなそう", "clothes": "長袖1枚がちょうどいい"}, {"label": "10/16", "wd": "金", "date": "2026-10-16", "text": "くもり", "icon": "☁️", "tmax": 25, "tmin": 13, "pop": 4, "umbrella": "傘はいらなそう", "clothes": "半袖でOK"}, {"label": "10/17", "wd": "土", "date": "2026-10-17", "text": "霧", "icon": "🌫️", "tmax": 26, "tmin": 16, "pop": 6, "umbrella": "傘はいらなそう", "clothes": "半袖でOK"}, {"label": "10/18", "wd": "日", "date": "2026-10-18", "text": "くもり", "icon": "☁️", "tmax": 28, "tmin": 14, "pop": 29, "umbrella": "傘はいらなそう", "clothes": "半袖でOK"}, {"label": "10/19", "wd": "月", "date": "2026-10-19", "text": "にわか雨", "icon": "🌦️", "tmax": 26, "tmin": 20, "pop": 45, "umbrella": "折りたたみ傘があると安心", "clothes": "半袖でOK"}, {"label": "10/20", "wd": "火", "date": "2026-10-20", "text": "にわか雨", "icon": "🌦️", "tmax": 24, "tmin": 20, "pop": 39, "umbrella": "折りたたみ傘があると安心", "clothes": "長袖1枚がちょうどいい"}], "hours": [{"t": 5, "day": "今日", "pop": 0, "temp": 16, "icon": "☀️"}, {"t": 6, "day": "今日", "pop": 0, "temp": 16, "icon": "☀️"}, {"t": 7, "day": "今日", "pop": 0, "temp": 16, "icon": "☀️"}, {"t": 8, "day": "今日", "pop": 0, "temp": 18, "icon": "☀️"}, {"t": 9, "day": "今日", "pop": 0, "temp": 20, "icon": "☀️"}, {"t": 10, "day": "今日", "pop": 0, "temp": 22, "icon": "☀️"}, {"t": 11, "day": "今日", "pop": 0, "temp": 24, "icon": "🌤️"}, {"t": 12, "day": "今日", "pop": 0, "temp": 26, "icon": "☀️"}, {"t": 13, "day": "今日", "pop": 0, "temp": 26, "icon": "☀️"}, {"t": 14, "day": "今日", "pop": 0, "temp": 26, "icon": "🌤️"}, {"t": 15, "day": "今日", "pop": 0, "temp": 25, "icon": "🌤️"}, {"t": 16, "day": "今日", "pop": 0, "temp": 25, "icon": "🌤️"}, {"t": 17, "day": "今日", "pop": 0, "temp": 25, "icon": "☀️"}, {"t": 18, "day": "今日", "pop": 0, "temp": 25, "icon": "🌤️"}, {"t": 19, "day": "今日", "pop": 0, "temp": 24, "icon": "⛅"}, {"t": 20, "day": "今日", "pop": 0, "temp": 23, "icon": "🌤️"}, {"t": 21, "day": "今日", "pop": 0, "temp": 22, "icon": "🌤️"}, {"t": 22, "day": "今日", "pop": 3, "temp": 22, "icon": "🌤️"}, {"t": 23, "day": "今日", "pop": 7, "temp": 22, "icon": "🌤️"}, {"t": 0, "day": "明日", "pop": 14, "temp": 22, "icon": "⛅"}, {"t": 1, "day": "明日", "pop": 24, "temp": 22, "icon": "☁️"}, {"t": 2, "day": "明日", "pop": 35, "temp": 22, "icon": "🌦️"}, {"t": 3, "day": "明日", "pop": 47, "temp": 22, "icon": "🌦️"}, {"t": 4, "day": "明日", "pop": 59, "temp": 22, "icon": "☁️"}, {"t": 5, "day": "明日", "pop": 71, "temp": 21, "icon": "🌦️"}, {"t": 6, "day": "明日", "pop": 80, "temp": 21, "icon": "🌦️"}, {"t": 7, "day": "明日", "pop": 87, "temp": 22, "icon": "🌧️"}, {"t": 8, "day": "明日", "pop": 91, "temp": 23, "icon": "🌦️"}, {"t": 9, "day": "明日", "pop": 92, "temp": 23, "icon": "🌧️"}, {"t": 10, "day": "明日", "pop": 88, "temp": 23, "icon": "🌦️"}, {"t": 11, "day": "明日", "pop": 81, "temp": 24, "icon": "🌤️"}, {"t": 12, "day": "明日", "pop": 75, "temp": 24, "icon": "⛅"}, {"t": 13, "day": "明日", "pop": 74, "temp": 25, "icon": "🌦️"}, {"t": 14, "day": "明日", "pop": 75, "temp": 26, "icon": "🌤️"}, {"t": 15, "day": "明日", "pop": 71, "temp": 25, "icon": "⛅"}, {"t": 16, "day": "明日", "pop": 59, "temp": 24, "icon": "🌤️"}, {"t": 17, "day": "明日", "pop": 43, "temp": 22, "icon": "🌤️"}, {"t": 18, "day": "明日", "pop": 29, "temp": 21, "icon": "🌤️"}, {"t": 19, "day": "明日", "pop": 17, "temp": 20, "icon": "☀️"}, {"t": 20, "day": "明日", "pop": 7, "temp": 19, "icon": "☀️"}, {"t": 21, "day": "明日", "pop": 0, "temp": 18, "icon": "☀️"}, {"t": 22, "day": "明日", "pop": 0, "temp": 18, "icon": "☀️"}, {"t": 23, "day": "明日", "pop": 0, "temp": 18, "icon": "🌤️"}]}, {"name": "貝塚市", "days": [{"label": "今日", "wd": "火", "date": "2026-10-13", "text": "晴れ", "icon": "🌤️", "tmax": 27, "tmin": 18, "pop": 4, "umbrella": "傘はいらなそう", "clothes": "半袖でOK"}, {"label": "明日", "wd": "水", "date": "2026-10-14", "text": "雨", "icon": "🌧️", "tmax": 25, "tmin": 19, "pop": 94, "umbrella": "傘を持って出かけましょう", "clothes": "半袖でOK"}, {"label": "10/15", "wd": "木", "date": "2026-10-15", "text": "晴れ", "icon": "🌤️", "tmax": 22, "tmin": 17, "pop": 0, "umbrella": "傘はいらなそう", "clothes": "長袖1枚がちょうどいい"}, {"label": "10/16", "wd": "金", "date": "2026-10-16", "text": "くもり", "icon": "☁️", "tmax": 22, "tmin": 13, "pop": 5, "umbrella": "傘はいらなそう", "clothes": "長袖1枚がちょうどいい"}, {"label": "10/17", "wd": "土", "date": "2026-10-17", "text": "くもり", "icon": "☁️", "tmax": 24, "tmin": 16, "pop": 10, "umbrella": "傘はいらなそう", "clothes": "長袖1枚がちょうどいい"}, {"label": "10/18", "wd": "日", "date": "2026-10-18", "text": "くもり", "icon": "☁️", "tmax": 25, "tmin": 14, "pop": 29, "umbrella": "傘はいらなそう", "clothes": "半袖でOK"}, {"label": "10/19", "wd": "月", "date": "2026-10-19", "text": "小雨", "icon": "🌦️", "tmax": 27, "tmin": 19, "pop": 43, "umbrella": "折りたたみ傘があると安心", "clothes": "半袖でOK"}, {"label": "10/20", "wd": "火", "date": "2026-10-20", "text": "にわか雨", "icon": "🌦️", "tmax": 23, "tmin": 19, "pop": 41, "umbrella": "折りたたみ傘があると安心", "clothes": "長袖1枚がちょうどいい"}], "hours": [{"t": 5, "day": "今日", "pop": 0, "temp": 18, "icon": "☀️"}, {"t": 6, "day": "今日", "pop": 0, "temp": 18, "icon": "☀️"}, {"t": 7, "day": "今日", "pop": 0, "temp": 18, "icon": "☀️"}, {"t": 8, "day": "今日", "pop": 0, "temp": 19, "icon": "☀️"}, {"t": 9, "day": "今日", "pop": 0, "temp": 21, "icon": "☀️"}, {"t": 10, "day": "今日", "pop": 0, "temp": 22, "icon": "🌤️"}, {"t": 11, "day": "今日", "pop": 0, "temp": 24, "icon": "🌤️"}, {"t": 12, "day": "今日", "pop": 0, "temp": 24, "icon": "🌤️"}, {"t": 13, "day": "今日", "pop": 0, "temp": 24, "icon": "🌤️"}, {"t": 14, "day": "今日", "pop": 0, "temp": 25, "icon": "☀️"}, {"t": 15, "day": "今日", "pop": 0, "temp": 27, "icon": "☀️"}, {"t": 16, "day": "今日", "pop": 0, "temp": 26, "icon": "☀️"}, {"t": 17, "day": "今日", "pop": 0, "temp": 25, "icon": "☀️"}, {"t": 18, "day": "今日", "pop": 0, "temp": 24, "icon": "🌤️"}, {"t": 19, "day": "今日", "pop": 0, "temp": 24, "icon": "🌤️"}, {"t": 20, "day": "今日", "pop": 0, "temp": 23, "icon": "🌤️"}, {"t": 21, "day": "今日", "pop": 0, "temp": 23, "icon": "🌤️"}, {"t": 22, "day": "今日", "pop": 2, "temp": 23, "icon": "🌤️"}, {"t": 23, "day": "今日", "pop": 4, "temp": 23, "icon": "🌤️"}, {"t": 0, "day": "明日", "pop": 6, "temp": 23, "icon": "🌤️"}, {"t": 1, "day": "明日", "pop": 6, "temp": 23, "icon": "⛅"}, {"t": 2, "day": "明日", "pop": 6, "temp": 22, "icon": "🌦️"}, {"t": 3, "day": "明日", "pop": 10, "temp": 22, "icon": "🌦️"}, {"t": 4, "day": "明日", "pop": 23, "temp": 22, "icon": "🌤️"}, {"t": 5, "day": "明日", "pop": 40, "temp": 22, "icon": "🌤️"}, {"t": 6, "day": "明日", "pop": 57, "temp": 22, "icon": "🌦️"}, {"t": 7, "day": "明日", "pop": 72, "temp": 22, "icon": "🌧️"}, {"t": 8, "day": "明日", "pop": 86, "temp": 23, "icon": "🌦️"}, {"t": 9, "day": "明日", "pop": 94, "temp": 23, "icon": "🌧️"}, {"t": 10, "day": "明日", "pop": 90, "temp": 23, "icon": "⛅"}, {"t": 11, "day": "明日", "pop": 80, "temp": 24, "icon": "🌤️"}, {"t": 12, "day": "明日", "pop": 71, "temp": 24, "icon": "🌤️"}, {"t": 13, "day": "明日", "pop": 66, "temp": 24, "icon": "☀️"}, {"t": 14, "day": "明日", "pop": 63, "temp": 24, "icon": "☀️"}, {"t": 15, "day": "明日", "pop": 59, "temp": 25, "icon": "☀️"}, {"t": 16, "day": "明日", "pop": 55, "temp": 25, "icon": "🌤️"}, {"t": 17, "day": "明日", "pop": 50, "temp": 23, "icon": "⛅"}, {"t": 18, "day": "明日", "pop": 43, "temp": 22, "icon": "🌤️"}, {"t": 19, "day": "明日", "pop": 30, "temp": 21, "icon": "🌤️"}, {"t": 20, "day": "明日", "pop": 14, "temp": 21, "icon": "☀️"}, {"t": 21, "day": "明日", "pop": 2, "temp": 20, "icon": "🌤️"}, {"t": 22, "day": "明日", "pop": 0, "temp": 20, "icon": "☀️"}, {"t": 23, "day": "明日", "pop": 0, "temp": 19, "icon": "🌤️"}]}], "jma": {"office": "大阪管区気象台", "reported": "2026-10-13 05:00", "text": "晴れ夕方からくもり", "wind": "南西の風後南の風海上では南西の風やや強く", "pops": [{"t": "06時", "pop": "0"}, {"t": "12時", "pop": "0"}, {"t": "18時", "pop": "10"}, {"t": "00時", "pop": "70"}]}}}</script>
+<script id="archive-data" type="application/json">["2026-10-13", "2026-10-12", "2026-10-11", "2026-10-10", "2026-10-09", "2026-10-08", "2026-10-07", "2026-10-06", "2026-10-05", "2026-10-04", "2026-10-03", "2026-10-02", "2026-10-01", "2026-09-30", "2026-09-29", "2026-09-28", "2026-09-27"]</script>
+<script>
+const D = JSON.parse(document.getElementById('news-data').textContent);
+const ARCH = JSON.parse(document.getElementById('archive-data').textContent);
+const CATS = {"地政学":"--c-geo","経済・金融":"--c-macro","テクノロジー":"--c-tech","日本":"--c-japan","中国・アジア":"--c-asia","エネルギー・資源":"--c-energy"};
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dir = v => { const s = String(v ?? ''); return s.startsWith('+') ? 'up' : s.startsWith('-') || s.startsWith('−') ? 'down' : 'flat'; };
+const $ = id => document.getElementById(id);
+const GL = (D.glossary||[]).filter(g=>g.term&&g.desc).sort((a,b)=>b.term.length-a.term.length);
+const usedTerms = new Set();
+const gl = (text, once = true) => {
+  let h = esc(text);
+  for (const g of GL) {
+    if (once && usedTerms.has(g.term)) continue;
+    const t = esc(g.term), i = h.indexOf(t);
+    if (i < 0 || h.lastIndexOf('<', i) > h.lastIndexOf('>', i)) continue;
+    h = h.slice(0,i) + `<span class="term" tabindex="0" data-t="${esc(g.term)}">${t}</span>` + h.slice(i+t.length);
+    if (once) usedTerms.add(g.term);
+  }
+  return h;
+};
+
+const REG = [];
+const reg = fn => { REG.push(fn); return REG.length - 1; };
+const tapAttr = fn => `data-open="${reg(fn)}" tabindex="0" role="button"`;
+const wd = ['日','月','火','水','木','金','土'];
+const dt = new Date(D.date + 'T00:00:00');
+$('date').textContent = `${dt.getFullYear()}年${dt.getMonth()+1}月${dt.getDate()}日（${wd[dt.getDay()]}）`;
+$('updated').textContent = `更新 ${D.generated_at || ''}`;
+document.title = `Morning Brief ${D.date}`;
+
+$('ticker').innerHTML = (D.markets||[]).map(m => `
+  <div class="tk tap" ${tapAttr(()=>marketView(m))}><div class="n">${esc(m.name)}</div>
+  <div class="v num">${esc(m.value)}</div>
+  <div class="c num ${dir(m.change)}">${esc(m.change||'')}</div>
+  ${m.note ? `<div class="note">${esc(m.note)}</div>` : ''}</div>`).join('');
+
+$('lead').textContent = D.lead || '';
+$('points').innerHTML = (D.summary||[]).map(s => `<li>${gl(s)}</li>`).join('');
+const mood = D.mood || {};
+$('moodLabel').textContent = mood.label || '';
+$('moodText').textContent = mood.text || '';
+$('needle').style.left = Math.max(2, Math.min(98, mood.score ?? 50)) + '%';
+$('themes').innerHTML = (D.themes||[]).map(t => `<span class="theme">#${esc(t)}</span>`).join('');
+
+const stories = (D.stories||[]).slice().sort((a,b)=>(b.importance||1)-(a.importance||1));
+const cats = [...new Set(stories.map(s=>s.category))];
+$('filters').innerHTML = ['すべて',...cats].map((c,i)=>`<button class="f ${i?'':'on'}" data-c="${esc(c)}">${esc(c)}</button>`).join('');
+const impList = (arr, up, s) => (arr||[]).map(x=>`<li class="tap" ${tapAttr(()=>stockView(x, up, s))}><b>${esc(x.name)}</b>${x.code?`<code>${esc(x.code)}</code>`:''}${x.reason?`<span>${esc(x.reason)}</span>`:''}</li>`).join('');
+$('stories').innerHTML = stories.map(s => {
+  const lv = s.importance||2;
+  const up = s.impact?.up?.length, dn = s.impact?.down?.length;
+  return `<article class="card story tap lvl${lv}" ${tapAttr(()=>storyView(s))} data-c="${esc(s.category)}" style="--cat:var(${CATS[s.category]||'--c-other'})">
+    <div class="meta"><span class="cat">${esc(s.category)}</span><span class="stars">${'★'.repeat(lv)}${'☆'.repeat(3-lv)}</span>${s.region?`<span>· ${esc(s.region)}</span>`:''}${s.followup?`<span class="fu">続報</span>`:''}</div>
+    <h4>${esc(s.title)}</h4>
+    ${s.followup && s.delta ? `<div class="delta"><b>昨日から</b>${esc(s.delta)}</div>` : ''}
+    <p>${gl(s.summary)}</p>
+    ${s.why ? `<div class="why"><b>WHY IT MATTERS</b>${gl(s.why)}</div>` : ''}
+    ${up||dn ? `<div class="impact">
+      ${up?`<div class="imp u"><h5>▲ 追い風になりそう</h5><ul>${impList(s.impact.up, true, s)}</ul></div>`:''}
+      ${dn?`<div class="imp d"><h5>▼ 逆風になりそう</h5><ul>${impList(s.impact.down, false, s)}</ul></div>`:''}
+    </div>`:''}
+    <div class="src"><span class="readmore">詳しく読む ›</span></div>
+  </article>`;}).join('');
+$('filters').addEventListener('click', e => {
+  const b = e.target.closest('.f'); if(!b) return;
+  document.querySelectorAll('.f').forEach(x=>x.classList.toggle('on', x===b));
+  document.querySelectorAll('.story').forEach(a => a.classList.toggle('hidden', b.dataset.c!=='すべて' && a.dataset.c!==b.dataset.c));
+});
+
+const arrow = {up:'▲',down:'▼',flat:'―'};
+$('sectors').innerHTML = (D.sectors||[]).map(s=>`<div class="sec tap" ${tapAttr(()=>sectorView(s))}><div class="arrow ${s.direction}">${arrow[s.direction]||'―'}</div><div><b>${esc(s.name)}</b><span>${esc(s.reason)}</span></div></div>`).join('');
+$('calendar').innerHTML = (D.calendar||[]).map(e=>`<div class="ev tap" ${tapAttr(()=>calView(e))}><div class="d">${esc(e.date)}<small>${esc(e.time||'')}</small></div><div><b>${esc(e.event)}</b><span>${esc(e.note||'')}</span></div></div>`).join('');
+
+const CATS2 = {"スポーツ":"--c-sports","社会・くらし":"--c-life","エンタメ・カルチャー":"--c-ent","話題・トレンド":"--c-trend","サイエンス・健康":"--c-sci"};
+const W = D.weather || {};
+if (!W.places && !W.jma) { $('wxHead').classList.add('hidden'); $('weather').classList.add('hidden'); }
+else {
+  $('wxNote').textContent = W.jma ? `${W.jma.office} ${W.jma.reported} 発表` : '';
+  const place = p => { const t = p.days[0], m = p.days[1];
+    return `<div class="card place">
+      <div class="top"><div class="ic">${t.icon}</div><div><div class="nm">${esc(p.name)}</div><div class="tx">${esc(t.text)}</div></div>
+      <div class="tp"><b>${t.tmax}°</b><span>${t.tmin}°</span></div></div>
+      <div class="advice"><span class="${t.pop>=30?'rain':''}">☂ 降水 ${t.pop}% · ${esc(t.umbrella)}</span><span>👕 ${esc(t.clothes)}</span></div>
+      <div class="hours-hint"><span>1時間ごとの降水確率</span><span>スワイプで明日まで →</span></div>
+      <div class="hours">${(p.hours||[]).map((h,i,a)=>`<div class="hr${i&&h.day!==a[i-1].day?' nd':''}">${h.t}時<span class="hi">${h.icon}</span><div class="bar"><i style="height:${h.pop}%"></i></div><b>${h.pop}%</b>${h.temp}°</div>`).join('')}</div>
+      ${m?`<div class="tmr">明日 ${m.icon} ${esc(m.text)}　${m.tmax}° / ${m.tmin}°　降水 ${m.pop}%</div>`:''}
+    </div>`; };
+  $('weather').innerHTML = (W.places||[]).map(place).join('') + (W.jma ? `<div class="card jma">
+      <div class="eyebrow">気象庁の予報（大阪府）</div>
+      <p>${esc(W.jma.text)}</p>
+      <div class="pops">${W.jma.pops.map(x=>`<div>${esc(x.t)}〜<b>${esc(x.pop)}%</b></div>`).join('')}</div>
+      <small>${esc(W.jma.wind)}</small></div>` : '') +
+    ((W.places||[]).length ? `<div class="card week"><div class="week-top"><div class="eyebrow">週間予報</div>
+      <div class="seg" id="wkSeg">${W.places.map((p,i)=>`<button class="${i?'':'on'}" data-i="${i}">${esc(p.name)}</button>`).join('')}</div></div>
+      <div class="days" id="wkDays"></div></div>` : '');
+  const week = i => { $('wkDays').innerHTML = W.places[i].days.map(d=>`<div class="day ${d.wd==='土'?'sat':d.wd==='日'?'sun':''}">
+      <div class="dl">${esc(d.label)}<small>${esc(d.wd||'')}</small></div><div class="di">${d.icon}</div><div class="dt">${esc(d.text)}</div>
+      <div class="dx">${d.tmax}°</div><div class="dn">${d.tmin}°</div><div class="dp ${d.pop>=50?'wet':''}">☂${d.pop}%</div></div>`).join(''); };
+  if ($('wkSeg')) { week(0); $('wkSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+    $('wkSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b)); week(+b.dataset.i); }); }
+}
+$('topics').innerHTML = (D.topics||[]).map(t=>`<article class="card topic tap" ${tapAttr(()=>topicView(t))} style="--cat:var(${CATS2[t.category]||'--c-other'})">
+  <div class="meta"><span class="cat">${esc(t.category)}</span></div>
+  <h4>${esc(t.title)}</h4><p>${gl(t.summary)}</p>
+  ${t.hook?`<div class="hook">💬 ${esc(t.hook)}</div>`:''}
+  <span class="readmore">詳しく ›</span>
+</article>`).join('') + (D.trivia ? `<article class="card trivia"><div class="eyebrow">${esc(D.trivia.label||'今日は何の日')}</div><h4>${esc(D.trivia.title)}</h4><p>${esc(D.trivia.text)}</p></article>` : '');
+
+const CH = D.changes || [];
+if (!CH.length) { $('chgHead').hidden = true; $('changes').hidden = true; }
+else $('changes').innerHTML = CH.map(c=>`<div class="chg tap" ${tapAttr(()=>changeView(c))}><span class="when ${/今日/.test(c.when||'')?'':'later'}">${esc(c.when||'')}</span><div><b>${esc(c.title)}</b><span>${gl(c.detail||'')}</span></div></div>`).join('');
+
+const P = t => t ? `<p>${gl(t, false)}</p>` : '';
+const sec = (title, body) => body ? `<div><div class="sec-t">${title}</div>${body}</div>` : '';
+const box = (title, body) => body ? `<div class="box"><div class="sec-t">${title}</div>${body}</div>` : '';
+const chartLinks = code => {
+  const c = String(code || ''), out = [];
+  (c.match(/\b\d{3}[0-9A-Z]\b/g) || []).forEach(k => out.push([k, `https://finance.yahoo.co.jp/quote/${k}.T`]));
+  if (!out.length) (c.match(/\b[A-Z]{1,5}\b/g) || []).forEach(k => out.push([k, `https://finance.yahoo.com/quote/${k}`]));
+  return out.length ? `<div class="codes">${out.map(([k,u])=>`<a href="${u}" target="_blank" rel="noopener">📈 ${esc(k)} のチャート</a>`).join('')}</div>` : '';
+};
+const itemList = (arr, up, s) => (arr||[]).length ? `<div class="lst">${arr.map(x=>`<div class="it tap ${up?'u':'d'}" ${tapAttr(()=>stockView(x, up, s))}><b>${esc(x.name)}${x.code?`<code>${esc(x.code)}</code>`:''}</b><span>${esc(x.reason||'')}</span></div>`).join('')}</div>` : '';
+const sources = s => (s.sources||[]).length ? `<div class="src"><div class="sec-t">出典</div>${s.sources.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)} ↗</a>`).join('')}</div>` : '';
+const NOTE = '<div class="note">ニュースからの連想を整理したもので、投資助言ではありません。</div>';
+
+const stockView = (x, up, s) => `
+  <div class="dir ${up?'up':'down'}">${up?'▲ 追い風になりそう':'▼ 逆風になりそう'}</div>
+  <h3>${esc(x.name)}</h3>
+  ${x.code?`<div class="note">コード：${esc(x.code)}</div>`:''}
+  ${box('ひとことで', P(x.reason))}
+  ${sec('なぜそう言えるのか', P(x.detail) || '<p class="note">この号には詳しい解説がありません。</p>')}
+  ${s ? sec('きっかけのニュース', `<div class="lst"><div class="it tap" ${tapAttr(()=>storyView(s))}><b>${esc(s.title)}</b></div></div>`) : ''}
+  ${chartLinks(x.code)}${NOTE}`;
+
+const storyView = s => `
+  <div class="meta"><span class="cat" style="color:var(${CATS[s.category]||'--c-other'})">${esc(s.category)}</span>${s.region?`<span>· ${esc(s.region)}</span>`:''}${s.followup?`<span class="fu">続報</span>`:''}</div>
+  <h3>${esc(s.title)}</h3>
+  ${s.followup && s.delta ? box('昨日から変わったこと', P(s.delta)) : ''}
+  ${P(s.summary)}
+  ${sec('もっと詳しく', P(s.detail))}
+  ${box('なぜ重要か', P(s.why))}
+  ${sec('▲ 追い風になりそう', itemList(s.impact?.up, true, s))}
+  ${sec('▼ 逆風になりそう', itemList(s.impact?.down, false, s))}
+  ${sources(s)}`;
+
+const topicView = t => `
+  <div class="meta"><span class="cat" style="color:var(${CATS2[t.category]||'--c-other'})">${esc(t.category)}</span></div>
+  <h3>${esc(t.title)}</h3>${P(t.summary)}${sec('もっと詳しく', P(t.detail))}
+  ${t.hook ? box('💬 話のネタ', P(t.hook)) : ''}${sources(t)}`;
+
+const marketView = m => `
+  <div class="eyebrow">マーケット</div><h3>${esc(m.name)}　<span class="num">${esc(m.value)}</span></h3>
+  <div class="num ${dir(m.change)}" style="font-weight:700">${esc(m.change||'')}</div>${m.note?`<div class="note">${esc(m.note)}</div>`:''}
+  ${sec('なぜ動いたのか・どう見るか', P(m.why) || '<p class="note">この号には解説がありません。</p>')}`;
+
+const sectorView = x => { const up = x.direction !== 'down'; return `
+  <div class="dir ${x.direction}">${arrow[x.direction]||'―'} ${x.direction==='up'?'追い風':x.direction==='down'?'逆風':'方向感なし'}</div>
+  <h3>${esc(x.name)}</h3>${box('ひとことで', P(x.reason))}${sec('くわしく', P(x.detail))}
+  ${sec('関連する銘柄', itemList(x.stocks, up, null))}${NOTE}`; };
+
+const calView = e => `
+  <div class="eyebrow">${esc(e.date)} ${esc(e.time||'')}</div><h3>${esc(e.event)}</h3>
+  ${P(e.note)}${sec('注目ポイント', P(e.detail))}`;
+
+const changeView = c => `
+  <div class="eyebrow">${esc(c.when||'')}</div><h3>${esc(c.title)}</h3>${P(c.detail)}${sec('もっと詳しく', P(c.more))}`;
+
+const termView = g => `<div class="eyebrow">用語ミニ解説</div><h3>${esc(g.term)}</h3>${P(g.desc)}`;
+
+const stack = [];
+const showSheet = () => { const v = stack[stack.length-1]; $('sheetBody').innerHTML = v(); $('sheetBody').scrollTop = 0;
+  $('sheetBack').hidden = stack.length < 2; $('sheetBg').hidden = false; document.body.style.overflow = 'hidden'; };
+const openView = fn => { stack.push(fn); showSheet(); };
+const closeSheet = () => { stack.length = 0; $('sheetBg').hidden = true; document.body.style.overflow = ''; };
+$('sheetX').addEventListener('click', closeSheet);
+$('sheetBack').addEventListener('click', () => { stack.pop(); showSheet(); });
+$('sheetBg').addEventListener('click', e => { if (e.target.id === 'sheetBg') closeSheet(); });
+const activate = e => {
+  if (e.target.closest('a')) return false;
+  const t = e.target.closest('.term');
+  if (t) { const g = GL.find(x=>x.term===t.dataset.t); if (g) { openView(()=>termView(g)); return true; } }
+  const o = e.target.closest('[data-open]');
+  if (o) { const fn = REG[+o.dataset.open]; openView(fn); return true; }
+  return false;
+};
+document.addEventListener('click', e => { if (!e.target.closest('.sheet-bar')) activate(e); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSheet();
+  if ((e.key === 'Enter' || e.key === ' ') && (e.target.matches?.('[data-open],.term'))) { e.preventDefault(); activate(e); }
+});
+
+// ---- 予想の答え合わせ ----
+const T = D.track || {};
+const pct = v => v == null ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(2)}%`;
+const VD = {"的中":["hit","✓"],"外れ":["miss","✗"],"横ばい":["flat","－"]};
+const t1 = T.total?.d1 || {}, t5 = T.total?.d5 || {};
+$('kpis').innerHTML = [
+  ['1営業日後の的中率', t1.rate != null ? t1.rate + '%' : '—', `${t1.n||0}件（的中${t1.hit||0}・外れ${t1.miss||0}）`],
+  ['5営業日後の的中率', t5.rate != null ? t5.rate + '%' : '—', `${t5.n||0}件（的中${t5.hit||0}・外れ${t5.miss||0}）`],
+  ['平均の優位性（1日後）', pct(t1.avg_edge), '予想した向きに指数より何%動いたか'],
+  ['判定待ち', `${T.pending ?? 0}件`, '次の取引日以降に判定'],
+].map(([n,v,sub])=>`<div class="kpi"><div class="n">${n}</div><div class="v num">${v}</div><div class="s">${sub}</div></div>`).join('');
+const RV = D.review || {};
+$('review').innerHTML = `<div class="eyebrow">昨日の振り返り</div><p>${esc(RV.summary || 'まだ振り返りはありません。予想の結果が出た翌朝から、外れた理由と学びをここに書きます。')}</p>` +
+  (RV.items||[]).map(it=>`<div class="rv tap" ${tapAttr(()=>reviewView(it))}><b>${esc(it.title)}</b>${esc(it.lesson||'')}</div>`).join('');
+const recent = T.recent || [];
+$('results').innerHTML = recent.length ? `<div class="eyebrow" style="padding:14px 16px 6px">最近の結果（1営業日後）</div>` + recent.slice(0,15).map(r=>{
+  const x = r.d1, [cls, mark] = VD[x.verdict] || ['flat','－'];
+  return `<div class="rs tap" ${tapAttr(()=>resultView(r))}><span class="vd ${cls}">${mark}</span>
+    <div class="nm">${esc(r.name)} <code class="num" style="font-size:11px;color:var(--sub)">${esc(r.code)}</code><small>${r.date.slice(5).replace('-','/')}号 · ${r.dir==='up'?'▲ 追い風':'▼ 逆風'}と予想</small></div>
+    <div class="fig ${dir(pct(x.ret))}">${pct(x.ret)}<small>指数との差 ${pct(x.excess)}</small></div></div>`; }).join('')
+  : `<div class="empty">まだ結果が出た予想はありません。判定待ちが ${T.pending ?? 0} 件あります。翌営業日の終値が出た次の朝から、ここに ✓ / ✗ が並びます。</div>`;
+const LS = T.lessons || [];
+if (LS.length) $('lessons').innerHTML = LS.map(l=>`<li>${esc(l)}</li>`).join('');
+else $('lessonsBox').hidden = true;
+
+const reviewView = it => `<div class="eyebrow">昨日の振り返り</div><h3>${esc(it.title)}</h3>
+  ${sec('なぜそうなったか', P(it.why))}${box('次にどう活かすか', P(it.lesson))}`;
+const resultView = r => { const row = (h, x) => x ? `<div class="box"><div class="sec-t">${h}営業日後（${esc(x.date)}）　${esc(x.verdict)}</div>
+    <p>株価 <b class="${dir(pct(x.ret))}">${pct(x.ret)}</b>　指数 ${pct(x.bench)}　→ 指数との差 <b class="${dir(pct(x.excess))}">${pct(x.excess)}</b></p></div>` : '';
+  return `<div class="dir ${r.dir}">${r.dir==='up'?'▲ 追い風':'▼ 逆風'}と予想（${esc(r.date)}号）</div>
+  <h3>${esc(r.name)}　<span class="num" style="font-size:16px">${esc(r.code)}</span></h3>
+  ${sec('予想した理由', P(r.reason))}${sec('元になったニュース・テーマ', P(r.context))}
+  <div class="note">基準：${esc(r.base_date)} の終値 ${r.base_price}</div>
+  ${row(1, r.d1)}${row(5, r.d5) || '<div class="note">5営業日後の結果はまだ出ていません。</div>'}
+  ${chartLinks(r.code)}${NOTE}`; };
+
+const sel = $('archive');
+
+sel.innerHTML = ARCH.map(d=>`<option value="${d}" ${d===D.date?'selected':''}>${d}</option>`).join('');
+sel.addEventListener('change', () => { location.href = (location.pathname.includes('/editions/') ? '' : 'editions/') + sel.value + '.html'; });
+
+const root = document.documentElement;
+try { const t = localStorage.getItem('mb-theme'); if (t) root.dataset.theme = t; } catch(e){}
+$('theme').addEventListener('click', () => {
+  const dark = root.dataset.theme ? root.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem('mb-theme', root.dataset.theme); } catch(e){}
+});
+</script>
+</body>
+</html>
