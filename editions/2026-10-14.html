@@ -12,7 +12,7 @@
   --bg:#f5f3ee; --paper:#fffdf8; --ink:#16161a; --sub:#5b5b66; --line:#e4e0d6;
   --accent:#c2410c; --up:#0f8a5f; --down:#c62839; --up-bg:#e3f4ec; --down-bg:#fbe7ea;
   --chip:#efece4; --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.05);
-  --c-geo:#b4232f; --c-macro:#1d4ed8; --c-tech:#7c3aed; --c-japan:#be185d; --c-asia:#b45309; --c-energy:#0f766e; --c-other:#475569; --c-sports:#15803d; --c-life:#0369a1; --c-ent:#c026d3; --c-trend:#ea580c; --c-sci:#4f46e5;
+  --c-geo:#b4232f; --c-macro:#1d4ed8; --c-tech:#7c3aed; --c-japan:#be185d; --c-asia:#b45309; --c-energy:#0f766e; --c-other:#475569; --c-sports:#15803d; --c-life:#0369a1; --c-ent:#c026d3; --c-trend:#ea580c; --c-sci:#4f46e5; --c-world:#0e7490; --c-usa:#1e40af;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -20,7 +20,7 @@
     --bg:#0f1014; --paper:#17181e; --ink:#ecebe7; --sub:#a0a0ab; --line:#2a2b33;
     --accent:#fb923c; --up:#34d399; --down:#f87171; --up-bg:#0f2a21; --down-bg:#33161b;
     --chip:#23242c; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
-    --c-geo:#f87171; --c-macro:#60a5fa; --c-tech:#a78bfa; --c-japan:#f472b6; --c-asia:#fbbf24; --c-energy:#2dd4bf; --c-other:#94a3b8; --c-sports:#4ade80; --c-life:#38bdf8; --c-ent:#e879f9; --c-trend:#fb923c; --c-sci:#818cf8;
+    --c-geo:#f87171; --c-macro:#60a5fa; --c-tech:#a78bfa; --c-japan:#f472b6; --c-asia:#fbbf24; --c-energy:#2dd4bf; --c-other:#94a3b8; --c-sports:#4ade80; --c-life:#38bdf8; --c-ent:#e879f9; --c-trend:#fb923c; --c-sci:#818cf8; --c-world:#22d3ee; --c-usa:#93c5fd;
   }
 }
 :root[data-theme="dark"]{
@@ -28,7 +28,7 @@
   --bg:#0f1014; --paper:#17181e; --ink:#ecebe7; --sub:#a0a0ab; --line:#2a2b33;
   --accent:#fb923c; --up:#34d399; --down:#f87171; --up-bg:#0f2a21; --down-bg:#33161b;
   --chip:#23242c; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
-  --c-geo:#f87171; --c-macro:#60a5fa; --c-tech:#a78bfa; --c-japan:#f472b6; --c-asia:#fbbf24; --c-energy:#2dd4bf; --c-other:#94a3b8; --c-sports:#4ade80; --c-life:#38bdf8; --c-ent:#e879f9; --c-trend:#fb923c; --c-sci:#818cf8;
+  --c-geo:#f87171; --c-macro:#60a5fa; --c-tech:#a78bfa; --c-japan:#f472b6; --c-asia:#fbbf24; --c-energy:#2dd4bf; --c-other:#94a3b8; --c-sports:#4ade80; --c-life:#38bdf8; --c-ent:#e879f9; --c-trend:#fb923c; --c-sci:#818cf8; --c-world:#22d3ee; --c-usa:#93c5fd;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -130,8 +130,7 @@ select.btn{appearance:none;padding-right:12px}
 
 
 /* weather */
-.wx{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:22px 0 28px}
-@media (max-width:980px){.wx{grid-template-columns:repeat(2,minmax(0,1fr))}.wx .jma{grid-column:span 2}}
+.wx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:22px 0 28px}
 @media (max-width:620px){.wx{grid-template-columns:minmax(0,1fr)}.wx .jma{grid-column:auto}}
 .place{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
 .place .top{display:flex;align-items:center;gap:14px}
@@ -168,6 +167,31 @@ select.btn{appearance:none;padding-right:12px}
 .topic h4{margin:0;font-size:16.5px;line-height:1.5;font-weight:700}
 .topic p{margin:0;font-size:13.5px;color:var(--sub)}
 .topic .hook{font-size:12.5px;background:var(--chip);border-radius:10px;padding:7px 10px;color:var(--ink)}
+/* world（現地メディアが伝える海外ニュース） */
+.world-intro{margin:0 0 14px;font-size:14px;color:var(--sub)}
+.world{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:16px}
+.wn{padding:18px 20px;display:flex;flex-direction:column;gap:8px;border-top:3px solid var(--c-world)}
+.wn .where{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--sub);font-weight:600}
+.wn .where .fl{font-size:22px;line-height:1}
+.wn .where .rg{margin-left:auto;background:var(--chip);border-radius:999px;padding:2px 9px;font-weight:500;white-space:nowrap}
+.wn h4{margin:0;font-size:16.5px;line-height:1.5;font-weight:700}
+.wn .orig{font-size:12px;color:var(--sub);font-style:italic;border-left:2px solid var(--line);padding-left:8px;overflow-wrap:anywhere}
+.wn p{margin:0;font-size:13.5px;color:var(--sub)}
+.wn .local{font-size:12.5px;background:var(--chip);border-radius:10px;padding:7px 10px;color:var(--ink)}
+.wn .via{font-size:11.5px;color:var(--sub);margin-top:auto}
+.wn.watch{border-top-color:var(--accent)}
+.wn .badge{font-size:11px;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:1px 8px}
+.wn .delta{font-size:12.5px;border-left:3px solid var(--accent);padding:4px 10px;color:var(--ink)}
+.wn .delta b{color:var(--accent);margin-right:6px}
+.usa .wn{border-top-color:var(--c-usa)}
+.usa .wn .how{font-size:12.5px;background:var(--chip);border-radius:10px;padding:7px 10px;color:var(--ink)}
+.usa .wn .how b{color:var(--c-usa);display:block;font-size:11px;margin-bottom:2px}
+.weekly{padding:22px 24px;border-left:4px solid var(--accent)}
+.weekly h4{font-family:"Shippori Mincho",serif;font-size:20px;margin:4px 0 8px}
+.weekly>p{margin:0 0 12px;font-size:14px}
+.weekly .wk{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:10px}
+.weekly .wk div{background:var(--chip);border-radius:10px;padding:10px 12px;font-size:13px}
+.weekly .wk b{display:block;font-size:13.5px;margin-bottom:3px}
 .trivia{padding:20px 22px;background:var(--ink);color:var(--paper);border:0}
 .trivia .eyebrow{color:var(--accent)}
 .trivia h4{font-family:"Shippori Mincho",serif;font-size:19px;margin:6px 0}
@@ -314,6 +338,9 @@ footer{color:var(--sub);font-size:11.5px;text-align:center;padding:40px 0 60px;l
     </div>
   </section>
 
+  <div class="sh" id="weeklyHead" hidden><h3>今週のまとめ</h3><small>1週間で何が起き、どこに行き着いたか</small></div>
+  <section class="card weekly" id="weekly" hidden></section>
+
   <div class="sh" id="chgHead"><h3>今日から変わること</h3><small>制度・値上げ・サービス変更など</small></div>
   <section class="card changes" id="changes"></section>
 
@@ -323,13 +350,21 @@ footer{color:var(--sub);font-size:11.5px;text-align:center;padding:40px 0 60px;l
   </div>
   <section class="grid" id="stories"></section>
 
+  <div class="sh" id="worldHead"><h3>世界の現地ニュース</h3><div class="filters" id="wfilters"></div></div>
+  <p class="world-intro" id="worldIntro"></p>
+  <section class="world" id="world"></section>
+
+  <div class="sh" id="usaHead"><h3>アメリカでいま起きていること</h3><small>新しい稼ぎ方・ビジネス・流行・暮らしの変化</small></div>
+  <p class="world-intro" id="usaIntro"></p>
+  <section class="world usa" id="usa"></section>
+
   <div class="sh"><h3>世の中の話題</h3><small>スポーツ・くらし・エンタメ・トレンド — 知っておくと会話に困らない</small></div>
   <section class="topics" id="topics"></section>
 
   <div class="sh"><h3>マーケット</h3><small>前営業日の終値ベース</small></div>
   <section class="ticker" id="ticker" style="margin-top:0"></section>
 
-  <div class="sh"><h3>予想の答え合わせ</h3><small>「追い風・逆風」の予想を実際の株価で検証（指数との差で判定）</small></div>
+  <div class="sh"><h3>予想の答え合わせ</h3><small>「追い風・逆風」の予想を実際の株価で検証（日本株はTOPIX、米国株はS&amp;P500との差で判定。5営業日後を重視）</small></div>
   <section class="trk" id="track">
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="kpis" id="kpis"></div>
@@ -432,7 +467,7 @@ $('stories').innerHTML = stories.map(s => {
   </article>`;}).join('');
 $('filters').addEventListener('click', e => {
   const b = e.target.closest('.f'); if(!b) return;
-  document.querySelectorAll('.f').forEach(x=>x.classList.toggle('on', x===b));
+  $('filters').querySelectorAll('.f').forEach(x=>x.classList.toggle('on', x===b));
   document.querySelectorAll('.story').forEach(a => a.classList.toggle('hidden', b.dataset.c!=='すべて' && a.dataset.c!==b.dataset.c));
 });
 
@@ -460,7 +495,7 @@ else {
       <div class="pops">${W.jma.pops.map(x=>`<div>${esc(x.t)}〜<b>${esc(x.pop)}%</b></div>`).join('')}</div>
       <small>${esc(W.jma.wind)}</small></div>` : '') +
     ((W.places||[]).length ? `<div class="card week"><div class="week-top"><div class="eyebrow">週間予報</div>
-      <div class="seg" id="wkSeg">${W.places.map((p,i)=>`<button class="${i?'':'on'}" data-i="${i}">${esc(p.name)}</button>`).join('')}</div></div>
+      <div class="seg" id="wkSeg" ${W.places.length<2?'hidden':''}>${W.places.map((p,i)=>`<button class="${i?'':'on'}" data-i="${i}">${esc(p.name)}</button>`).join('')}</div></div>
       <div class="days" id="wkDays"></div></div>` : '');
   const week = i => { $('wkDays').innerHTML = W.places[i].days.map(d=>`<div class="day ${d.wd==='土'?'sat':d.wd==='日'?'sun':''}">
       <div class="dl">${esc(d.label)}<small>${esc(d.wd||'')}</small></div><div class="di">${d.icon}</div><div class="dt">${esc(d.text)}</div>
@@ -474,6 +509,55 @@ $('topics').innerHTML = (D.topics||[]).map(t=>`<article class="card topic tap" $
   ${t.hook?`<div class="hook">💬 ${esc(t.hook)}</div>`:''}
   <span class="readmore">詳しく ›</span>
 </article>`).join('') + (D.trivia ? `<article class="card trivia"><div class="eyebrow">${esc(D.trivia.label||'今日は何の日')}</div><h4>${esc(D.trivia.title)}</h4><p>${esc(D.trivia.text)}</p></article>` : '');
+
+// 作成できなかった日の簡易版：天気と冒頭の説明だけ出す
+if (D.fallback) document.querySelectorAll('main .sh, main > section, main > p').forEach(el => {
+  if (!['wxHead','weather'].includes(el.id) && !el.classList.contains('hero')) el.hidden = true; });
+const WD = D.world || {};
+const WI = WD.items || [];
+if (!WI.length) { ['worldHead','worldIntro','world'].forEach(id => $(id).hidden = true); }
+else {
+  $('worldIntro').textContent = WD.intro || 'その国の新聞・テレビが自分たちの言葉で大きく伝えていること。日本ではあまり報じられない話題を中心に。';
+  const regs = [...new Set(WI.map(w=>w.region).filter(Boolean))];
+  $('wfilters').innerHTML = regs.length > 1 ? ['すべて',...regs].map((r,i)=>`<button class="f ${i?'':'on'}" data-r="${esc(r)}">${esc(r)}</button>`).join('') : '';
+  $('world').innerHTML = WI.slice().sort((a,b)=>!!b.watch-!!a.watch).map(w=>`<article class="card wn tap${w.watch?' watch':''}" ${tapAttr(()=>worldView(w))} data-r="${esc(w.region||'')}">
+    <div class="where"><span class="fl">${esc(w.flag||'🌐')}</span><span>${esc(w.country||'')}</span>${w.watch?`<span class="badge">定点観測</span>`:''}${w.region?`<span class="rg">${esc(w.region)}</span>`:''}</div>
+    <h4>${esc(w.title)}</h4>
+    ${w.watch && w.delta?`<div class="delta"><b>昨日から</b>${esc(w.delta)}</div>`:''}
+    ${w.original?`<div class="orig">${esc(w.original)}</div>`:''}
+    <p>${gl(w.summary)}</p>
+    ${w.local?`<div class="local">🗣 ${gl(w.local)}</div>`:''}
+    <div class="via">${(w.sources||[]).length?`via ${w.sources.map(x=>esc(x.name)).join(' / ')}`:''}<span class="readmore" style="float:right">詳しく ›</span></div>
+  </article>`).join('');
+  $('wfilters').addEventListener('click', e => {
+    const b = e.target.closest('.f'); if(!b) return;
+    $('wfilters').querySelectorAll('.f').forEach(x=>x.classList.toggle('on', x===b));
+    $('world').querySelectorAll('.wn').forEach(a => a.classList.toggle('hidden', b.dataset.r!=='すべて' && a.dataset.r!==b.dataset.r));
+  });
+}
+
+const US = D.usa || {};
+const UI = US.items || [];
+if (!UI.length) { ['usaHead','usaIntro','usa'].forEach(id => $(id).hidden = true); }
+else {
+  $('usaIntro').textContent = US.intro || '';
+  $('usaIntro').hidden = !US.intro;
+  $('usa').innerHTML = UI.map(u=>`<article class="card wn tap" ${tapAttr(()=>usaView(u))}>
+    <div class="where"><span class="fl">🇺🇸</span><span>${esc(u.category||'')}</span>${u.place?`<span class="rg">${esc(u.place)}</span>`:''}</div>
+    <h4>${esc(u.title)}</h4>
+    <p>${gl(u.summary)}</p>
+    ${u.how?`<div class="how"><b>しくみ（だれが、だれに、なぜお金を払う？）</b>${gl(u.how)}</div>`:''}
+    <div class="via">${(u.sources||[]).length?`via ${u.sources.map(x=>esc(x.name)).join(' / ')}`:''}<span class="readmore" style="float:right">詳しく ›</span></div>
+  </article>`).join('');
+}
+
+const WK = D.weekly;
+if (WK && (WK.overview || (WK.items||[]).length)) {
+  $('weeklyHead').hidden = false; $('weekly').hidden = false;
+  $('weekly').innerHTML = `<div class="eyebrow">${esc(WK.range||'今週')}</div><h4>${esc(WK.title||'今週の世界')}</h4>
+    <p>${gl(WK.overview||'')}</p>
+    <div class="wk">${(WK.items||[]).map(i=>`<div><b>${esc(i.title)}</b>${gl(i.text)}</div>`).join('')}</div>`;
+}
 
 const CH = D.changes || [];
 if (!CH.length) { $('chgHead').hidden = true; $('changes').hidden = true; }
@@ -516,6 +600,21 @@ const topicView = t => `
   <div class="meta"><span class="cat" style="color:var(${CATS2[t.category]||'--c-other'})">${esc(t.category)}</span></div>
   <h3>${esc(t.title)}</h3>${P(t.summary)}${sec('もっと詳しく', P(t.detail))}
   ${t.hook ? box('💬 話のネタ', P(t.hook)) : ''}${sources(t)}`;
+
+const worldView = w => `
+  <div class="meta"><span class="cat" style="color:var(--c-world)">${esc(w.flag||'🌐')} ${esc(w.country||'')}${w.region?` · ${esc(w.region)}`:''}</span></div>
+  <h3>${esc(w.title)}</h3>${w.original?`<div class="note"><i>${esc(w.original)}</i></div>`:''}
+  ${w.watch && w.delta ? box('定点観測：昨日から変わったこと', P(w.delta)) : ''}${P(w.summary)}
+  ${sec('もっと詳しく', P(w.detail))}
+  ${w.local ? box('🗣 現地ではこう受け止められている', P(w.local)) : ''}
+  ${w.japan ? sec('日本とのつながり', P(w.japan)) : ''}${sources(w)}`;
+
+const usaView = u => `
+  <div class="meta"><span class="cat" style="color:var(--c-usa)">🇺🇸 ${esc(u.category||'')}${u.place?` · ${esc(u.place)}`:''}</span></div>
+  <h3>${esc(u.title)}</h3>${P(u.summary)}
+  ${u.how ? box('しくみ（だれが、だれに、なぜお金を払う？）', P(u.how)) : ''}
+  ${sec('なぜいま広がっているのか', P(u.why))}${sec('もっと詳しく', P(u.detail))}
+  ${u.japan ? box('🇯🇵 日本では？', P(u.japan)) : ''}${sources(u)}`;
 
 const marketView = m => `
   <div class="eyebrow">マーケット</div><h3>${esc(m.name)}　<span class="num">${esc(m.value)}</span></h3>
@@ -564,17 +663,18 @@ const pct = v => v == null ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(2)}%`;
 const VD = {"的中":["hit","✓"],"外れ":["miss","✗"],"横ばい":["flat","－"]};
 const t1 = T.total?.d1 || {}, t5 = T.total?.d5 || {};
 $('kpis').innerHTML = [
-  ['1営業日後の的中率', t1.rate != null ? t1.rate + '%' : '—', `${t1.n||0}件（的中${t1.hit||0}・外れ${t1.miss||0}）`],
   ['5営業日後の的中率', t5.rate != null ? t5.rate + '%' : '—', `${t5.n||0}件（的中${t5.hit||0}・外れ${t5.miss||0}）`],
-  ['平均の優位性（1日後）', pct(t1.avg_edge), '予想した向きに指数より何%動いたか'],
+  ['平均の優位性（5日後）', pct(t5.avg_edge), '予想した向きに指数より何%動いたか'],
+  ['1営業日後の的中率', t1.rate != null ? t1.rate + '%' : '—', `${t1.n||0}件（的中${t1.hit||0}・外れ${t1.miss||0}）・ぶれが大きい参考値`],
   ['判定待ち', `${T.pending ?? 0}件`, '次の取引日以降に判定'],
 ].map(([n,v,sub])=>`<div class="kpi"><div class="n">${n}</div><div class="v num">${v}</div><div class="s">${sub}</div></div>`).join('');
 const RV = D.review || {};
 $('review').innerHTML = `<div class="eyebrow">昨日の振り返り</div><p>${esc(RV.summary || 'まだ振り返りはありません。予想の結果が出た翌朝から、外れた理由と学びをここに書きます。')}</p>` +
   (RV.items||[]).map(it=>`<div class="rv tap" ${tapAttr(()=>reviewView(it))}><b>${esc(it.title)}</b>${esc(it.lesson||'')}</div>`).join('');
-const recent = T.recent || [];
-$('results').innerHTML = recent.length ? `<div class="eyebrow" style="padding:14px 16px 6px">最近の結果（1営業日後）</div>` + recent.slice(0,15).map(r=>{
-  const x = r.d1, [cls, mark] = VD[x.verdict] || ['flat','－'];
+const H = (T.recent5||[]).length ? 'd5' : 'd1';
+const recent = (H === 'd5' ? T.recent5 : T.recent) || [];
+$('results').innerHTML = recent.length ? `<div class="eyebrow" style="padding:14px 16px 6px">最近の結果（${H==='d5'?5:1}営業日後）</div>` + recent.slice(0,15).map(r=>{
+  const x = r[H], [cls, mark] = VD[x.verdict] || ['flat','－'];
   return `<div class="rs tap" ${tapAttr(()=>resultView(r))}><span class="vd ${cls}">${mark}</span>
     <div class="nm">${esc(r.name)} <code class="num" style="font-size:11px;color:var(--sub)">${esc(r.code)}</code><small>${r.date.slice(5).replace('-','/')}号 · ${r.dir==='up'?'▲ 追い風':'▼ 逆風'}と予想</small></div>
     <div class="fig ${dir(pct(x.ret))}">${pct(x.ret)}<small>指数との差 ${pct(x.excess)}</small></div></div>`; }).join('')
