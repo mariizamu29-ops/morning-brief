@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morning Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho:wght@600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f3ee; --paper:#fffdf8; --ink:#16161a; --sub:#5b5b66; --line:#e4e0d6;
+  --accent:#c2410c; --up:#0f8a5f; --down:#c62839; --up-bg:#e3f4ec; --down-bg:#fbe7ea;
+  --chip:#efece4; --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.05);
+  --c-geo:#b4232f; --c-macro:#1d4ed8; --c-tech:#7c3aed; --c-japan:#be185d; --c-asia:#b45309; --c-energy:#0f766e; --c-other:#475569; --c-sports:#15803d; --c-life:#0369a1; --c-ent:#c026d3; --c-trend:#ea580c; --c-sci:#4f46e5; --c-world:#0e7490; --c-usa:#1e40af;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f1014; --paper:#17181e; --ink:#ecebe7; --sub:#a0a0ab; --line:#2a2b33;
+    --accent:#fb923c; --up:#34d399; --down:#f87171; --up-bg:#0f2a21; --down-bg:#33161b;
+    --chip:#23242c; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+    --c-geo:#f87171; --c-macro:#60a5fa; --c-tech:#a78bfa; --c-japan:#f472b6; --c-asia:#fbbf24; --c-energy:#2dd4bf; --c-other:#94a3b8; --c-sports:#4ade80; --c-life:#38bdf8; --c-ent:#e879f9; --c-trend:#fb923c; --c-sci:#818cf8; --c-world:#22d3ee; --c-usa:#93c5fd;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f1014; --paper:#17181e; --ink:#ecebe7; --sub:#a0a0ab; --line:#2a2b33;
+  --accent:#fb923c; --up:#34d399; --down:#f87171; --up-bg:#0f2a21; --down-bg:#33161b;
+  --chip:#23242c; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  --c-geo:#f87171; --c-macro:#60a5fa; --c-tech:#a78bfa; --c-japan:#f472b6; --c-asia:#fbbf24; --c-energy:#2dd4bf; --c-other:#94a3b8; --c-sports:#4ade80; --c-life:#38bdf8; --c-ent:#e879f9; --c-trend:#fb923c; --c-sci:#818cf8; --c-world:#22d3ee; --c-usa:#93c5fd;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{overflow-wrap:anywhere;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.num{font-family:Inter,"Noto Sans JP",sans-serif;font-variant-numeric:tabular-nums}
+
+/* masthead */
+header.mast{border-bottom:3px double var(--ink);padding:28px 0 14px}
+.mast-top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;color:var(--sub);letter-spacing:.08em}
+.mast h1{font-family:"Shippori Mincho",serif;font-weight:800;font-size:clamp(34px,6vw,64px);line-height:1.1;margin:10px 0 4px;letter-spacing:.02em}
+.mast h1 span{color:var(--accent)}
+.mast .date{font-family:"Shippori Mincho",serif;font-size:18px}
+.tools{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:5px 12px;font:inherit;font-size:12px;cursor:pointer}
+select.btn{appearance:none;padding-right:12px}
+
+/* ticker */
+.ticker{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:22px 0}
+.tk{padding:12px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 -1px -1px 0;min-width:0}
+.tk .n{font-size:11px;color:var(--sub);letter-spacing:.04em}
+.tk .v{font-size:19px;font-weight:800}
+.tk .c{font-size:12px;font-weight:600}
+.tk .note{font-size:10.5px;color:var(--sub);line-height:1.4;margin-top:2px}
+.up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--sub)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-bottom:28px}
+@media (max-width:820px){.hero{grid-template-columns:minmax(0,1fr)}}
+.card{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.summary{padding:24px 26px}
+.eyebrow{font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:700;text-transform:uppercase}
+.summary h2{font-family:"Shippori Mincho",serif;font-size:clamp(20px,2.6vw,27px);line-height:1.45;margin:6px 0 14px}
+.summary ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.summary li{counter-increment:s;position:relative;padding:10px 0 10px 40px;border-top:1px solid var(--line);font-size:15px}
+.summary li::before{content:counter(s);position:absolute;left:0;top:10px;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--paper);font:700 13px/26px Inter;text-align:center}
+.mood{padding:22px 24px;display:flex;flex-direction:column;gap:14px}
+.gauge{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,var(--down),#d4a017 50%,var(--up))}
+.gauge i{position:absolute;top:-5px;width:4px;height:22px;background:var(--ink);border-radius:2px;transform:translateX(-50%)}
+.gauge-l{display:flex;justify-content:space-between;font-size:11px;color:var(--sub)}
+.mood .lbl{font-size:24px;font-weight:900}
+.mood p{margin:0;font-size:14px;color:var(--sub)}
+.themes{display:flex;flex-wrap:wrap;gap:6px}
+.theme{background:var(--chip);border-radius:999px;padding:3px 11px;font-size:12px;font-weight:500}
+
+/* section heads */
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-top:1px solid var(--ink);padding-top:10px;margin:34px 0 16px;flex-wrap:wrap}
+.sh h3{font-family:"Shippori Mincho",serif;font-size:24px;margin:0}
+.sh small{color:var(--sub);font-size:12px}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.f{border:1px solid var(--line);background:transparent;color:var(--sub);border-radius:999px;padding:3px 12px;font:inherit;font-size:12px;cursor:pointer}
+.f.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* stories */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+.story{grid-column:span 6;padding:22px 24px;display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--cat)}
+.story.lvl3{grid-column:span 12}
+.story.lvl1{grid-column:span 6}
+@media (max-width:980px){.story.lvl1{grid-column:span 6}}
+@media (max-width:720px){.story,.story.lvl1,.story.lvl3{grid-column:span 12}}
+.meta{display:flex;gap:8px;align-items:center;font-size:11.5px;color:var(--sub);flex-wrap:wrap}
+.cat{color:var(--cat);font-weight:700;letter-spacing:.06em}
+.stars{color:var(--accent);letter-spacing:1px}
+.story h4{font-family:"Shippori Mincho",serif;font-size:20px;line-height:1.45;margin:0}
+.story.lvl3 h4{font-size:clamp(22px,2.8vw,30px)}
+.story p{margin:0;font-size:14.5px}
+.why{background:var(--chip);border-radius:12px;padding:10px 14px;font-size:13.5px}
+.why b{color:var(--accent);font-size:11px;letter-spacing:.12em;display:block}
+.impact{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.impact{grid-template-columns:minmax(0,1fr)}.ticker{grid-template-columns:repeat(2,minmax(0,1fr))}.summary,.story,.mood{padding:18px}}
+.imp{border-radius:12px;padding:10px 12px;font-size:12.5px}
+.imp.u{background:var(--up-bg)} .imp.d{background:var(--down-bg)}
+.imp h5{margin:0 0 4px;font-size:11px;letter-spacing:.1em}
+.imp.u h5{color:var(--up)} .imp.d h5{color:var(--down)}
+.imp ul{margin:0;padding:0;list-style:none}
+.imp li{padding:3px 0;line-height:1.5}
+.imp li b{font-weight:700}
+.imp li code{font-family:Inter;font-size:10.5px;background:var(--paper);border-radius:4px;padding:0 4px;margin-left:4px;color:var(--sub)}
+.imp li span{display:block;color:var(--sub);font-size:11.5px}
+.src{font-size:11.5px;color:var(--sub);margin-top:auto}
+.src a{color:var(--sub);text-decoration:underline;text-underline-offset:2px;margin-right:10px}
+
+/* sectors & calendar */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
+.sectors{padding:8px 0}
+.sec{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:12px 20px;border-bottom:1px solid var(--line);align-items:start}
+.sec:last-child{border-bottom:0}
+.arrow{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-weight:900;font-size:15px}
+.arrow.up{background:var(--up-bg)} .arrow.down{background:var(--down-bg)} .arrow.flat{background:var(--chip)}
+.sec b{font-size:14.5px} .sec div span{display:block;font-size:12.5px;color:var(--sub);line-height:1.55}
+.cal{padding:8px 0}
+.ev{display:grid;grid-template-columns:78px 1fr;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line)}
+.ev:last-child{border-bottom:0}
+.ev .d{font-family:Inter;font-weight:800;font-size:14px}
+.ev .d small{display:block;font-weight:600;font-size:11px;color:var(--sub)}
+.ev b{font-size:14px} .ev span{display:block;font-size:12.5px;color:var(--sub);line-height:1.55}
+
+
+/* weather */
+.wx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:22px 0 28px}
+@media (max-width:620px){.wx{grid-template-columns:minmax(0,1fr)}.wx .jma{grid-column:auto}}
+.place{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.place .top{display:flex;align-items:center;gap:14px}
+.place .ic{font-size:44px;line-height:1}
+.place .nm{font-size:12px;color:var(--sub);letter-spacing:.1em}
+.place .tx{font-size:20px;font-weight:900;line-height:1.3}
+.place .tp{margin-left:auto;text-align:right;font-family:Inter;line-height:1.2}
+.place .tp b{font-size:26px;color:var(--down)} .place .tp span{font-size:15px;color:#3b82f6;display:block}
+.advice{display:flex;flex-wrap:wrap;gap:6px}
+.advice span{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--chip)}
+.advice .rain{background:#dbeafe;color:#1e40af}
+:root[data-theme="dark"] .advice .rain{background:#172554;color:#93c5fd}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .advice .rain{background:#172554;color:#93c5fd}}
+.hours{display:flex;gap:4px;text-align:center;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding-bottom:6px;scrollbar-width:thin;overscroll-behavior-x:contain}
+.hours-hint{font-size:11px;color:var(--sub);display:flex;justify-content:space-between}
+.hr{flex:0 0 44px;scroll-snap-align:start;font-size:11px;color:var(--sub);display:flex;flex-direction:column;align-items:center;gap:2px;position:relative}
+.hr.nd{margin-left:8px}
+.hr.nd::before{content:"明日";position:absolute;left:-7px;top:-2px;bottom:0;border-left:2px dashed var(--accent);padding-left:3px;font-size:9px;color:var(--accent);font-weight:700;writing-mode:vertical-rl}
+.hr .hi{font-size:15px;line-height:1.2}
+.hr .bar{width:100%;height:34px;background:var(--chip);border-radius:6px;position:relative;overflow:hidden}
+.hr .bar i{position:absolute;left:0;right:0;bottom:0;background:#60a5fa;opacity:.8}
+.hr b{font-family:Inter;color:var(--ink);font-size:11.5px}
+.tmr{font-size:12.5px;color:var(--sub);border-top:1px solid var(--line);padding-top:8px}
+.jma{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.jma p{margin:0;font-size:14.5px;font-weight:500}
+.jma .pops{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;text-align:center}
+.jma .pops div{background:var(--chip);border-radius:10px;padding:6px 0;font-size:11px;color:var(--sub)}
+.jma .pops b{display:block;font:800 17px Inter;color:var(--ink)}
+.jma small{color:var(--sub);font-size:11px}
+
+/* topics */
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.topic{padding:18px 20px;display:flex;flex-direction:column;gap:8px;border-left:4px solid var(--cat)}
+.topic h4{margin:0;font-size:16.5px;line-height:1.5;font-weight:700}
+.topic p{margin:0;font-size:13.5px;color:var(--sub)}
+.topic .hook{font-size:12.5px;background:var(--chip);border-radius:10px;padding:7px 10px;color:var(--ink)}
+/* world（現地メディアが伝える海外ニュース） */
+.world-intro{margin:0 0 14px;font-size:14px;color:var(--sub)}
+.world{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:16px}
+.wn{padding:18px 20px;display:flex;flex-direction:column;gap:8px;border-top:3px solid var(--c-world)}
+.wn .where{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--sub);font-weight:600}
+.wn .where .fl{font-size:22px;line-height:1}
+.wn .where .rg{margin-left:auto;background:var(--chip);border-radius:999px;padding:2px 9px;font-weight:500;white-space:nowrap}
+.wn h4{margin:0;font-size:16.5px;line-height:1.5;font-weight:700}
+.wn .orig{font-size:12px;color:var(--sub);font-style:italic;border-left:2px solid var(--line);padding-left:8px;overflow-wrap:anywhere}
+.wn p{margin:0;font-size:13.5px;color:var(--sub)}
+.wn .local{font-size:12.5px;background:var(--chip);border-radius:10px;padding:7px 10px;color:var(--ink)}
+.wn .via{font-size:11.5px;color:var(--sub);margin-top:auto}
+.wn.watch{border-top-color:var(--accent)}
+.wn .badge{font-size:11px;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:1px 8px}
+.wn .delta{font-size:12.5px;border-left:3px solid var(--accent);padding:4px 10px;color:var(--ink)}
+.wn .delta b{color:var(--accent);margin-right:6px}
+.usa .wn{border-top-color:var(--c-usa)}
+.usa .wn .how{font-size:12.5px;background:var(--chip);border-radius:10px;padding:7px 10px;color:var(--ink)}
+.usa .wn .how b{color:var(--c-usa);display:block;font-size:11px;margin-bottom:2px}
+.weekly{padding:22px 24px;border-left:4px solid var(--accent)}
+.weekly h4{font-family:"Shippori Mincho",serif;font-size:20px;margin:4px 0 8px}
+.weekly>p{margin:0 0 12px;font-size:14px}
+.weekly .wk{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:10px}
+.weekly .wk div{background:var(--chip);border-radius:10px;padding:10px 12px;font-size:13px}
+.weekly .wk b{display:block;font-size:13.5px;margin-bottom:3px}
+.trivia{padding:20px 22px;background:var(--ink);color:var(--paper);border:0}
+.trivia .eyebrow{color:var(--accent)}
+.trivia h4{font-family:"Shippori Mincho",serif;font-size:19px;margin:6px 0}
+.trivia p{margin:0;font-size:13.5px;opacity:.85}
+
+/* weekly */
+.week{grid-column:1/-1;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.week-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.seg{display:flex;gap:4px;background:var(--chip);padding:3px;border-radius:999px}
+.seg button{border:0;background:transparent;color:var(--sub);font:inherit;font-size:12px;padding:3px 12px;border-radius:999px;cursor:pointer}
+.seg button.on{background:var(--paper);color:var(--ink);font-weight:700;box-shadow:var(--shadow)}
+.days{display:grid;grid-template-columns:repeat(8,minmax(64px,1fr));gap:6px;overflow-x:auto;padding-bottom:4px}
+.day{background:var(--chip);border-radius:12px;padding:10px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;align-items:center}
+.day .dl{font-size:12px;font-weight:700}
+.day .dl small{font-weight:500;color:var(--sub);margin-left:2px}
+.day.sat .dl small{color:#3b82f6} .day.sun .dl small{color:var(--down)}
+.day .di{font-size:24px;line-height:1.3}
+.day .dt{font-size:11.5px;color:var(--sub)}
+.day .dx{font:800 15px Inter;color:var(--down)} .day .dn{font:600 12px Inter;color:#3b82f6}
+.day .dp{font-size:11px;font-family:Inter;color:var(--sub)}
+.day .dp.wet{color:#3b82f6;font-weight:700}
+
+/* changes */
+.changes{padding:6px 0}
+.chg{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:13px 20px;border-bottom:1px solid var(--line);align-items:start}
+.chg:last-child{border-bottom:0}
+.chg .when{font-size:11.5px;font-weight:700;background:var(--accent);color:var(--paper);border-radius:8px;padding:3px 9px;white-space:nowrap;margin-top:2px}
+.chg .when.later{background:var(--chip);color:var(--ink)}
+.chg b{font-size:15px} .chg span{display:block;font-size:13px;color:var(--sub);line-height:1.6}
+
+/* follow-up */
+.fu{background:var(--accent);color:var(--paper);font-weight:700;border-radius:6px;padding:0 7px;font-size:11px;letter-spacing:.05em}
+.delta{font-size:13px;border-left:3px solid var(--accent);padding:2px 0 2px 10px;color:var(--ink)}
+.delta b{color:var(--accent);font-size:11px;letter-spacing:.08em;margin-right:6px}
+
+/* glossary */
+.term{border-bottom:1.5px dotted var(--accent);cursor:help;border-radius:2px}
+.term:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* tap-to-open details */
+.tap{cursor:pointer}
+.tap:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card.tap{transition:transform .15s ease, box-shadow .15s ease}
+.card.tap:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(0,0,0,.06),0 14px 32px rgba(0,0,0,.1)}
+.imp li.tap{border-radius:8px;padding:5px 22px 5px 6px;margin:0 -6px;position:relative}
+.imp li.tap::after{content:"›";position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--sub)}
+.imp li.tap:hover{background:var(--paper)}
+.tk.tap:hover,.sec.tap:hover,.ev.tap:hover,.chg.tap:hover{background:var(--chip)}
+.sec.tap,.ev.tap,.chg.tap{position:relative;padding-right:30px}
+.sec.tap::after,.ev.tap::after,.chg.tap::after{content:"›";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--sub)}
+.readmore{font-size:12.5px;font-weight:700;color:var(--accent)}
+@media (prefers-reduced-motion: reduce){.card.tap,.sheet{transition:none!important;animation:none!important}}
+
+.sheet-bg{position:fixed;inset:0;background:rgba(10,10,14,.5);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--paper);color:var(--ink);width:min(680px,100%);max-height:88vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.3);animation:up .22s ease-out;padding-bottom:env(safe-area-inset-bottom, 0px)}
+@media (min-width:760px){.sheet-bg{align-items:center}.sheet{border-radius:22px;max-height:84vh}}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.sheet-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 4px;gap:8px}
+.sheet-bar button{background:var(--chip);border:0;color:var(--ink);border-radius:999px;font:inherit;font-size:13px;padding:5px 14px;cursor:pointer}
+.sheet-bar .grab{width:40px;height:4px;border-radius:4px;background:var(--line)}
+.sheet-body{overflow-y:auto;padding:6px 24px 28px;display:flex;flex-direction:column;gap:14px;overscroll-behavior:contain}
+.sheet-body h3{font-family:"Shippori Mincho",serif;font-size:23px;line-height:1.4;margin:0;text-wrap:balance}
+.sheet-body p{margin:0;font-size:15px;line-height:1.85}
+.sheet-body .sec-t{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--accent);margin-bottom:4px}
+.sheet-body .box{background:var(--chip);border-radius:14px;padding:12px 16px}
+.sheet-body .dir{font-size:12px;font-weight:800;letter-spacing:.08em}
+.sheet-body .codes{display:flex;flex-wrap:wrap;gap:6px}
+.sheet-body .codes a{font:600 12.5px Inter,sans-serif;background:var(--chip);border-radius:999px;padding:4px 12px;text-decoration:none}
+.sheet-body .codes a:hover{background:var(--line)}
+.sheet-body .lst{display:flex;flex-direction:column;gap:6px}
+.sheet-body .lst .it{border:1px solid var(--line);border-radius:12px;padding:10px 34px 10px 14px;position:relative;font-size:13.5px}
+.sheet-body .lst .it::after{content:"›";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--sub)}
+.sheet-body .lst .it b{display:block;font-size:14.5px}
+.sheet-body .lst .it code{font-family:Inter;font-size:11px;color:var(--sub);margin-left:6px}
+.sheet-body .lst .it span{color:var(--sub)}
+.sheet-body .lst .it.u b{color:var(--up)} .sheet-body .lst .it.d b{color:var(--down)}
+.sheet-body .note{font-size:11.5px;color:var(--sub)}
+.sheet-body .src a{font-size:12.5px;color:var(--sub);margin-right:12px}
+
+/* track record */
+.trk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:18px}
+@media (max-width:820px){.trk{grid-template-columns:minmax(0,1fr)}}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.kpi{background:var(--paper);padding:14px 16px}
+.kpi .n{font-size:11px;color:var(--sub)}
+.kpi .v{font:800 26px Inter,sans-serif}
+.kpi .s{font-size:11px;color:var(--sub)}
+.review{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.review p{margin:0;font-size:14px}
+.rv{border:1px solid var(--line);border-radius:12px;padding:10px 34px 10px 14px;position:relative;font-size:13px}
+.rv b{display:block;font-size:14px}
+.rv::after{content:"›";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--sub)}
+.res{padding:4px 0}
+.rs{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 32px 10px 16px;border-bottom:1px solid var(--line);position:relative}
+.rs:last-child{border-bottom:0}
+.rs::after{content:"›";position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--sub)}
+.rs:hover{background:var(--chip)}
+.vd{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px}
+.vd.hit{background:var(--up-bg);color:var(--up)} .vd.miss{background:var(--down-bg);color:var(--down)} .vd.flat{background:var(--chip);color:var(--sub)}
+.rs .nm{font-size:13.5px;font-weight:700;line-height:1.4}
+.rs .nm small{display:block;font-weight:400;color:var(--sub);font-size:11.5px}
+.rs .fig{text-align:right;font-family:Inter;font-size:13px;font-weight:700;line-height:1.35}
+.rs .fig small{display:block;font-weight:500;font-size:11px;color:var(--sub)}
+.lessons{margin:0;padding:6px 20px 14px 36px;font-size:13.5px}
+.lessons li{padding:4px 0}
+.empty{padding:18px 20px;color:var(--sub);font-size:13.5px}
+
+footer{color:var(--sub);font-size:11.5px;text-align:center;padding:40px 0 60px;line-height:1.8}
+.hidden,[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <span id="updated"></span>
+      <div class="tools">
+        <select class="btn" id="archive" aria-label="過去の号"></select>
+        <button class="btn" id="theme">◐</button>
+      </div>
+    </div>
+    <h1>Morning <span>Brief</span></h1>
+    <div class="date" id="date"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="sh" id="wxHead"><h3>今日の天気</h3><small id="wxNote"></small></div>
+  <section class="wx" id="weather"></section>
+
+  <section class="hero">
+    <div class="card summary">
+      <div class="eyebrow">Today in 30 seconds</div>
+      <h2 id="lead"></h2>
+      <ol id="points"></ol>
+    </div>
+    <div class="card mood">
+      <div class="eyebrow">Market Mood</div>
+      <div class="lbl" id="moodLabel"></div>
+      <div><div class="gauge"><i id="needle"></i></div><div class="gauge-l"><span>リスクオフ</span><span>中立</span><span>リスクオン</span></div></div>
+      <p id="moodText"></p>
+      <div class="eyebrow" style="margin-top:4px">Key Themes</div>
+      <div class="themes" id="themes"></div>
+    </div>
+  </section>
+
+  <div class="sh" id="weeklyHead" hidden><h3>今週のまとめ</h3><small>1週間で何が起き、どこに行き着いたか</small></div>
+  <section class="card weekly" id="weekly" hidden></section>
+
+  <div class="sh" id="chgHead"><h3>今日から変わること</h3><small>制度・値上げ・サービス変更など</small></div>
+  <section class="card changes" id="changes"></section>
+
+  <div class="sh">
+    <h3>今日の重要ニュース</h3>
+    <div class="filters" id="filters"></div>
+  </div>
+  <section class="grid" id="stories"></section>
+
+  <div class="sh" id="worldHead"><h3>世界の現地ニュース</h3><div class="filters" id="wfilters"></div></div>
+  <p class="world-intro" id="worldIntro"></p>
+  <section class="world" id="world"></section>
+
+  <div class="sh" id="usaHead"><h3>アメリカでいま起きていること</h3><small>新しい稼ぎ方・ビジネス・流行・暮らしの変化</small></div>
+  <p class="world-intro" id="usaIntro"></p>
+  <section class="world usa" id="usa"></section>
+
+  <div class="sh"><h3>世の中の話題</h3><small>スポーツ・くらし・エンタメ・トレンド — 知っておくと会話に困らない</small></div>
+  <section class="topics" id="topics"></section>
+
+  <div class="sh"><h3>マーケット</h3><small>前営業日の終値ベース</small></div>
+  <section class="ticker" id="ticker" style="margin-top:0"></section>
+
+  <div class="sh"><h3>予想の答え合わせ</h3><small>「追い風・逆風」の予想を実際の株価で検証（日本株はTOPIX、米国株はS&amp;P500との差で判定。5営業日後を重視）</small></div>
+  <section class="trk" id="track">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="kpis" id="kpis"></div>
+      <div class="card review" id="review"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card res" id="results"></div>
+      <div class="card" id="lessonsBox"><div class="eyebrow" style="padding:16px 20px 0">これまでの学び</div><ol class="lessons" id="lessons"></ol></div>
+    </div>
+  </section>
+
+  <section class="two">
+    <div>
+      <div class="sh"><h3>セクターの風向き</h3><small>ニュースから読む追い風・逆風</small></div>
+      <div class="card sectors" id="sectors"></div>
+    </div>
+    <div>
+      <div class="sh"><h3>今後の注目予定</h3><small>相場や暮らしに関わるイベント</small></div>
+      <div class="card cal" id="calendar"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  AIが公開ニュースを収集・要約したものです。天気は気象庁・Open-Meteoのデータ。銘柄の記載は連想・影響の整理であり投資助言ではありません。<br>
+  数値は前営業日の終値ベース。最終判断は必ず一次情報でご確認ください。
+</footer>
+
+<div class="sheet-bg" id="sheetBg" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="詳しい説明">
+    <div class="sheet-bar"><button id="sheetBack" hidden>‹ 戻る</button><span class="grab"></span><button id="sheetX" aria-label="閉じる">閉じる</button></div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+</div>
+
+<script id="news-data" type="application/json">{"date": "2026-11-05", "generated_at": "2026-11-05 06:30 JST", "lead": "4日(現地時間)、米中間選挙の結果が出そろい、野党・民主党が下院(222議席対129議席)・上院(52議席対42議席)の両方で多数派を確定させた。トランプ大統領が「民主党と協力する」と協調姿勢を示したことで政治の不透明感が後退し、NYダウは前日比1,535ドル高(+2.96%)の53,321ドルと急伸、一時の上げ幅は1,500ドルを超えた。ナスダックも+1.70%高で終えたが、データセンター関連株には「ねじれ議会でAI規制が強まるかもしれない」との警戒から逆風も出た。半導体ではAMDが好決算でも時間外急落、スーパーマイクロが急伸という構図が続き方向感は定まらない。一方、ドル安を好感して金は1オンス4,034ドルまで急伸し約1カ月ぶりの高値を付け、ビットコインは民主党の両院奪還で暗号資産政策への懸念から一時7万5,630ドルまで急落した後V字回復し7万8,000ドル台を回復した。中東では、トランプ氏がイランへの「重い一撃」の可能性に言及し、イラン革命防衛隊はホルムズ海峡で4隻のタンカーが機雷に触れて炎上したと発表、無人機を撃墜したとも主張するなど緊張が最高潮に達している。国内では、高市首相への各党代表質問の舞台が4日の衆院から参院に移り、武部農水相の政治資金問題がなお追及の焦点になっている。東京市場は4日、米中間選挙の民主党優勢観測を受けて一時2,000円超安まで売られる場面があったが、シカゴの日経平均先物はその後のNY株急伸を受けて大阪取引所の終値を1.46%上回る63,370円まで戻しており、本日の東京市場は反発して始まりそうだ。", "summary": ["米中間選挙で民主党が上下両院の多数派奪得を確定。トランプ氏の協調姿勢を受けてNYダウは2.96%高の53,321円と急伸したが、ねじれ議会によるAI規制観測からデータセンター関連株には逆風も出た。金は1カ月ぶりの高値、ビットコインは一時急落後にV字回復した。", "中東ではトランプ氏がイランへの「重い一撃」に言及し、ホルムズ海峡でタンカー4隻が機雷で炎上。2日の対話進展から一夜で緊張が最高潮に達し、原油・海運株への影響がにらまれる。", "国内では高市首相への代表質問が参院に移り、武部農水相の政治資金問題がなお追及される。東京市場は4日に米選挙の思惑で一時2,000円超安まで売られたが、シカゴの日経平均先物は大阪比1.46%高く、本日は反発して始まる見通し。"], "mood": {"label": "米中間選挙の不透明感が晴れて世界的にリスクオン、中東の緊張最高潮だけが火種として残る", "score": 63, "text": "米中間選挙で民主党が上下両院を制したことで「ねじれ議会」が確定し、トランプ政権の急激な政策転換に歯止めがかかるとの見方からNY株は大幅反発した。トランプ氏自身も協調姿勢を示し、政治的な混乱への警戒が和らいだことが世界的なリスクオンにつながっている。半導体はAI規制観測とAMD・スーパーマイクロの明暗が交錯し方向感を欠くが、指数全体としては選挙前の神経質な展開から解放された印象が強い。一方で中東は、2日の対話進展からわずか2日で「重い一撃」警告・タンカー機雷攻撃という最高潮の緊張に転じており、株式市場の楽観とは裏腹に地政学リスクは全く収束していない。"}, "markets": [{"name": "日経平均", "value": "62,188.63", "change": "-893.23 (-1.42%)", "note": "11/4終値", "why": "米中間選挙で民主党が優勢と伝わり、ねじれ議会によるAI規制観測から半導体・AI関連株に売りが先行し、一時2,000円超安まで売られる場面があった。"}, {"name": "TOPIX", "value": "3,895.38", "change": "-34.90 (-0.89%)", "note": "11/4終値", "why": "値がさの半導体関連株の比率が日経平均より低く、指数全体では日経平均より下落率が小さかった。"}, {"name": "NYダウ", "value": "53,321.78", "change": "+1,535.06 (+2.96%)", "note": "11/4終値", "why": "中間選挙で民主党が上下両院を制し「ねじれ議会」が確定、トランプ氏が協調姿勢を示したことで政策の不透明感が後退し幅広く買われた。"}, {"name": "S&P 500", "value": "7,698前後", "change": "+130前後 (+1.71%)", "note": "11/4終値・速報", "why": "政治の不確実性後退を好感しほぼ全面高となったが、データセンター関連株の一角には利益確定売りも出た。"}, {"name": "ナスダック", "value": "25,803.78", "change": "+431.77 (+1.70%)", "note": "11/4終値", "why": "半導体の一角には買いが入ったが、ねじれ議会によるAI規制観測からデータセンター関連株には逆風も出た。"}, {"name": "米10年債利回り", "value": "4.891%", "change": "-0.061pt", "note": "11/4 NY市場", "why": "政治的な不透明感の後退とともに、金利の先高観がいったん後退し小幅に低下した。"}, {"name": "ドル円", "value": "158円30銭前後", "change": "-0.4円", "note": "11/5早朝", "why": "中間選挙の結果を受けたドル売りが先行。日米の通貨当局による円安けん制姿勢への警戒も重なり上値は限定的。"}, {"name": "WTI原油", "value": "$97.85", "change": "+0.44%", "note": "11/4", "why": "米軍のケシム島空爆とイランの対案拒否で上昇する場面があったが、対話継続への期待も交錯し一日で大きく上下した。"}, {"name": "金", "value": "$4,034", "change": "+2.38%", "note": "11/4 NY市場", "why": "中間選挙の結果を受けたドル急落を好感し、約1カ月ぶりの高値を付けた。"}, {"name": "ビットコイン", "value": "$78,000台", "change": "+3%前後", "note": "11/4夜・速報", "why": "民主党の上下両院奪還で暗号資産に不利な政策(クリプトクラリティ法案の停滞など)への懸念が強まり一時7万5,630ドルまで急落したが、その後V字回復した。"}], "stories": [{"category": "地政学", "importance": 3, "region": "米国", "title": "米中間選挙、民主党が上下両院奪還を確定——トランプ氏「協力」表明でNYダウ急伸", "summary": "4日、米中間選挙の開票が進み、下院(222議席対129議席、残り84議席は未確定)・上院(52議席対42議席)の両方で民主党の多数派奪還が確定した。トランプ大統領は結果を受け入れる姿勢を示し「民主党とも協力していく」と発言。政治的な不透明感の後退を好感し、NYダウは前日比1,535ドル高(+2.96%)の53,321ドルと急伸し、一時の上げ幅は1,500ドルを超えた。", "detail": "民主党はわずか3議席の奪還で下院の支配権を握れる状況だったが、最終的に共和党から大きく議席を奪う結果となった。背景には、トランプ氏の支持率低迷、食料品など物価高への不満、中間選挙で与党が議席を減らしやすい歴史的傾向が重なっていた。市場は当初、民主党優勢の観測が強まった4日未明にはナスダック100先物が一時2%超下落するなど「AI規制が強まるのでは」との警戒から売りが先行したが、トランプ氏が対立ではなく協調を選んだことで「ねじれ議会により急激な政策転換が抑えられる」との見方に転換し、大幅な買い戻しが入った。今後は、対中関税政策や対日通商協議の行方、トランプ政権後半の政策運営の自由度にどう影響するかが焦点になる。上院では引き続き共和党が外交・安全保障分野での一定の発言力を保つ見通し。", "why": "米国議会の勢力図は財政政策・通商政策・対中関税の方向性を左右し、日本企業の対米戦略や株式市場にも影響する。「ねじれ議会」の確定は政策の急変リスクを和らげる一方、個別分野(AI規制など)での対立が長期化する可能性もある。", "followup": true, "delta": "前回号(11/4)では投票が進行中で結果判明を待つ段階だったが、今回は民主党の上下両院奪還が確定し、トランプ氏が協力姿勢を示したことで株式市場が急伸したことが新しい情報。", "impact": {"up": [], "down": []}, "sources": [{"name": "日本経済新聞", "url": "https://www.nikkei.com/article/DGXZQOGN04BB20U6A101C2000000/"}, {"name": "時事ドットコム", "url": "https://www.jiji.com/jc/article?k=2026110401301&g=int&m=rss"}]}, {"category": "エネルギー・資源", "importance": 3, "region": "中東", "title": "イラン、米「重い一撃」警告に対抗——タンカー4隻が機雷で炎上、ホルムズ海峡緊張が最高潮", "summary": "トランプ米大統領は4日、FOXニュースに対しイランへの大規模な攻撃の可能性を示唆し「大きなことをしなければならないかもしれない」「重い一撃になる」と警告した。これに対しイラン革命防衛隊は、ホルムズ海峡南側の禁止航路を通過しようとしたタンカー4隻が機雷に触れて炎上したと発表し、同海域で無人機1機を撃墜したとも主張。オマーン沖でもタンカーの機関室に砲弾が撃ち込まれた。わずか2日前の対話進展から一夜で緊張が最高潮に転じた。", "detail": "イランの最高指導者モジュタバ・ハメネイ氏は司令官らに即応体制を取るよう指示し、対象には欧州諸国や海底ケーブルも含まれ得ると伝えられる。イラン側の交渉責任者はトランプ氏の発言について「米国民は中間選挙で『戦争に反対』と答えを出した」と反論し、ペゼシキアン大統領は改めて対話による解決を望むと述べた。カタールは依然仲介を続けているが、タンカー攻撃が実際に起きたことで、2日の対話進展による緊張緩和は完全に巻き戻された形になった。原油価格はこの日まだ大きく反応していないが、攻撃が今後も続けば一段と上下に振れやすい状況。", "why": "中東の地政学リスクは原油価格を通じて日本のガソリン代やエネルギーコスト、海運会社の運賃収入に直結する。わずか2日で緊張緩和から最高潮の対立に転じたことは、海運・資源株への見方を再び大きく反転させる材料になる。", "followup": true, "delta": "前回号(11/4)では米軍のケシム島空爆とイランの対案拒否を伝えたが、今回はトランプ氏の「重い一撃」警告とタンカー4隻の機雷炎上、無人機撃墜の主張など、緊張がさらに最高潮に達したことが新しい情報。", "impact": {"up": [{"name": "日本郵船", "code": "9101", "reason": "大手海運、中東発エネルギー輸送への依存度が高い", "detail": "タンカーへの攻撃が実際に起きたことでホルムズ海峡のリスクプレミアムが再び高まりやすい。前日からの追い風をさらに強める材料になる。ただし原油価格自体はまだ大きく反応していない点には注意が必要。"}, {"name": "ENEOSホールディングス", "code": "5020", "reason": "国内最大手の石油元売り、中東の地政学リスクで原油先高観が強まれば増益期待が復元しやすい", "detail": "タンカー攻撃と「重い一撃」警告が重なったことで、前日に反転させた追い風がさらに強まる可能性がある。原油価格の実際の反応を見極める必要がある。"}], "down": []}, "sources": [{"name": "Al Jazeera", "url": "https://www.aljazeera.com/news/2026/11/4/iran-says-us-reply-to-hormuz-plan-unconvincing-trump-confirms-strikes"}, {"name": "Gulf News", "url": "https://gulfnews.com/world/mena/middle-east-conflict-trump-warns-of-heavy-hit-as-iran-says-americans-voted-no-to-war-1.500735100"}]}, {"category": "日本", "importance": 2, "region": "日本", "title": "高市首相への代表質問、舞台は参院へ——武部農水相の政治資金問題なお追及", "summary": "高市早苗首相の所信表明演説に対する各党代表質問は、4日の衆院に続き5日から参院でも行われる。野党は、武部新農林水産相をめぐる政治資金の不記載・裏金疑惑を引き続き追及する構え。衆院では立憲民主党の野田佳彦代表が、高市首相の『食料品の消費税率は0%にすべき』との過去の発言を取り上げ、消費税ゼロ法案の今国会中の成立への協力を求める場面もあった。", "detail": "衆院の代表質問には自民党の小林鷹之政調会長、日本維新の会の藤田文武共同代表も登壇し、物価高対策や積極財政・金融緩和の継続が円安と物価高を助長しないかが論点になった。高市首相は経済対策について『野党と真摯な対話と合意を積み重ね、速やかに取りまとめる』と述べ、野党への配慮も見せた。参院での代表質問は6日まで行われる見通しで、武部氏の政治資金問題への説明が引き続き焦点になる。物価高対策を最優先政策とする高市政権にとって、閣僚の政治資金問題が審議の停滞要因になるかが注目される。", "why": "代表質問でのやり取りは、今後の経済対策や消費税を含む税制議論の方向性を左右し、与野党の協力関係が今国会の法案成立ペースにも影響する。", "followup": true, "delta": "前回号(11/4)では衆院での代表質問開始を伝えたが、今回は舞台が参院に移り、武部農水相の政治資金問題がなお追及の焦点になっていることが新しい情報。", "impact": {"up": [], "down": []}, "sources": [{"name": "さきがけ", "url": "https://www.sakigake.jp/news/article/20251103CO0059/"}, {"name": "衆議院", "url": "https://www.shugiin.go.jp/internet/itdb_kouhou.nsf/html/kouhou/61EDE2_219114.htm"}]}, {"category": "テクノロジー", "importance": 2, "region": "米国", "title": "米国株、政治不透明感後退で大幅反発——データセンター関連株には逆風も", "summary": "4日の米国株式市場は、中間選挙での「ねじれ議会」確定とトランプ氏の協調姿勢を好感してほぼ全面高となったが、データセンター関連株の一角には「ねじれ議会でAI規制が強まるかもしれない」との警戒から逆風が出た。前日発表のAMDの決算は市場予想を上回ったが『期待が高すぎた』として時間外で急落し、スーパーマイクロは強い見通しを好感して急伸するという対照的な反応も続いている。", "detail": "AI関連株への評価は、決算の『伸び率』そのものより『期待との比較』や『政策環境の変化』に移りつつある。民主党が議会で勢力を強めたことで、データセンターの環境負荷やエネルギー消費、独占的な市場構造への監視が強まるとの観測が一部で広がった。一方で、トランプ政権が基本的な対AI産業の方針を維持する限り、規制強化が短期間で実現する可能性は低いとの見方もあり、市場全体としては楽観が優勢だった。日本の半導体製造装置株への影響は、米国側の反応が割れている間は方向感が出にくい状況が続く。", "why": "米テック大手の株価動向と米議会のAI政策スタンスは、日本の半導体製造装置・データセンター関連株の値動きにも波及する。政治環境の変化によるAI規制観測は、今後の決算発表シーズン全体への新しい警戒材料になる。", "impact": {"up": [], "down": []}, "sources": [{"name": "Newsweek日本版", "url": "https://www.newsweekjapan.jp/articles/-/339028"}]}, {"category": "地政学", "importance": 2, "region": "ウクライナ・ロシア", "title": "ロシアの10月兵員損失が侵攻後最悪に——独、来年の対ウクライナ支援を3,500億円増額", "summary": "ウクライナ軍参謀本部は4日、ロシアが10月に54,400人の兵員を失い侵攻後最悪の月となったと発表した。同日、ゼレンスキー大統領はベルリンでメルツ独首相と会談し、防空システムの強化とエネルギー部門への支援を要請。ドイツは来年の対ウクライナ支援を約30億ユーロ(約3,500億円)増額する方針を示した。", "detail": "ウクライナ軍はロシアが11月1日の1日だけでも『35秒に1人』のペースで兵員を失ったとしている一方、ロシア軍は東部ポクロフスク方面での戦果を強調する発表を続け、双方の発表の対立が続いている。ドイツは2026年にキーウの主要な二国間支援国となり、防空・長距離兵器・ドローン分野での協力を軸に関係を『戦略的パートナーシップ』に引き上げてきた経緯がある。欧州委員会は4日にブリュッセルで米・ウクライナ・NATO・欧州各国代表による停戦交渉の調整会合を開く予定で、3者協議が11月6〜10日にアブダビで行われる可能性も報じられている。冬を前にしたエネルギー網への攻撃激化は、双方の持久力が問われる局面を映している。", "why": "ウクライナ戦況の推移と欧州の支援継続姿勢は、停戦交渉の行方とロシア制裁の継続に関わり、長期化すればエネルギー価格や欧州の安全保障環境を通じて世界経済にも影響する。", "followup": true, "delta": "前回号(11/4)ではザポリージャの避難所空爆で死者33人・50人安否不明と伝えたが、今回はロシアの10月の兵員損失が侵攻後最悪の規模だったことと、ドイツが来年の支援を3,500億円増額する方針を示したことが新しい情報。", "impact": {"up": [], "down": []}, "sources": [{"name": "Kyiv Independent", "url": "https://kyivindependent.com/"}]}, {"category": "中国・アジア", "importance": 1, "region": "中国", "title": "中国共産党、5中総会の正式文書を公表——党規律強化を柱に", "summary": "中国共産党第20期中央委員会第5回総会(5中総会、10月26〜29日開催)の正式な決定文書『党の全面的で厳格な自己統治を持続的に推進する上での若干の重要問題に関する決定』が公表された。幹部の行動規範化・腐敗防止・権力の抑制が柱で、並行して人民銀行は人民元買い介入を継続し、上海総合指数は4,000ポイント台を回復している。", "detail": "5中総会では過去最多となる高級幹部33人の党籍剥奪も正式承認され、習近平氏の次期指導部人事に向けた準備が本格化しているとみられる。中国人民銀行は年次金融安定報告で『世界的な保護主義の高まりが中国の金融市場を傷つけている』と懸念を示しており、10月には人民元の無秩序な下落を防ぐため340億ドル超を為替市場での介入に投じたとされる。日中関係は、高市首相の台湾に関する国会答弁を受けた中国側の反発が続いており、11月18〜19日に深圳で開催予定のAPEC首脳会議で日中首脳会談が実現するかが今後の焦点となる。", "why": "中国の内政動向と金融市場安定策は、資源価格や対中輸出に依存する日本企業の業績、中国関連株の値動きに影響する。党規律強化の具体的な内容は、今後の経済政策の優先順位にも波及しうる。", "followup": true, "delta": "前回号(11/4)では人民銀による人民元買い介入の継続と上海株の反発を伝えたが、今回は5中総会の正式な決定文書が公表され、党規律強化策が明文化されたことが新しい情報。", "impact": {"up": [], "down": []}, "sources": [{"name": "大和総研", "url": "https://www.dir.co.jp/report/research/economics/china/20261030_026171.html"}]}, {"category": "経済・金融", "importance": 1, "region": "米国", "title": "金が1カ月ぶりの高値に——中間選挙でドル急落、非鉄・金関連株に追い風", "summary": "4日のNY金先物は前日比2.38%高の1オンス4,034ドルと約1カ月ぶりの高値を付けた。米中間選挙で民主党が上下両院を制したことを受けてドルが急落したことが主因で、米10年債利回りも同時に低下した。", "detail": "過去の答え合わせでは、米10年債利回りが0.05pt以上低下し金が1%以上上昇した翌朝は、国内の非鉄・金関連株の追い風がよく当たる傾向が確認されている。今回は利回りが0.061pt低下、金は2.38%上昇と両条件を大きく上回っており、条件が整った状態。ただし金価格の上昇はドル急落という一過性の要因が主因であり、地政学リスクの再燃による『質への逃避』とは性質が異なる点には注意が必要。", "why": "金価格の動向は非鉄・資源株の値動きに直結するほか、ドルの先行きを見るうえでの重要な指標になる。中間選挙という一時的な政治イベントが主因のため、効果が長続きするかは見極めが必要。", "impact": {"up": [{"name": "住友金属鉱山", "code": "5713", "reason": "国内非鉄大手、金価格の上昇を受けやすい", "detail": "米10年債利回りの低下と金価格の上昇が同時に起きた条件は、過去の答え合わせで非鉄株の追い風が当たりやすいパターンに合致する。ただし今回の金高はドル急落という一過性の要因が主因である点には注意。"}], "down": []}, "sources": [{"name": "KuCoin News", "url": "https://kucoin.com/ja/news/flash/gold-price-surges-3-above-4-040-as-us-dollar-falls-after-midterm-elections"}]}], "sectors": [{"name": "海運", "direction": "up", "reason": "トランプ氏がイランへの「重い一撃」に言及し、タンカー4隻が機雷で炎上するなどホルムズ海峡の緊張が最高潮に達している", "detail": "前日に逆風から追い風へ反転させた判断を、今回の緊張最高潮でさらに強める。過去の答え合わせでは、停戦報道で売られた海運株が緊張再燃で急反発する例が確認されており、今回はその『再燃』がさらに進んだ形。ただし原油価格自体はまだ大きく反応していないため、反応が鈍い可能性も残る。", "stocks": [{"name": "日本郵船", "code": "9101", "reason": "大手海運、中東発エネルギー輸送への依存度が高い", "detail": "タンカーへの実際の攻撃が確認されたことでホルムズ海峡のリスクプレミアムが再び意識されやすい。"}, {"name": "川崎汽船", "code": "9107", "reason": "大手海運、連日の銘柄重複を避けつつ同テーマの追い風を継続", "detail": "日本郵船と同様の理由で推移するとみられるが、個別の業績要因も加味する必要がある。"}]}, {"name": "石油・資源", "direction": "up", "reason": "中東の軍事的緊張が最高潮に達し、原油の先高観が意識されやすくなっている", "detail": "トランプ氏の「重い一撃」警告とタンカー攻撃が重なり、前日反転させた追い風の材料がさらに強まった。原油価格自体の反応はまだ限定的で、今後の推移次第で風向きが変わる可能性がある。", "stocks": [{"name": "INPEX", "code": "1605", "reason": "国内最大手の石油・天然ガス開発会社", "detail": "中東の地政学リスクが最高潮に達すれば原油先高観から増益期待が復元しやすい。"}, {"name": "ENEOSホールディングス", "code": "5020", "reason": "国内最大手の石油元売り", "detail": "INPEXと同様に、原油価格の先高観が意識されれば追い風となりやすい。"}]}, {"name": "非鉄", "direction": "up", "reason": "米10年債利回りが0.061pt低下し金価格が2.38%上昇、過去の答え合わせで非鉄株の追い風が当たりやすい条件が整った", "detail": "米中間選挙でドルが急落したことを受けた動きで、地政学リスクの『質への逃避』とは異なる一過性の要因である点に留意が必要。それでも利回り低下・金高の組み合わせ自体は非鉄株にとって追い風になりやすい。", "stocks": [{"name": "住友金属鉱山", "code": "5713", "reason": "国内非鉄大手", "detail": "金価格の上昇を受けやすく、過去の答え合わせでも条件が整った日の追い風が当たりやすい。"}, {"name": "DOWAホールディングス", "code": "5714", "reason": "非鉄金属リサイクル大手", "detail": "住友金属鉱山と同様の理由で推移するとみられる。"}]}, {"name": "銀行", "direction": "up", "reason": "12月の日銀追加利上げ観測が引き続き意識されており、前日の米国株大幅反発で世界的なリスクオンの地合いも支えになる", "detail": "過去の答え合わせでは、銀行の追い風は『次回利上げの確度』で判断するのが有効。米国株が中間選挙の不確実性後退で大幅反発したこの日は、米国株安の連想売りという最大のリスク要因が後退している点もプラス材料。", "stocks": [{"name": "三菱UFJフィナンシャル・グループ", "code": "8306", "reason": "国内最大手の銀行、同一ペアの連続起用を避けて銘柄を入れ替え", "detail": "12月の追加利上げ観測が続く限り中期的な追い風。米国株の反発で連想売りのリスクが後退している。"}, {"name": "三井住友フィナンシャルグループ", "code": "8316", "reason": "国内大手銀行グループ", "detail": "三菱UFJと同様の理由で推移するとみられる。"}]}, {"name": "半導体", "direction": "flat", "reason": "AMD安・スーパーマイクロ高の対照的な反応に加え、ねじれ議会によるAI規制観測という新しい不確実性が重なり方向感が定まらない", "detail": "過去の答え合わせでは、方向に強い確信がない日の半導体の追い風・逆風はどちらも外れやすいことが確認されている。今回は政治要因も加わり一段と判断が難しいため、明確な方向は出さない。", "stocks": [{"name": "東京エレクトロン", "code": "8035", "reason": "半導体製造装置大手、前々日の好決算・自社株買いの効果は一巡しつつある", "detail": "米国側の反応が割れている間は方向感を欠きやすく、持ち越しでの追い打ちは裏切られやすい。"}, {"name": "アドバンテスト", "code": "6857", "reason": "半導体検査装置大手、AI規制観測とスーパーマイクロ高の綱引き", "detail": "連想売りのリスクと見直し買いの可能性の両方があり、方向は読みにくい。"}]}], "topics": [{"category": "スポーツ", "title": "中島啓太、マイナビABC選手権で今季3勝目——大会新記録で賞金ランク1位に返り咲き", "summary": "ゴルフのマイナビABCチャンピオンシップ最終日が5日、兵庫県のABCゴルフ倶楽部で行われ、中島啓太が逃げ切って優勝、今季3勝目を飾った。片山晋呉の持つ大会記録を更新し、2位の金谷拓実に1,952万円の差をつけて賞金ランキング1位に返り咲いた。", "hook": "賞金王争いが最終盤で大きく動いた一戦。中島が今年のツアーで見せている勝負強さが改めて際立った。", "detail": "中島は15番でのイーグルが勝因になったと振り返り、大会新記録での優勝で2,400万円を獲得。賞金ランキングは今年最終盤に向けてさらに混戦が予想される。", "sources": [{"name": "ALBA Net", "url": "https://www.alba.co.jp/tour/category/jgto/tournament/97136/"}]}, {"category": "スポーツ", "title": "大相撲九州場所、11月8日初日——横綱2人・大関3人の布陣", "summary": "大相撲九州場所は11月8日、福岡国際センターで初日を迎える。番付は横綱に大の里(東)・豊昇龍(西)、大関に安青錦・琴櫻・霧島の3人が並ぶ豪華な布陣。", "hook": "大関が3人並ぶのは近年でも珍しく、優勝争いがどこまで広がるかが見どころ。ウクライナ出身の安青錦の綱取りの行方にも注目したい。", "detail": "大の里は連覇を目指し『年4回の優勝を目指して頑張りたい』と意欲を見せている。豊昇龍は夏場所以降休場が続いており、復調できるかも注目点。22日に千秋楽を迎える15日間の長丁場になる。", "sources": [{"name": "熊本日日新聞", "url": "https://kumanichi.com/articles/2044389"}]}, {"category": "スポーツ", "title": "プロ野球オフのFA市場、注目は松本裕樹・宗佑磨ら", "summary": "NPBは10月、2026年度のFA有資格選手を公示した。福岡ソフトバンクの松本裕樹(最優秀中継ぎ投手)、オリックスの宗佑磨(今季本塁打・打点とも自己最多)らが目玉候補として挙がっている。", "hook": "シーズンオフの風物詩であるFA市場がいよいよ本格化。主力の残留・移籍の行方は来季の戦力バランスを大きく左右する。", "detail": "広島の床田寛樹・坂倉将吾のバッテリーもFA権行使が注目されており、権利行使の最終判断は今後数週間で相次ぐ見通し。", "sources": [{"name": "ベースボールチャンネル", "url": "https://www.baseballchannel.jp/tag/fa%e9%81%b8%e6%89%8b/"}]}, {"category": "社会・くらし", "title": "紅葉シーズンが本格化、関西は11月中旬から見頃へ", "summary": "関西の紅葉は例年10月下旬〜12月上旬が見頃で、京都は11月中旬〜12月上旬が最盛期とされる。人気スポットには「メタセコイア並木」「瑠璃光院」「奈良・長谷寺」などが挙がっている。", "hook": "行楽シーズン本番。ライトアップ目当てなら「嵯峨野トロッコ列車」や「永観堂」も狙い目で、週末の混雑を避けるなら平日の午前がおすすめ。", "detail": "紅葉の進み方は気温次第で前後するため、お出かけ前に最新の見頃情報をチェックするのがおすすめ。", "sources": [{"name": "ウォーカープラス", "url": "https://koyo.walkerplus.com/ranking/ar0700/"}]}, {"category": "エンタメ・カルチャー", "title": "映画「ママがもうこの世界にいなくても」、興収30億円が目前に", "summary": "映画「ママがもうこの世界にいなくても 私の命の日記」が2週連続・3度目の国内興収ランキング1位となり、累計動員200万人を突破。累計興収は30億円に迫っている。", "hook": "10月2日の公開から1カ月以上を経てなお首位を守る息の長いヒット。口コミで動員を伸ばす『じわ売れ』型の典型例になっている。", "detail": "公開3日間で29万2千人・4億4,100万円というスタートから、3週目に『返り咲きV』を果たすなど、2026年公開作の中でも異例の粘り強さを見せている。", "sources": [{"name": "MovieWalker PRESS", "url": "https://press.moviewalker.jp/news/article/1452040/"}]}, {"category": "サイエンス・健康", "title": "インフルエンザ、全国的に流行継続——観測史上早い流行シーズン入り", "summary": "2025-26シーズンのインフルエンザは8月に全国的な「流行シーズン」入りし、2023年を除くと感染症法施行(1999年)以降で2番目に早いシーズン入りとなった。11月に入っても学級閉鎖の報告が全国で相次いでいる。", "hook": "例年より早いペースでの流行が続いており、年末年始の外出・会食シーズン前の早めのワクチン接種が改めて呼びかけられている。", "detail": "自治体によっては定点あたり報告数が注意報・警報レベルの基準値を超えている地域もあり、学校現場では手洗い・換気などの基本対策の徹底が求められている。", "sources": [{"name": "科学技術振興機構", "url": "https://scienceportal.jst.go.jp/newsflash/20260903_n01/"}]}, {"category": "話題・トレンド", "title": "ビットコイン、中間選挙のジェットコースター——一時7万5,630ドルまで急落後V字回復", "summary": "ビットコインは米中間選挙で民主党が上下両院を制するとの観測が強まった4日、暗号資産政策への懸念から一時7万5,630ドルまで急落し約7週間ぶりの安値を付けたが、その後V字回復し7万8,000ドル台を回復した。", "hook": "選挙結果ひとつで仮想通貨の規制環境への期待が一気に揺れる好例。上院で審議入りできなかった「クリプトクラリティ法案」の行方は来年1月3日の会期末が次の節目になる。", "detail": "仮想通貨業界は共和党優位の議会での法整備進展を期待していたため、民主党の勢力拡大は短期的な警戒材料になった。その後は『初期の売りは過剰』との見方が広がり切り返した。", "sources": [{"name": "CoinDesk Japan", "url": "https://coindesk.com/ja/markets/2026/11/04/bitcoin-knocks-on-usd78-000-in-v-shaped-comeback-as-midterm-uncertainty-fades"}]}, {"category": "話題・トレンド", "title": "OpenAI、ChatGPT Goをインドで1年間無料開放", "summary": "OpenAIは11月4日から始まるキャンペーンで、インドのユーザーに有料プラン「ChatGPT Go」を1年間無料で提供すると発表した。", "hook": "世界最大級のネット人口を持つインドで一気にユーザーを取り込む狙いとみられ、生成AIの国際的な普及競争の激しさを映す動き。", "detail": "ChatGPT Goは画像生成や長文処理など無料版より高機能な有料プランで、通常は月額課金が必要。今回の施策はインド市場でのシェア拡大を狙ったものとみられる。", "sources": [{"name": "Deccan Herald", "url": "https://www.deccanherald.com/india/dh-evening-brief-modi-says-upa-shelved-strike-on-pak-after-2611-due-to-foreign-pressure-nitish-is-ndas-cm-face-says-giriraj-singh-3757035"}]}], "trivia": {"label": "今日は何の日", "title": "11月5日は「津波防災の日」——“稲むらの火”の物語にちなんで", "text": "1854年(安政元年)11月5日、紀伊半島沖を震源とする安政南海地震が発生し、大津波が和歌山県を襲った。このとき広村(現・広川町)の実業家・濱口梧陵は、刈り取ったばかりの稲わらの山に火を放ち、その灯りを頼りに村人を高台へ避難させて多くの命を救った。この逸話は「稲むらの火」として知られ、2011年の東日本大震災を経て2011年に11月5日が「津波防災の日」として法制化された。2015年には国連総会でも同じ日が「世界津波の日」として採択されている。"}, "world": {"intro": "選挙で揺れたワシントン、機雷が燃えるホルムズ海峡、スモッグに包まれる南アジアの二つの首都――晴れた不確実性と、晴れない大気が同時に世界を覆う一日。", "items": [{"region": "北米", "country": "アメリカ合衆国", "flag": "🇺🇸", "title": "米中間選挙、民主党が上下両院奪還を確定——トランプ氏は協調姿勢", "summary": "11月3日投票の米中間選挙は4日に結果が出そろい、民主党が下院(222対129)・上院(52対42)の両方で多数派奪還を確定させた。トランプ大統領は結果を受け入れ「民主党とも協力していく」と発言した。", "original": "", "local": "公共ラジオ系メディアは与党への逆風の強さと歴史的な議席交代の規模を強調する一方、保守系メディアはトランプ氏の協調発言を『現実主義的な軌道修正』と評価する論調も見られる。市場関係者の間では『ねじれ議会が急激な政策転換を抑える安定装置になる』との受け止めが広がった。", "detail": "共和党への逆風は、トランプ氏の支持率低迷、食料品など物価高への不満、中間選挙で与党が議席を減らしやすい歴史的傾向が重なった結果とされる。民主党はわずか3議席の奪還で下院の支配権を握れる状況だったが、最終的にそれを上回る規模で議席を伸ばした。今後は下院司法・金融委員会などの委員長ポストが民主党に移り、政権への監視機能が強まる見通し。対中関税政策や対日通商協議への影響も注視される。", "japan": "下院の勢力図が変わったことで対中関税政策や対日通商協議の行方に影響し、日本企業の対米戦略にも波及する可能性がある。", "watch": true, "delta": "前回号(11/4)では投票が進み結果判明を待つ段階だったが、今回は民主党の両院奪還が確定し、トランプ氏が協調姿勢を示したことが新しい動き。", "sources": [{"name": "時事ドットコム", "url": "https://www.jiji.com/jc/article?k=2026110401301&g=int&m=rss"}, {"name": "NHK", "url": "https://news.web.nhk/newsweb/na/nd-20261104de70666"}]}, {"region": "中東", "country": "イラン", "flag": "🇮🇷", "title": "トランプ氏「重い一撃」警告、イランはタンカー4隻の機雷炎上を発表", "summary": "トランプ大統領は4日、FOXニュースでイランへの大規模攻撃の可能性に言及し「重い一撃になる」と警告した。イラン革命防衛隊はこれに対抗するように、ホルムズ海峡でタンカー4隻が機雷に触れて炎上したと発表、無人機1機を撃墜したとも主張した。", "original": "Iran warns against war as Trump signals 'heavy hit' and tankers catch fire near Hormuz", "local": "アルジャジーラは『イランは戦争に反対しつつ警告する』と報じ、湾岸地域の緊張再燃への警戒を強調。イラン側の交渉責任者は『米国民は中間選挙で戦争に反対の答えを出した』とトランプ氏の発言に反論し、最高指導者モジュタバ・ハメネイ氏は司令官らに即応体制を取るよう指示し、対象には欧州諸国や海底ケーブルも含まれ得ると伝えられている。", "detail": "わずか2日前の11月2日には米国・イラン双方が対話に前向きな姿勢を見せ原油が7%超急落していたが、3日の米軍によるケシム島空爆を境に緊張が再燃し、4日にはタンカーへの実際の攻撃という最高潮の対立に転じた。カタールは依然仲介を続けているが、ペゼシキアン大統領は対話による解決を望むと述べる一方、軍事的な構えは強まっている。今後数日のタンカー攻撃の有無と、カタールの仲介が実を結ぶかが焦点。", "japan": "原油価格と中東の航路の安定は日本のエネルギー輸入コストに直結し、海運会社の運賃動向にも大きく影響する。", "watch": true, "delta": "前回号(11/4)では米軍のケシム島空爆とイランの対案拒否を伝えたが、今回はトランプ氏の「重い一撃」警告とタンカー4隻の機雷炎上という、さらに最高潮の緊張が新しい動き。", "sources": [{"name": "Al Jazeera", "url": "https://www.aljazeera.com/news/2026/11/4/iran-says-us-reply-to-hormuz-plan-unconvincing-trump-confirms-strikes"}, {"name": "Gulf News", "url": "https://gulfnews.com/world/mena/middle-east-conflict-trump-warns-of-heavy-hit-as-iran-says-americans-voted-no-to-war-1.500735100"}]}, {"region": "ロシア・旧ソ連", "country": "ウクライナ・ロシア", "flag": "🇺🇦", "title": "ロシアの10月兵員損失が侵攻後最悪に——独、来年の支援を3,500億円増額", "summary": "ウクライナ軍参謀本部は4日、ロシアが10月に54,400人の兵員を失い侵攻後最悪の月になったと発表。ゼレンスキー大統領はベルリンでメルツ独首相と会談し、ドイツは来年の対ウクライナ支援を約30億ユーロ増額する方針を示した。", "original": "", "local": "キーウ側の独立系メディアはロシアの損失規模を『侵攻後最悪』と強調して報じる一方、ロシア側は東部ポクロフスク方面での戦果を強調する発表を続け、双方の発表の対立が続いている。ドイツ国内では、2026年の軍事支援額がすでに過去最大規模に達していることもあり、増額方針への財政的な議論も一部で見られる。", "detail": "ウクライナ軍は11月1日の1日だけで『35秒に1人』のペースで兵員を失ったとロシア側の損失を分析している。ドイツは2026年にキーウにとって最大の二国間支援国となり、防空・長距離兵器・ドローン分野での協力を軸に『戦略的パートナーシップ』に関係を引き上げてきた。欧州委員会は4日、ブリュッセルで米・ウクライナ・NATO・欧州各国代表による停戦交渉の調整会合を開催。3者協議が11月6〜10日にアブダビで行われる可能性も報じられている。", "japan": "ウクライナ戦況の推移と欧州の支援継続姿勢は、対ロシア制裁の継続や欧州の安全保障環境を通じて、エネルギー価格など世界経済にも影響する。", "watch": true, "delta": "前回号(11/4)ではザポリージャの避難所空爆で死者33人・50人安否不明と伝えたが、今回はロシアの10月の兵員損失の規模と、独の来年の支援増額方針が新しい情報。", "sources": [{"name": "Kyiv Independent", "url": "https://kyivindependent.com/"}]}, {"region": "東アジア", "country": "中国", "flag": "🇨🇳", "title": "5中総会の正式文書公表——党規律強化を柱に、人民元買い介入も継続", "summary": "中国共産党5中総会(10月26〜29日開催)の正式な決定文書が公表され、幹部の行動規範化・腐敗防止・権力の抑制が柱となった。並行して人民銀行は人民元買い介入を継続し、上海総合指数は4,000ポイント台を回復している。", "original": "", "local": "南華早報(SCMP)は、人民銀が年次金融安定報告で『世界的な保護主義の高まりが中国の金融市場を傷つけている』と懸念を示したと報じ、国営メディアは5中総会の決議を受けた党の統治強化を前向きに報じている。過去最多となる高級幹部33人の党籍剥奪も話題になっている。", "detail": "5中総会での党籍剥奪は習近平氏の次期指導部人事に向けた準備が本格化していることを示すとみられる。人民銀行は10月、人民元の無秩序な下落を防ぐため340億ドル超を為替市場での介入に投じたとされる。日中関係は、高市首相の台湾に関する国会答弁への中国側の反発が続いており、11月18〜19日に深圳で開催予定のAPEC首脳会議で日中首脳会談が実現するかが今後の焦点になっている。", "japan": "中国の内政動向と金融市場安定策は、資源価格や対中輸出に依存する日本企業の業績に影響する。日中関係の緊張が続く中でのAPEC首脳会談の行方も注視材料。", "watch": true, "delta": "前回号(11/4)では人民銀による人民元買い介入の継続と上海株の反発を伝えたが、今回は5中総会の正式な決定文書が公表されたことが新しい情報。", "sources": [{"name": "大和総研", "url": "https://www.dir.co.jp/report/research/economics/china/20261030_026171.html"}]}, {"region": "南アジア", "country": "インド", "flag": "🇮🇳", "title": "デリーの大気質、危険レベルの413に——学校休校・建設中止の緊急対策", "summary": "インドの首都デリーの大気質指数(AQI)は4日、6段階中最も危険な「Hazardous」レベルの413に達した。デリー首都圏政府は建設プロジェクトの中止や学校の休校などの緊急対策を発表し、住民には屋内にとどまるよう要請した。", "original": "", "local": "現地メディアは、先月後半からのどを焦がすような有毒なスモッグがデリーを覆い、昼を夜のように暗くしフライトを妨害していると報じている。当局は今後2週間でさらに悪化すると警告し、デリーと周辺地域が危機的状況になるとの見方を示している。", "detail": "デリーの大気汚染は毎年冬季に深刻化する恒例の問題で、農業廃棄物の野焼き、車両排気、気象条件(気温逆転層)が重なって発生する。今回の413という水準は今季これまでで最悪で、呼吸器疾患の患者増加や妊婦・子どもへの影響が懸念されている。政府は過去にも同様の措置を繰り返しているが、構造的な解決には至っていない。", "japan": "デリーに拠点を持つ日本企業の在留邦人の健康管理にも影響し、インド進出企業にとって冬季の恒例課題として対応が求められている。", "watch": true, "sources": [{"name": "CNN.co.jp", "url": "https://www.cnn.co.jp/world/35226467.html"}]}, {"region": "南アジア", "country": "パキスタン", "flag": "🇵🇰", "title": "ラホール、世界最悪の大気汚染都市に再び——道路洗浄車も出動", "summary": "パキスタン・ラホールのAQIは4日に362を記録し、世界の主要都市で最も汚染された状態に再び陥った。地区別ではイクバル・タウンで722という極めて高い値も観測された。市当局は道路洗浄車を投入してほこりを抑える対策に乗り出している。", "original": "Iqbal Town Hits 722 as Lahore Answers Smog With Road Washers", "local": "現地紙Dawnは、パンジャブ州内18地区で学校・大学が休校になった時期があったことを報じ、現地テレビ局は『ラホールが再び世界最汚染都市のトップに』と速報している。病院では季節性インフルエンザの症状や眼の感染症を訴える患者の長い行列ができていると伝えられている。", "detail": "ラホールの冬季スモッグは、作物の残渣を燃やす野焼き、車両排気、工場排煙、気象条件が重なって毎年11月前後に深刻化する地域の恒例問題。隣接するインドのパンジャブ州・デリーとも大気が連動しており、両国の大気汚染はしばしば同時に悪化する。今回は学校の全面休校までは至っていないが、過去には同時期に18地区で休校措置が取られたこともあり、今後の悪化次第で同様の措置が検討される可能性がある。", "japan": "", "sources": [{"name": "LHR Times", "url": "https://www.lhrtimes.com/2026/11/04/iqbal-town-hits-722-as-lahore-answers-smog-with-road-washers/"}]}, {"region": "アフリカ", "country": "南アフリカ", "flag": "🇿🇦", "title": "南アフリカ、地方選挙投票終了——ANCの退潮が続くか結果待ち", "summary": "南アフリカでは4日、地方議会の全10,526議席を選ぶ統一地方選挙の投票が行われた。与党ANC、野党DA、MK党、EFFの4大政党が接戦を演じ、特にヨハネスブルグ市ではDAがANCを大きく上回るとの事前調査もあった。ラマフォーザ大統領も投票し、良好な投票率を歓迎するコメントを出した。", "original": "", "local": "デイリー・マーベリックは選挙関連の報道が社会の最重要課題として圧倒的な存在感を持つと伝え、ヨハネスブルグやツワネでのDA優勢の調査結果が、投票後の連立協議の行方を左右すると分析している。全国で546の政党が議席を争った。", "detail": "事前の世論調査では、ヨハネスブルグでDAが35%、ANCが21.8%という大差が示されており、与党ANCにとって厳しい選挙戦となった。開票結果の確定にはなお時間がかかる見通しで、主要都市での単独過半数獲得は難しいとみられ、投票後の連立政権の枠組みが地域のガバナンスを左右する構図が続いている。", "japan": "", "sources": [{"name": "Daily Maverick", "url": "https://www.dailymaverick.co.za/article/2026-11-01-ten-critical-questions-as-south-africa-heads-into-high-stakes-poll/"}]}, {"region": "オセアニア", "country": "ニュージーランド", "flag": "🇳🇿", "title": "ニュージーランド総選挙、11月7日投票へ——事前投票が本格化", "summary": "ニュージーランドの総選挙は11月7日に投票日を迎える。事前投票は10月26日から始まっており、選挙戦の最終盤に入っている。", "original": "", "local": "現地メディアRNZは公共放送としての中立報道を続けつつ、与野党の最終盤の政策論争を詳報している。国内では経済政策や生活費の高さが最大の争点として報じられている。", "detail": "選挙結果は、今後の財政・移民・住宅政策の方向性を左右する見通し。少数政党の動向次第で連立協議の枠組みが変わる可能性があり、投票終了後の開票速報に関心が集まっている。", "japan": "", "sources": [{"name": "RNZ", "url": "https://www.rnz.co.nz/news/national"}]}]}, "usa": {"intro": "自分の写真や動画を売ってAIに学習させ月数千ドルを稼ぐ人がいる一方、ブランド品の「見た目だけ」の代替品を堂々と自慢する――お金の守り方と稼ぎ方の両方が静かに変わっているアメリカ。", "items": [{"category": "AI・テック", "place": "全米", "title": "写真・動画を売ってAIに学習させる「Kled」、月7,400ドル稼ぐ人も", "summary": "スマートフォンの写真や動画をAI企業に売る専用アプリ「Kled」の利用が広がっている。ブロックチェーン基盤で運営され、投稿した写真・動画がAIの学習データとして使われるたびに継続的な報酬が支払われる仕組みで、米国の高収益ユーザーの中には月7,400ドルを稼ぐ例もある。", "how": "利用者がKledに写真・動画などのファイルをアップロードし、Kledがそれを学習用データセットに加工してAI開発企業に販売する。収益は内容の質やAI学習での活用度に応じて分配され、紹介した相手の生涯収益の10%を受け取れる紹介プログラムもある。", "why": "AIモデルの精度向上には大量の実世界データが必要で、特にロボット・画像認識向けの質の高いデータの需要が急拡大している。従来は無料で提供されてきた個人データに、正式な『値付け』をする動きが広がっている。", "detail": "報酬は米ドルのアプリ内ウォレット、独自トークン、またはその混合で受け取れる。フィリピンなど所得水準の低い国では月20〜40ドル程度の利用者が多いが、米国の積極的な利用者はより高額を得ている。1枚の画像が今日投稿されても、学習に使われ続ける限り数カ月にわたって収益を生み続ける点が従来のデータ販売モデルと異なる。", "japan": "日本では個人データの直接販売という発想自体がまだ根付いておらず、プライバシー意識や法制度の違いから同様のサービスが広がるかは不透明だが、AI学習データ市場の拡大という流れ自体は共通している。", "sources": [{"name": "Startup Hub AI", "url": "https://www.startuphub.ai/news/luel-ai-kled-ai-alternatives-2026"}]}, {"category": "暮らし・消費", "place": "全米", "title": "ブランド品は買わず「見た目だけの代替品」を堂々と自慢する「status dupe」", "summary": "2026年、安価な『見た目だけの代替品(dupe)』を買う行為が一般的な買い物戦略として定着した。調査会社Circanaによると消費者の58%がdupe商品を購入した経験があり、Z世代では47%に達する。中でも、本物の代わりに安価な代替品を選び、それをSNSで誇らしげに披露する『status dupe』という新しい文化が注目されている。", "how": "お金の流れとしては、化粧品・日用品・ブランド品の代替品を手がける新興ブランドやプライベートブランドに消費が流れている。ユーザーはSNSで『本物とどれだけ似ているか』を比較する動画を投稿し、企業はその口コミ効果を狙って商品開発を進める。", "why": "物価高の長期化、SNSでの比較文化、AIを使った商品比較の普及、ロゴにお金を払うことへの世代的な抵抗感が重なって2026年に一気に広がった。中間層・中上流層の消費者ほど『賢い選択』として積極的にdupeを選ぶ傾向がある。", "detail": "化粧品・香水のジャンルで特に人気が高く、価格差が大きいことが背景にある。従来は『偽物を買うのは恥ずかしい』という感覚があったが、現在はdupeを選ぶこと自体が『知的な消費者』のアイデンティティとして肯定的に捉えられている。store-brand(自社ブランド)商品も人気が高まっている。", "japan": "日本でもプライベートブランドやジェネリック家電の人気は根強いが、ブランド品の『見た目だけの代替品』をSNSで誇示する文化はまだ一般的でなく、今後広がる可能性がある消費トレンドの一つ。", "sources": [{"name": "The Citizen", "url": "https://citizen.co.za/lifestyle/fashion-and-beauty/young-people-prefer-dupes-to-genuine-luxury-goods"}]}, {"category": "仕事・お金", "place": "全米", "title": "新卒の89%が「AIに仕事を奪われる」と不安——入社前から始まる競争", "summary": "2026年卒業予定の学生の89%が、就職する前からAIや自動化に仕事を奪われることを懸念しているとの調査結果が出た(前年の64%から急増)。企業側も、採用担当者の48%が新卒を雇って育てるよりAIツールへの投資を優先したいと答えている。", "how": "お金の流れとしては、企業が新卒採用予算の一部をAIツールの導入費に振り替える動きが広がっている。実際に55%の企業が入社レベルの採用予算をAIツールに移したと回答している。", "why": "AIが新卒がこれまで『練習台』として担ってきた定型業務(データ入力、資料作成、簡単な分析など)を代替できるようになったことが背景。企業は『新人を育てる時間』よりも『即戦力』を求める傾向が強まっている。", "detail": "新卒向けの求人数は15%減少した一方、1件あたりの応募者数は30%増加しており、狙える椅子はより少なく競争はより激しくなっている。一方で、AIの管理・監督を担う新しいタイプの入社レベルの仕事が今後5年で生まれるとの楽観的な見方も専門家の間にはある。", "japan": "日本でも新卒一括採用の仕組みの中でAI活用が進めば同様の現象が起きる可能性があり、新人研修のあり方そのものが問われる課題になりうる。", "sources": [{"name": "The Interview Guys", "url": "https://blog.theinterviewguys.com/?p=11659"}]}, {"category": "暮らし・消費", "place": "全米", "title": "「ノーバイ2026」「声高予算」——SNSで『買わない』を自慢する新しい節約文化", "summary": "不要不急の買い物を一定期間やめる『ノーバイ(No-Buy)2026』チャレンジと、自分の予算を周囲に公言して無理な支出を断る『声高予算(loud budgeting)』が、Z世代・ミレニアル世代の間で定着している。Z世代の42%が声高予算を実践していると回答。", "how": "お金の流れを伴う話題ではなく、SNSでの『節約の宣言』という行動自体がトレンド化している現象。不使用のサブスクの解約、携帯データプランの見直し、保険のまとめ契約などの具体的な節約法とセットで広がっている。", "why": "28%の米国人が2026年の家計は今年より悪化すると予想し、53%の人しか2026年の予算を立てていないなど、物価高への不安が根強い。『見栄で買い物をする』ことへの反発が、節約を公言することの『かっこよさ』に転じている。", "detail": "今年のノーバイは『完全に何も買わない』ではなく、Uber Eats注文や話題の水筒など『特定の無駄遣い』を狙って減らす形に変化している。Intuitの調査では93%の米国人が2026年に何らかのお金の使い方の見直しを計画していると回答した。", "japan": "日本でも『推し活』などメリハリ消費の文化はあるが、節約そのものを堂々とSNSで発信する文化は米国ほど定着しておらず、SNS上の消費行動の違いとして興味深い。", "sources": [{"name": "MoneyLion", "url": "https://moneylion.com/trending/money/loud-budgeting-other-ways-gen-z-surviving-2026-economy"}]}, {"category": "カルチャー・SNS", "place": "全米", "title": "「Z世代マーケティング研修生に編集させた」風動画がTikTokで流行", "summary": "TikTokでは『うちのZ世代マーケティング担当の新人に動画を編集させてみた』という設定で、わざと落ち着きのない編集・流行語・絵文字を詰め込んだパロディ広告風動画が流行している。これは、作り込まれた『盛った』コンテンツから距離を置き、ありのままを見せる『Reali-Tea』という大きな潮流の一部とされる。", "how": "お金の流れを伴う話題ではなく、企業の公式SNS担当者自身が自社のマーケティング手法を自虐的にパロディ化して拡散させる現象。ブランド側も『親しみやすさ』を演出する手段としてこの流れに乗っている。", "why": "Z世代は、インフルエンサー文化が作り出した『作り込まれた理想像』への疲れを感じており、わざと雑に見える・本音が垂れ流しに見えるコンテンツほど『本物』として好まれる傾向が強まっている。", "detail": "10月に流行した『Suspect』トレンドや『No, I'm speaking』などのミーム的なフレーズも並行して拡散しており、TikTok自身も2026年のトレンド予測で『Reali-Tea』(現実をそのまま見せる)という言葉を掲げ、作り込みよりも実際の出来事をそのまま見せるコンテンツへの移行を指摘している。", "japan": "日本でも『盛らない』投稿や企業の『素の中の人』感を出すSNS運用は増えているが、米国のように『パロディ広告』そのものを看板コンテンツにする動きはまだ少なく、今後参考になりうる手法。", "sources": [{"name": "Content Grip", "url": "https://contentgrip.com/tiktok-trends-gen-z-marketing-guide"}]}]}, "changes": [], "glossary": [{"term": "中間選挙", "desc": "米国で大統領選挙の間の年に行われる、議会(上院・下院)の議員を選ぶ選挙。大統領の政権運営への『中間評価』の意味を持つ。"}, {"term": "下院", "desc": "米国議会の一院。全435議席が2年ごとに改選され、予算や法案の審議で重要な役割を持つ。過半数は218議席。"}, {"term": "上院", "desc": "米国議会の一院。100議席のうち約3分の1が2年ごとに改選される。外交・安全保障の人事承認などで強い権限を持つ。"}, {"term": "ねじれ議会", "desc": "大統領の政党と、議会の多数派を占める政党が異なる状態。急激な政策転換が難しくなるため、政治の安定要因とみなされることがある。"}, {"term": "ホルムズ海峡", "desc": "中東のペルシャ湾と外海をつなぐ狭い海峡。世界の原油輸送の多くが通過するため、この付近で緊張が高まると原油価格が上がりやすい。"}, {"term": "5中総会", "desc": "中国共産党の重要会議の一つ。党の方針や幹部人事に関わる重要な議題が話し合われる。"}, {"term": "大気質指数(AQI)", "desc": "空気の汚れ具合を表す指標。数字が大きいほど汚染が深刻で、日本の環境省の基準とは目盛りが異なる場合がある。"}, {"term": "代表質問", "desc": "国会で首相の施政方針演説などに対し、各党の代表者が行う質疑。国会論戦の最初の見せ場とされる。"}, {"term": "FA(フリーエージェント)", "desc": "プロ野球で、一定の年数を経た選手が所属球団を離れて他球団と自由に契約できる権利。"}, {"term": "大関", "desc": "大相撲の番付で横綱の次に高い地位。2場所連続で優勝相当の成績を挙げると横綱への昇進が検討される。"}], "calendar": [{"date": "11/5", "time": "", "event": "高市首相への代表質問、参院で開始", "note": "6日まで実施、武部農水相の政治資金問題が焦点", "detail": "野党の追及の強さと、与党側の答弁内容が今後の国会運営の空気を左右する。"}, {"date": "11/5", "time": "", "event": "ブラジル中央銀行、政策金利発表", "note": "市場は政策金利の維持を予想", "detail": "新興国の金融政策の方向性として、日本の投資家にも参考材料になる。"}, {"date": "11/5", "time": "", "event": "フランス、公共部門の統一スト", "note": "教育・医療・運輸・公務員サービスが対象", "detail": "学生運動がより広い社会的不満に発展しているかを示す試金石になる。"}, {"date": "11/6〜10", "time": "", "event": "ウクライナ・ロシア・米国の3者協議(アブダビで検討)", "note": "トルコでのゼレンスキー・プーチン会談構想も並行", "detail": "停戦交渉が具体的に進展するかが焦点。実現すれば地政学リスクの後退につながる可能性がある。"}, {"date": "11/7", "time": "", "event": "ニュージーランド総選挙、投票日", "note": "事前投票は10/26から実施中", "detail": "経済政策・生活費の高さが最大の争点で、連立協議の枠組みにも注目。"}, {"date": "11/8〜22", "time": "", "event": "大相撲九州場所(福岡)", "note": "横綱大の里・豊昇龍、大関3人の布陣", "detail": "大の里が連覇を狙えるか、安青錦の綱取りの行方にも注目が集まる。"}, {"date": "11/18〜19", "time": "", "event": "APEC首脳会議(中国・深圳)", "note": "高市首相と習近平氏の会談実現が焦点", "detail": "台湾問題をめぐる日中の対立が続く中、首脳会談が実現すれば関係改善の糸口になる可能性がある。"}, {"date": "12/9", "time": "", "event": "日銀金融政策決定会合", "note": "市場は高い確率で追加利上げを予想", "detail": "10月会合での反対票と総裁会見が利上げの確度をどこまで固めたかが問われる。"}], "review": {"summary": "自動集計は1営業日後55%(256件)・5営業日後66%(222件)で、11/4号時点から変化なし。新規に確定した結果はまだないため、本日号は直近の教訓(半導体の方向不明時はflat、中東の緊張再燃時は海運・石油の追い風を素早く強める、同一ペアの連続起用を避ける)をそのまま踏襲した。", "items": [{"title": "半導体はAMD安・スーパーマイクロ高に加えAI規制観測も重なり、2日連続でflat判定", "why": "11/1・11/2号で半導体の逆風が2日連続で外れた教訓(方向に強い確信がない日は見送るべき)に加え、今回は米国のねじれ議会によるAI規制観測という新しい不確実性も重なり、判断材料がさらに割れた。", "lesson": "政治要因が加わって不確実性が二重になっている日は、なおのこと無理に方向を出さない判断が有効だと考え、本日号も東京エレクトロン・アドバンテストはflatとした。"}, {"title": "海運・石油の追い風は中東緊張の『再燃』からさらに『最高潮』へ、2日連続で強化", "why": "lessons.mdの『停戦報道後の緊張再燃は素早く追い風に戻す』仮説は11/4号で初適用したばかりで答え合わせはまだ先だが、今回はタンカー4隻の機雷炎上という実際の攻撃が確認され、仮説の前提(緊張再燃)がさらに強まる形になった。", "lesson": "地政学リスクが数日単位で大きく揺れる局面では、材料の強弱に応じて判断を小刻みに更新することが重要と判断し、本日号も海運・石油の追い風を継続・強化した。"}, {"title": "銀行は三井住友・みずほのペアを3日連続で使っていたため、三菱UFJ・三井住友に入れ替え", "why": "11/1号から11/4号まで三井住友・みずほの組み合わせが続き、11/2号ではこのペアがFOMCの地合い悪化で2件とも外れている。同一ペアの連続起用は判定の重複リスクを高める。", "lesson": "テーマが継続して有効でも、銘柄は定期的に入れ替えて判定の重複を避けるという既存ルールを実践し、本日号は三菱UFJ・三井住友に変更した。"}]}, "weather": {"fetched": "05:26", "places": [{"name": "貝塚市", "days": [{"label": "今日", "wd": "木", "date": "2026-11-05", "text": "雨", "icon": "🌧️", "tmax": 22, "tmin": 15, "pop": 86, "umbrella": "傘を持って出かけましょう", "clothes": "長袖1枚がちょうどいい"}, {"label": "明日", "wd": "金", "date": "2026-11-06", "text": "晴れ時々くもり", "icon": "⛅", "tmax": 21, "tmin": 15, "pop": 99, "umbrella": "傘を持って出かけましょう", "clothes": "長袖1枚がちょうどいい"}, {"label": "11/7", "wd": "土", "date": "2026-11-07", "text": "くもり", "icon": "☁️", "tmax": 16, "tmin": 11, "pop": 2, "umbrella": "傘はいらなそう", "clothes": "薄手の上着を"}, {"label": "11/8", "wd": "日", "date": "2026-11-08", "text": "くもり", "icon": "☁️", "tmax": 14, "tmin": 10, "pop": 1, "umbrella": "傘はいらなそう", "clothes": "ジャケットやセーターを"}, {"label": "11/9", "wd": "月", "date": "2026-11-09", "text": "くもり", "icon": "☁️", "tmax": 16, "tmin": 10, "pop": 18, "umbrella": "傘はいらなそう", "clothes": "薄手の上着を"}, {"label": "11/10", "wd": "火", "date": "2026-11-10", "text": "くもり", "icon": "☁️", "tmax": 13, "tmin": 6, "pop": 20, "umbrella": "傘はいらなそう", "clothes": "ジャケットやセーターを"}, {"label": "11/11", "wd": "水", "date": "2026-11-11", "text": "快晴", "icon": "☀️", "tmax": 15, "tmin": 6, "pop": 10, "umbrella": "傘はいらなそう", "clothes": "薄手の上着を"}, {"label": "11/12", "wd": "木", "date": "2026-11-12", "text": "晴れ", "icon": "🌤️", "tmax": 17, "tmin": 7, "pop": 8, "umbrella": "傘はいらなそう", "clothes": "薄手の上着を"}], "hours": [{"t": 5, "day": "今日", "pop": 4, "temp": 16, "icon": "⛅"}, {"t": 6, "day": "今日", "pop": 6, "temp": 16, "icon": "⛅"}, {"t": 7, "day": "今日", "pop": 8, "temp": 15, "icon": "🌤️"}, {"t": 8, "day": "今日", "pop": 11, "temp": 16, "icon": "⛅"}, {"t": 9, "day": "今日", "pop": 12, "temp": 16, "icon": "⛅"}, {"t": 10, "day": "今日", "pop": 12, "temp": 18, "icon": "🌤️"}, {"t": 11, "day": "今日", "pop": 11, "temp": 19, "icon": "🌤️"}, {"t": 12, "day": "今日", "pop": 10, "temp": 20, "icon": "🌤️"}, {"t": 13, "day": "今日", "pop": 7, "temp": 20, "icon": "🌤️"}, {"t": 14, "day": "今日", "pop": 3, "temp": 21, "icon": "☀️"}, {"t": 15, "day": "今日", "pop": 2, "temp": 22, "icon": "🌤️"}, {"t": 16, "day": "今日", "pop": 4, "temp": 22, "icon": "🌤️"}, {"t": 17, "day": "今日", "pop": 8, "temp": 21, "icon": "🌤️"}, {"t": 18, "day": "今日", "pop": 14, "temp": 20, "icon": "🌦️"}, {"t": 19, "day": "今日", "pop": 23, "temp": 20, "icon": "🌦️"}, {"t": 20, "day": "今日", "pop": 35, "temp": 20, "icon": "🌤️"}, {"t": 21, "day": "今日", "pop": 49, "temp": 20, "icon": "🌤️"}, {"t": 22, "day": "今日", "pop": 67, "temp": 20, "icon": "🌦️"}, {"t": 23, "day": "今日", "pop": 86, "temp": 21, "icon": "🌧️"}, {"t": 0, "day": "明日", "pop": 98, "temp": 21, "icon": "🌤️"}, {"t": 1, "day": "明日", "pop": 99, "temp": 20, "icon": "🌤️"}, {"t": 2, "day": "明日", "pop": 92, "temp": 20, "icon": "☀️"}, {"t": 3, "day": "明日", "pop": 82, "temp": 20, "icon": "🌤️"}, {"t": 4, "day": "明日", "pop": 65, "temp": 19, "icon": "⛅"}, {"t": 5, "day": "明日", "pop": 44, "temp": 19, "icon": "🌤️"}, {"t": 6, "day": "明日", "pop": 29, "temp": 19, "icon": "🌤️"}, {"t": 7, "day": "明日", "pop": 27, "temp": 19, "icon": "🌤️"}, {"t": 8, "day": "明日", "pop": 31, "temp": 19, "icon": "☀️"}, {"t": 9, "day": "明日", "pop": 33, "temp": 19, "icon": "☀️"}, {"t": 10, "day": "明日", "pop": 28, "temp": 20, "icon": "☀️"}, {"t": 11, "day": "明日", "pop": 19, "temp": 20, "icon": "☀️"}, {"t": 12, "day": "明日", "pop": 12, "temp": 20, "icon": "🌤️"}, {"t": 13, "day": "明日", "pop": 7, "temp": 20, "icon": "🌤️"}, {"t": 14, "day": "明日", "pop": 3, "temp": 20, "icon": "🌤️"}, {"t": 15, "day": "明日", "pop": 0, "temp": 21, "icon": "🌤️"}, {"t": 16, "day": "明日", "pop": 0, "temp": 21, "icon": "☀️"}, {"t": 17, "day": "明日", "pop": 1, "temp": 20, "icon": "🌤️"}, {"t": 18, "day": "明日", "pop": 2, "temp": 20, "icon": "🌤️"}, {"t": 19, "day": "明日", "pop": 2, "temp": 19, "icon": "☀️"}, {"t": 20, "day": "明日", "pop": 1, "temp": 18, "icon": "☀️"}, {"t": 21, "day": "明日", "pop": 0, "temp": 17, "icon": "☀️"}, {"t": 22, "day": "明日", "pop": 0, "temp": 16, "icon": "🌤️"}, {"t": 23, "day": "明日", "pop": 0, "temp": 16, "icon": "⛅"}]}], "jma": {"office": "大阪管区気象台", "reported": "2026-11-05 05:00", "text": "くもり夜雨所により雷を伴う", "wind": "北東の風後南西の風海上では後南西の風やや強く", "pops": [{"t": "06時", "pop": "10"}, {"t": "12時", "pop": "30"}, {"t": "18時", "pop": "60"}, {"t": "00時", "pop": "20"}]}}}</script>
+<script id="archive-data" type="application/json">["2026-11-05", "2026-11-04", "2026-11-03", "2026-11-02", "2026-11-01", "2026-10-31", "2026-10-30", "2026-10-29", "2026-10-28", "2026-10-27", "2026-10-26", "2026-10-25", "2026-10-24", "2026-10-23", "2026-10-22", "2026-10-21", "2026-10-20", "2026-10-19", "2026-10-18", "2026-10-16", "2026-10-15", "2026-10-14", "2026-10-13", "2026-10-12", "2026-10-11", "2026-10-10", "2026-10-09", "2026-10-08", "2026-10-07", "2026-10-06", "2026-10-05", "2026-10-04", "2026-10-03", "2026-10-02", "2026-10-01", "2026-09-30", "2026-09-29", "2026-09-28", "2026-09-27"]</script>
+<script>
+const D = JSON.parse(document.getElementById('news-data').textContent);
+const ARCH = JSON.parse(document.getElementById('archive-data').textContent);
+const CATS = {"地政学":"--c-geo","経済・金融":"--c-macro","テクノロジー":"--c-tech","日本":"--c-japan","中国・アジア":"--c-asia","エネルギー・資源":"--c-energy"};
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dir = v => { const s = String(v ?? ''); return s.startsWith('+') ? 'up' : s.startsWith('-') || s.startsWith('−') ? 'down' : 'flat'; };
+const $ = id => document.getElementById(id);
+const GL = (D.glossary||[]).filter(g=>g.term&&g.desc).sort((a,b)=>b.term.length-a.term.length);
+const usedTerms = new Set();
+const gl = (text, once = true) => {
+  let h = esc(text);
+  for (const g of GL) {
+    if (once && usedTerms.has(g.term)) continue;
+    const t = esc(g.term), i = h.indexOf(t);
+    if (i < 0 || h.lastIndexOf('<', i) > h.lastIndexOf('>', i)) continue;
+    h = h.slice(0,i) + `<span class="term" tabindex="0" data-t="${esc(g.term)}">${t}</span>` + h.slice(i+t.length);
+    if (once) usedTerms.add(g.term);
+  }
+  return h;
+};
+
+const REG = [];
+const reg = fn => { REG.push(fn); return REG.length - 1; };
+const tapAttr = fn => `data-open="${reg(fn)}" tabindex="0" role="button"`;
+const wd = ['日','月','火','水','木','金','土'];
+const dt = new Date(D.date + 'T00:00:00');
+$('date').textContent = `${dt.getFullYear()}年${dt.getMonth()+1}月${dt.getDate()}日（${wd[dt.getDay()]}）`;
+$('updated').textContent = `更新 ${D.generated_at || ''}`;
+document.title = `Morning Brief ${D.date}`;
+
+$('ticker').innerHTML = (D.markets||[]).map(m => `
+  <div class="tk tap" ${tapAttr(()=>marketView(m))}><div class="n">${esc(m.name)}</div>
+  <div class="v num">${esc(m.value)}</div>
+  <div class="c num ${dir(m.change)}">${esc(m.change||'')}</div>
+  ${m.note ? `<div class="note">${esc(m.note)}</div>` : ''}</div>`).join('');
+
+$('lead').textContent = D.lead || '';
+$('points').innerHTML = (D.summary||[]).map(s => `<li>${gl(s)}</li>`).join('');
+const mood = D.mood || {};
+$('moodLabel').textContent = mood.label || '';
+$('moodText').textContent = mood.text || '';
+$('needle').style.left = Math.max(2, Math.min(98, mood.score ?? 50)) + '%';
+$('themes').innerHTML = (D.themes||[]).map(t => `<span class="theme">#${esc(t)}</span>`).join('');
+
+const stories = (D.stories||[]).slice().sort((a,b)=>(b.importance||1)-(a.importance||1));
+const cats = [...new Set(stories.map(s=>s.category))];
+$('filters').innerHTML = ['すべて',...cats].map((c,i)=>`<button class="f ${i?'':'on'}" data-c="${esc(c)}">${esc(c)}</button>`).join('');
+const impList = (arr, up, s) => (arr||[]).map(x=>`<li class="tap" ${tapAttr(()=>stockView(x, up, s))}><b>${esc(x.name)}</b>${x.code?`<code>${esc(x.code)}</code>`:''}${x.reason?`<span>${esc(x.reason)}</span>`:''}</li>`).join('');
+$('stories').innerHTML = stories.map(s => {
+  const lv = s.importance||2;
+  const up = s.impact?.up?.length, dn = s.impact?.down?.length;
+  return `<article class="card story tap lvl${lv}" ${tapAttr(()=>storyView(s))} data-c="${esc(s.category)}" style="--cat:var(${CATS[s.category]||'--c-other'})">
+    <div class="meta"><span class="cat">${esc(s.category)}</span><span class="stars">${'★'.repeat(lv)}${'☆'.repeat(3-lv)}</span>${s.region?`<span>· ${esc(s.region)}</span>`:''}${s.followup?`<span class="fu">続報</span>`:''}</div>
+    <h4>${esc(s.title)}</h4>
+    ${s.followup && s.delta ? `<div class="delta"><b>昨日から</b>${esc(s.delta)}</div>` : ''}
+    <p>${gl(s.summary)}</p>
+    ${s.why ? `<div class="why"><b>WHY IT MATTERS</b>${gl(s.why)}</div>` : ''}
+    ${up||dn ? `<div class="impact">
+      ${up?`<div class="imp u"><h5>▲ 追い風になりそう</h5><ul>${impList(s.impact.up, true, s)}</ul></div>`:''}
+      ${dn?`<div class="imp d"><h5>▼ 逆風になりそう</h5><ul>${impList(s.impact.down, false, s)}</ul></div>`:''}
+    </div>`:''}
+    <div class="src"><span class="readmore">詳しく読む ›</span></div>
+  </article>`;}).join('');
+$('filters').addEventListener('click', e => {
+  const b = e.target.closest('.f'); if(!b) return;
+  $('filters').querySelectorAll('.f').forEach(x=>x.classList.toggle('on', x===b));
+  document.querySelectorAll('.story').forEach(a => a.classList.toggle('hidden', b.dataset.c!=='すべて' && a.dataset.c!==b.dataset.c));
+});
+
+const arrow = {up:'▲',down:'▼',flat:'―'};
+$('sectors').innerHTML = (D.sectors||[]).map(s=>`<div class="sec tap" ${tapAttr(()=>sectorView(s))}><div class="arrow ${s.direction}">${arrow[s.direction]||'―'}</div><div><b>${esc(s.name)}</b><span>${esc(s.reason)}</span></div></div>`).join('');
+$('calendar').innerHTML = (D.calendar||[]).map(e=>`<div class="ev tap" ${tapAttr(()=>calView(e))}><div class="d">${esc(e.date)}<small>${esc(e.time||'')}</small></div><div><b>${esc(e.event)}</b><span>${esc(e.note||'')}</span></div></div>`).join('');
+
+const CATS2 = {"スポーツ":"--c-sports","社会・くらし":"--c-life","エンタメ・カルチャー":"--c-ent","話題・トレンド":"--c-trend","サイエンス・健康":"--c-sci"};
+const W = D.weather || {};
+if (!W.places && !W.jma) { $('wxHead').classList.add('hidden'); $('weather').classList.add('hidden'); }
+else {
+  $('wxNote').textContent = W.jma ? `${W.jma.office} ${W.jma.reported} 発表` : '';
+  const place = p => { const t = p.days[0], m = p.days[1];
+    return `<div class="card place">
+      <div class="top"><div class="ic">${t.icon}</div><div><div class="nm">${esc(p.name)}</div><div class="tx">${esc(t.text)}</div></div>
+      <div class="tp"><b>${t.tmax}°</b><span>${t.tmin}°</span></div></div>
+      <div class="advice"><span class="${t.pop>=30?'rain':''}">☂ 降水 ${t.pop}% · ${esc(t.umbrella)}</span><span>👕 ${esc(t.clothes)}</span></div>
+      <div class="hours-hint"><span>1時間ごとの降水確率</span><span>スワイプで明日まで →</span></div>
+      <div class="hours">${(p.hours||[]).map((h,i,a)=>`<div class="hr${i&&h.day!==a[i-1].day?' nd':''}">${h.t}時<span class="hi">${h.icon}</span><div class="bar"><i style="height:${h.pop}%"></i></div><b>${h.pop}%</b>${h.temp}°</div>`).join('')}</div>
+      ${m?`<div class="tmr">明日 ${m.icon} ${esc(m.text)}　${m.tmax}° / ${m.tmin}°　降水 ${m.pop}%</div>`:''}
+    </div>`; };
+  $('weather').innerHTML = (W.places||[]).map(place).join('') + (W.jma ? `<div class="card jma">
+      <div class="eyebrow">気象庁の予報（大阪府）</div>
+      <p>${esc(W.jma.text)}</p>
+      <div class="pops">${W.jma.pops.map(x=>`<div>${esc(x.t)}〜<b>${esc(x.pop)}%</b></div>`).join('')}</div>
+      <small>${esc(W.jma.wind)}</small></div>` : '') +
+    ((W.places||[]).length ? `<div class="card week"><div class="week-top"><div class="eyebrow">週間予報</div>
+      <div class="seg" id="wkSeg" ${W.places.length<2?'hidden':''}>${W.places.map((p,i)=>`<button class="${i?'':'on'}" data-i="${i}">${esc(p.name)}</button>`).join('')}</div></div>
+      <div class="days" id="wkDays"></div></div>` : '');
+  const week = i => { $('wkDays').innerHTML = W.places[i].days.map(d=>`<div class="day ${d.wd==='土'?'sat':d.wd==='日'?'sun':''}">
+      <div class="dl">${esc(d.label)}<small>${esc(d.wd||'')}</small></div><div class="di">${d.icon}</div><div class="dt">${esc(d.text)}</div>
+      <div class="dx">${d.tmax}°</div><div class="dn">${d.tmin}°</div><div class="dp ${d.pop>=50?'wet':''}">☂${d.pop}%</div></div>`).join(''); };
+  if ($('wkSeg')) { week(0); $('wkSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+    $('wkSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b)); week(+b.dataset.i); }); }
+}
+$('topics').innerHTML = (D.topics||[]).map(t=>`<article class="card topic tap" ${tapAttr(()=>topicView(t))} style="--cat:var(${CATS2[t.category]||'--c-other'})">
+  <div class="meta"><span class="cat">${esc(t.category)}</span></div>
+  <h4>${esc(t.title)}</h4><p>${gl(t.summary)}</p>
+  ${t.hook?`<div class="hook">💬 ${esc(t.hook)}</div>`:''}
+  <span class="readmore">詳しく ›</span>
+</article>`).join('') + (D.trivia ? `<article class="card trivia"><div class="eyebrow">${esc(D.trivia.label||'今日は何の日')}</div><h4>${esc(D.trivia.title)}</h4><p>${esc(D.trivia.text)}</p></article>` : '');
+
+// 作成できなかった日の簡易版：天気と冒頭の説明だけ出す
+if (D.fallback) document.querySelectorAll('main .sh, main > section, main > p').forEach(el => {
+  if (!['wxHead','weather'].includes(el.id) && !el.classList.contains('hero')) el.hidden = true; });
+const WD = D.world || {};
+const WI = WD.items || [];
+if (!WI.length) { ['worldHead','worldIntro','world'].forEach(id => $(id).hidden = true); }
+else {
+  $('worldIntro').textContent = WD.intro || 'その国の新聞・テレビが自分たちの言葉で大きく伝えていること。日本ではあまり報じられない話題を中心に。';
+  const regs = [...new Set(WI.map(w=>w.region).filter(Boolean))];
+  $('wfilters').innerHTML = regs.length > 1 ? ['すべて',...regs].map((r,i)=>`<button class="f ${i?'':'on'}" data-r="${esc(r)}">${esc(r)}</button>`).join('') : '';
+  $('world').innerHTML = WI.slice().sort((a,b)=>!!b.watch-!!a.watch).map(w=>`<article class="card wn tap${w.watch?' watch':''}" ${tapAttr(()=>worldView(w))} data-r="${esc(w.region||'')}">
+    <div class="where"><span class="fl">${esc(w.flag||'🌐')}</span><span>${esc(w.country||'')}</span>${w.watch?`<span class="badge">定点観測</span>`:''}${w.region?`<span class="rg">${esc(w.region)}</span>`:''}</div>
+    <h4>${esc(w.title)}</h4>
+    ${w.watch && w.delta?`<div class="delta"><b>昨日から</b>${esc(w.delta)}</div>`:''}
+    ${w.original?`<div class="orig">${esc(w.original)}</div>`:''}
+    <p>${gl(w.summary)}</p>
+    ${w.local?`<div class="local">🗣 ${gl(w.local)}</div>`:''}
+    <div class="via">${(w.sources||[]).length?`via ${w.sources.map(x=>esc(x.name)).join(' / ')}`:''}<span class="readmore" style="float:right">詳しく ›</span></div>
+  </article>`).join('');
+  $('wfilters').addEventListener('click', e => {
+    const b = e.target.closest('.f'); if(!b) return;
+    $('wfilters').querySelectorAll('.f').forEach(x=>x.classList.toggle('on', x===b));
+    $('world').querySelectorAll('.wn').forEach(a => a.classList.toggle('hidden', b.dataset.r!=='すべて' && a.dataset.r!==b.dataset.r));
+  });
+}
+
+const US = D.usa || {};
+const UI = US.items || [];
+if (!UI.length) { ['usaHead','usaIntro','usa'].forEach(id => $(id).hidden = true); }
+else {
+  $('usaIntro').textContent = US.intro || '';
+  $('usaIntro').hidden = !US.intro;
+  $('usa').innerHTML = UI.map(u=>`<article class="card wn tap" ${tapAttr(()=>usaView(u))}>
+    <div class="where"><span class="fl">🇺🇸</span><span>${esc(u.category||'')}</span>${u.place?`<span class="rg">${esc(u.place)}</span>`:''}</div>
+    <h4>${esc(u.title)}</h4>
+    <p>${gl(u.summary)}</p>
+    ${u.how?`<div class="how"><b>しくみ（だれが、だれに、なぜお金を払う？）</b>${gl(u.how)}</div>`:''}
+    <div class="via">${(u.sources||[]).length?`via ${u.sources.map(x=>esc(x.name)).join(' / ')}`:''}<span class="readmore" style="float:right">詳しく ›</span></div>
+  </article>`).join('');
+}
+
+const WK = D.weekly;
+if (WK && (WK.overview || (WK.items||[]).length)) {
+  $('weeklyHead').hidden = false; $('weekly').hidden = false;
+  $('weekly').innerHTML = `<div class="eyebrow">${esc(WK.range||'今週')}</div><h4>${esc(WK.title||'今週の世界')}</h4>
+    <p>${gl(WK.overview||'')}</p>
+    <div class="wk">${(WK.items||[]).map(i=>`<div><b>${esc(i.title)}</b>${gl(i.text)}</div>`).join('')}</div>`;
+}
+
+const CH = D.changes || [];
+if (!CH.length) { $('chgHead').hidden = true; $('changes').hidden = true; }
+else $('changes').innerHTML = CH.map(c=>`<div class="chg tap" ${tapAttr(()=>changeView(c))}><span class="when ${/今日/.test(c.when||'')?'':'later'}">${esc(c.when||'')}</span><div><b>${esc(c.title)}</b><span>${gl(c.detail||'')}</span></div></div>`).join('');
+
+const P = t => t ? `<p>${gl(t, false)}</p>` : '';
+const sec = (title, body) => body ? `<div><div class="sec-t">${title}</div>${body}</div>` : '';
+const box = (title, body) => body ? `<div class="box"><div class="sec-t">${title}</div>${body}</div>` : '';
+const chartLinks = code => {
+  const c = String(code || ''), out = [];
+  (c.match(/\b\d{3}[0-9A-Z]\b/g) || []).forEach(k => out.push([k, `https://finance.yahoo.co.jp/quote/${k}.T`]));
+  if (!out.length) (c.match(/\b[A-Z]{1,5}\b/g) || []).forEach(k => out.push([k, `https://finance.yahoo.com/quote/${k}`]));
+  return out.length ? `<div class="codes">${out.map(([k,u])=>`<a href="${u}" target="_blank" rel="noopener">📈 ${esc(k)} のチャート</a>`).join('')}</div>` : '';
+};
+const itemList = (arr, up, s) => (arr||[]).length ? `<div class="lst">${arr.map(x=>`<div class="it tap ${up?'u':'d'}" ${tapAttr(()=>stockView(x, up, s))}><b>${esc(x.name)}${x.code?`<code>${esc(x.code)}</code>`:''}</b><span>${esc(x.reason||'')}</span></div>`).join('')}</div>` : '';
+const sources = s => (s.sources||[]).length ? `<div class="src"><div class="sec-t">出典</div>${s.sources.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)} ↗</a>`).join('')}</div>` : '';
+const NOTE = '<div class="note">ニュースからの連想を整理したもので、投資助言ではありません。</div>';
+
+const stockView = (x, up, s) => `
+  <div class="dir ${up?'up':'down'}">${up?'▲ 追い風になりそう':'▼ 逆風になりそう'}</div>
+  <h3>${esc(x.name)}</h3>
+  ${x.code?`<div class="note">コード：${esc(x.code)}</div>`:''}
+  ${box('ひとことで', P(x.reason))}
+  ${sec('なぜそう言えるのか', P(x.detail) || '<p class="note">この号には詳しい解説がありません。</p>')}
+  ${s ? sec('きっかけのニュース', `<div class="lst"><div class="it tap" ${tapAttr(()=>storyView(s))}><b>${esc(s.title)}</b></div></div>`) : ''}
+  ${chartLinks(x.code)}${NOTE}`;
+
+const storyView = s => `
+  <div class="meta"><span class="cat" style="color:var(${CATS[s.category]||'--c-other'})">${esc(s.category)}</span>${s.region?`<span>· ${esc(s.region)}</span>`:''}${s.followup?`<span class="fu">続報</span>`:''}</div>
+  <h3>${esc(s.title)}</h3>
+  ${s.followup && s.delta ? box('昨日から変わったこと', P(s.delta)) : ''}
+  ${P(s.summary)}
+  ${sec('もっと詳しく', P(s.detail))}
+  ${box('なぜ重要か', P(s.why))}
+  ${sec('▲ 追い風になりそう', itemList(s.impact?.up, true, s))}
+  ${sec('▼ 逆風になりそう', itemList(s.impact?.down, false, s))}
+  ${sources(s)}`;
+
+const topicView = t => `
+  <div class="meta"><span class="cat" style="color:var(${CATS2[t.category]||'--c-other'})">${esc(t.category)}</span></div>
+  <h3>${esc(t.title)}</h3>${P(t.summary)}${sec('もっと詳しく', P(t.detail))}
+  ${t.hook ? box('💬 話のネタ', P(t.hook)) : ''}${sources(t)}`;
+
+const worldView = w => `
+  <div class="meta"><span class="cat" style="color:var(--c-world)">${esc(w.flag||'🌐')} ${esc(w.country||'')}${w.region?` · ${esc(w.region)}`:''}</span></div>
+  <h3>${esc(w.title)}</h3>${w.original?`<div class="note"><i>${esc(w.original)}</i></div>`:''}
+  ${w.watch && w.delta ? box('定点観測：昨日から変わったこと', P(w.delta)) : ''}${P(w.summary)}
+  ${sec('もっと詳しく', P(w.detail))}
+  ${w.local ? box('🗣 現地ではこう受け止められている', P(w.local)) : ''}
+  ${w.japan ? sec('日本とのつながり', P(w.japan)) : ''}${sources(w)}`;
+
+const usaView = u => `
+  <div class="meta"><span class="cat" style="color:var(--c-usa)">🇺🇸 ${esc(u.category||'')}${u.place?` · ${esc(u.place)}`:''}</span></div>
+  <h3>${esc(u.title)}</h3>${P(u.summary)}
+  ${u.how ? box('しくみ（だれが、だれに、なぜお金を払う？）', P(u.how)) : ''}
+  ${sec('なぜいま広がっているのか', P(u.why))}${sec('もっと詳しく', P(u.detail))}
+  ${u.japan ? box('🇯🇵 日本では？', P(u.japan)) : ''}${sources(u)}`;
+
+const marketView = m => `
+  <div class="eyebrow">マーケット</div><h3>${esc(m.name)}　<span class="num">${esc(m.value)}</span></h3>
+  <div class="num ${dir(m.change)}" style="font-weight:700">${esc(m.change||'')}</div>${m.note?`<div class="note">${esc(m.note)}</div>`:''}
+  ${sec('なぜ動いたのか・どう見るか', P(m.why) || '<p class="note">この号には解説がありません。</p>')}`;
+
+const sectorView = x => { const up = x.direction !== 'down'; return `
+  <div class="dir ${x.direction}">${arrow[x.direction]||'―'} ${x.direction==='up'?'追い風':x.direction==='down'?'逆風':'方向感なし'}</div>
+  <h3>${esc(x.name)}</h3>${box('ひとことで', P(x.reason))}${sec('くわしく', P(x.detail))}
+  ${sec('関連する銘柄', itemList(x.stocks, up, null))}${NOTE}`; };
+
+const calView = e => `
+  <div class="eyebrow">${esc(e.date)} ${esc(e.time||'')}</div><h3>${esc(e.event)}</h3>
+  ${P(e.note)}${sec('注目ポイント', P(e.detail))}`;
+
+const changeView = c => `
+  <div class="eyebrow">${esc(c.when||'')}</div><h3>${esc(c.title)}</h3>${P(c.detail)}${sec('もっと詳しく', P(c.more))}`;
+
+const termView = g => `<div class="eyebrow">用語ミニ解説</div><h3>${esc(g.term)}</h3>${P(g.desc)}`;
+
+const stack = [];
+const showSheet = () => { const v = stack[stack.length-1]; $('sheetBody').innerHTML = v(); $('sheetBody').scrollTop = 0;
+  $('sheetBack').hidden = stack.length < 2; $('sheetBg').hidden = false; document.body.style.overflow = 'hidden'; };
+const openView = fn => { stack.push(fn); showSheet(); };
+const closeSheet = () => { stack.length = 0; $('sheetBg').hidden = true; document.body.style.overflow = ''; };
+$('sheetX').addEventListener('click', closeSheet);
+$('sheetBack').addEventListener('click', () => { stack.pop(); showSheet(); });
+$('sheetBg').addEventListener('click', e => { if (e.target.id === 'sheetBg') closeSheet(); });
+const activate = e => {
+  if (e.target.closest('a')) return false;
+  const t = e.target.closest('.term');
+  if (t) { const g = GL.find(x=>x.term===t.dataset.t); if (g) { openView(()=>termView(g)); return true; } }
+  const o = e.target.closest('[data-open]');
+  if (o) { const fn = REG[+o.dataset.open]; openView(fn); return true; }
+  return false;
+};
+document.addEventListener('click', e => { if (!e.target.closest('.sheet-bar')) activate(e); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSheet();
+  if ((e.key === 'Enter' || e.key === ' ') && (e.target.matches?.('[data-open],.term'))) { e.preventDefault(); activate(e); }
+});
+
+// ---- 予想の答え合わせ ----
+const T = D.track || {};
+const pct = v => v == null ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(2)}%`;
+const VD = {"的中":["hit","✓"],"外れ":["miss","✗"],"横ばい":["flat","－"]};
+const t1 = T.total?.d1 || {}, t5 = T.total?.d5 || {};
+$('kpis').innerHTML = [
+  ['5営業日後の的中率', t5.rate != null ? t5.rate + '%' : '—', `${t5.n||0}件（的中${t5.hit||0}・外れ${t5.miss||0}）`],
+  ['平均の優位性（5日後）', pct(t5.avg_edge), '予想した向きに指数より何%動いたか'],
+  ['1営業日後の的中率', t1.rate != null ? t1.rate + '%' : '—', `${t1.n||0}件（的中${t1.hit||0}・外れ${t1.miss||0}）・ぶれが大きい参考値`],
+  ['判定待ち', `${T.pending ?? 0}件`, '次の取引日以降に判定'],
+].map(([n,v,sub])=>`<div class="kpi"><div class="n">${n}</div><div class="v num">${v}</div><div class="s">${sub}</div></div>`).join('');
+const RV = D.review || {};
+$('review').innerHTML = `<div class="eyebrow">昨日の振り返り</div><p>${esc(RV.summary || 'まだ振り返りはありません。予想の結果が出た翌朝から、外れた理由と学びをここに書きます。')}</p>` +
+  (RV.items||[]).map(it=>`<div class="rv tap" ${tapAttr(()=>reviewView(it))}><b>${esc(it.title)}</b>${esc(it.lesson||'')}</div>`).join('');
+const H = (T.recent5||[]).length ? 'd5' : 'd1';
+const recent = (H === 'd5' ? T.recent5 : T.recent) || [];
+$('results').innerHTML = recent.length ? `<div class="eyebrow" style="padding:14px 16px 6px">最近の結果（${H==='d5'?5:1}営業日後）</div>` + recent.slice(0,15).map(r=>{
+  const x = r[H], [cls, mark] = VD[x.verdict] || ['flat','－'];
+  return `<div class="rs tap" ${tapAttr(()=>resultView(r))}><span class="vd ${cls}">${mark}</span>
+    <div class="nm">${esc(r.name)} <code class="num" style="font-size:11px;color:var(--sub)">${esc(r.code)}</code><small>${r.date.slice(5).replace('-','/')}号 · ${r.dir==='up'?'▲ 追い風':'▼ 逆風'}と予想</small></div>
+    <div class="fig ${dir(pct(x.ret))}">${pct(x.ret)}<small>指数との差 ${pct(x.excess)}</small></div></div>`; }).join('')
+  : `<div class="empty">まだ結果が出た予想はありません。判定待ちが ${T.pending ?? 0} 件あります。翌営業日の終値が出た次の朝から、ここに ✓ / ✗ が並びます。</div>`;
+const LS = T.lessons || [];
+if (LS.length) $('lessons').innerHTML = LS.map(l=>`<li>${esc(l)}</li>`).join('');
+else $('lessonsBox').hidden = true;
+
+const reviewView = it => `<div class="eyebrow">昨日の振り返り</div><h3>${esc(it.title)}</h3>
+  ${sec('なぜそうなったか', P(it.why))}${box('次にどう活かすか', P(it.lesson))}`;
+const resultView = r => { const row = (h, x) => x ? `<div class="box"><div class="sec-t">${h}営業日後（${esc(x.date)}）　${esc(x.verdict)}</div>
+    <p>株価 <b class="${dir(pct(x.ret))}">${pct(x.ret)}</b>　指数 ${pct(x.bench)}　→ 指数との差 <b class="${dir(pct(x.excess))}">${pct(x.excess)}</b></p></div>` : '';
+  return `<div class="dir ${r.dir}">${r.dir==='up'?'▲ 追い風':'▼ 逆風'}と予想（${esc(r.date)}号）</div>
+  <h3>${esc(r.name)}　<span class="num" style="font-size:16px">${esc(r.code)}</span></h3>
+  ${sec('予想した理由', P(r.reason))}${sec('元になったニュース・テーマ', P(r.context))}
+  <div class="note">基準：${esc(r.base_date)} の終値 ${r.base_price}</div>
+  ${row(1, r.d1)}${row(5, r.d5) || '<div class="note">5営業日後の結果はまだ出ていません。</div>'}
+  ${chartLinks(r.code)}${NOTE}`; };
+
+const sel = $('archive');
+
+sel.innerHTML = ARCH.map(d=>`<option value="${d}" ${d===D.date?'selected':''}>${d}</option>`).join('');
+sel.addEventListener('change', () => { location.href = (location.pathname.includes('/editions/') ? '' : 'editions/') + sel.value + '.html'; });
+
+const root = document.documentElement;
+try { const t = localStorage.getItem('mb-theme'); if (t) root.dataset.theme = t; } catch(e){}
+$('theme').addEventListener('click', () => {
+  const dark = root.dataset.theme ? root.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem('mb-theme', root.dataset.theme); } catch(e){}
+});
+</script>
+</body>
+</html>
